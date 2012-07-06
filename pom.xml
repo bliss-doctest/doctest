@@ -1,31 +1,164 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>devbliss</groupId>
-	<artifactId>java-doctests</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
 
-	<name>java-doctests</name>
-	<url>http://maven.apache.org</url>
+    <groupId>de.devbliss.java-doctests</groupId>
+    <artifactId>java-doctests</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <description>Test your REST-API and create an always-uptodate documentation for it</description>
+    <url>https://github.com/devbliss/java-doctests</url>
+    <organization>
+        <name>devbliss GmbH</name>
+        <url>http://devbliss.com</url>
+    </organization>
+    <inceptionYear>2012</inceptionYear>
+    <packaging>jar</packaging>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+    <name>java-doctests</name>
+    <url>http://maven.apache.org</url>
 
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Necessary because according to the docs, site filtering doesn't work for properties with dots in them -->
+        <siteProjectVersion>${project.version}</siteProjectVersion>
+    </properties>
 
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.9.5-rc1</version>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5-rc1</version>
+        </dependency>
+    </dependencies>
+
+    <developers>
+        <developer>
+            <name>Bastien Mary</name>
+            <email>bastien.mary@devbliss.com</email>
+            <url>http://www.devbliss.com</url>
+            <roles>
+                <role>Author</role>
+            </roles>
+            <organization>devbliss GmbH</organization>
+        </developer>
+        <developer>
+            <name>Henning Schuetz</name>
+            <email>henning.schuetz@devbliss.com</email>
+            <url>http://www.devbliss.com</url>
+            <roles>
+                <role>Author</role>
+            </roles>
+            <organization>devbliss GmbH</organization>
+        </developer>
+        <developer>
+            <name>James Roper</name>
+            <email>james.roper@devbliss.com</email>
+            <url>http://www.devbliss.com</url>
+            <roles>
+                <role>Author</role>
+            </roles>
+            <organization>devbliss GmbH</organization>
+        </developer>
+        <developer>
+            <name>Marco Reinwarth</name>
+            <email>marco.reinwarth@devbliss.com</email>
+            <url>http://www.devbliss.com</url>
+            <roles>
+                <role>Author</role>
+            </roles>
+            <organization>devbliss GmbH</organization>
+        </developer>
+        <developer>
+            <name>Raphael Andre Bauer</name>
+            <email>raphael.bauer@devbliss.com</email>
+            <url>http://www.devbliss.com</url>
+            <roles>
+                <role>Author</role>
+            </roles>
+            <organization>devbliss GmbH</organization>
+        </developer>
+        <developer>
+            <name>Marcel Bankmann</name>
+            <email>marcel.bankmann@devbliss.com</email>
+            <url>http://www.devbliss.com</url>
+            <roles>
+                <role>Author</role>
+            </roles>
+            <organization>devbliss GmbH</organization>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.4</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <scm>
+        <url>https://github.com/devbliss/java-doctests</url>
+        <connection>scm:git://github.com/devbliss/java-doctests.git</connection>
+        <developerConnection>scm:git:git@github.com:devbliss/java-doctests.git</developerConnection>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/devbliss/java-doctests/issues/</url>
+    </issueManagement>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
