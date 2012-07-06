@@ -1,4 +1,4 @@
-package de.devbliss.doctest;
+package com.devbliss.doctest;
 
 
 import java.net.URI;

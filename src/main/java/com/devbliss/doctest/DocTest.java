@@ -1,4 +1,4 @@
-package de.devbliss.doctest;
+package com.devbliss.doctest;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,12 +8,12 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import com.devbliss.doctest.templates.Templates;
 import com.google.gson.Gson;
 
 import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
-import de.devbliss.doctest.templates.Templates;
 
 public abstract class DocTest {
 

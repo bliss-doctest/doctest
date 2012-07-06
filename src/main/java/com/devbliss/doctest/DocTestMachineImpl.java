@@ -1,4 +1,4 @@
-package de.devbliss.doctest;
+package com.devbliss.doctest;
 
 
 import java.io.File;
@@ -11,8 +11,9 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.devbliss.doctest.templates.Templates;
+
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
-import de.devbliss.doctest.templates.Templates;
 
 public class DocTestMachineImpl implements DocTestMachine {
 

@@ -1,4 +1,4 @@
-package de.devbliss.doctest.templates;
+package com.devbliss.doctest.templates;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 

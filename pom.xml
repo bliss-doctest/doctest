@@ -8,12 +8,12 @@
         <version>7</version>
     </parent>
 
-    <groupId>de.devbliss.java-doctests</groupId>
-    <name>java-doctests</name>
-    <artifactId>java-doctests</artifactId>
+    <groupId>de.devbliss.doctest</groupId>
+    <name>doctest</name>
+    <artifactId>doctest</artifactId>
     <version>0.1-SNAPSHOT</version>
     <description>Test your REST-API and create an always-uptodate documentation for it</description>
-    <url>https://github.com/devbliss/java-doctests</url>
+    <url>https://github.com/devbliss/doctest</url>
     <organization>
         <name>devbliss GmbH</name>
         <url>http://devbliss.com</url>
@@ -153,14 +153,14 @@
     </profiles>
 
     <scm>
-        <url>https://github.com/devbliss/java-doctests</url>
-        <connection>scm:git://github.com/devbliss/java-doctests.git</connection>
-        <developerConnection>scm:git:git@github.com:devbliss/java-doctests.git</developerConnection>
+        <url>https://github.com/devbliss/doctest</url>
+        <connection>scm:git://github.com/devbliss/doctest.git</connection>
+        <developerConnection>scm:git:git@github.com:devbliss/doctest.git</developerConnection>
     </scm>
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/devbliss/java-doctests/issues/</url>
+        <url>https://github.com/devbliss/doctest/issues/</url>
     </issueManagement>
 
     <reporting>
