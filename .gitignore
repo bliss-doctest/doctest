@@ -5,9 +5,14 @@
 *.jar
 *.war
 *.ear
-/target/*
-/target/**/*
+/target
+/bin
 
+###############
+## mvn release
+*.releaseBackup
+release.properties
 
-#eclipse settings
+#################
+## eclipse settings
 *.prefs
