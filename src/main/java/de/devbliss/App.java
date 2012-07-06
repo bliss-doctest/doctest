@@ -1,4 +1,4 @@
-package devbliss;
+package de.devbliss;
 
 /**
  * Hello world!

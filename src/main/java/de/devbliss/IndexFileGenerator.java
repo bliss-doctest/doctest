@@ -1,4 +1,4 @@
-package devbliss;
+package de.devbliss;
 
 
 import java.io.File;
