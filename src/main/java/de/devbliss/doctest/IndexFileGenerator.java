@@ -1,4 +1,4 @@
-package de.devbliss;
+package de.devbliss.doctest;
 
 
 import java.io.File;
