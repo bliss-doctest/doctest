@@ -9,6 +9,7 @@
     </parent>
 
     <groupId>de.devbliss.java-doctests</groupId>
+    <name>java-doctests</name>
     <artifactId>java-doctests</artifactId>
     <version>0.1-SNAPSHOT</version>
     <description>Test your REST-API and create an always-uptodate documentation for it</description>
@@ -19,9 +20,6 @@
     </organization>
     <inceptionYear>2012</inceptionYear>
     <packaging>jar</packaging>
-
-    <name>java-doctests</name>
-    <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
