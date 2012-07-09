@@ -7,8 +7,10 @@ import java.net.URI;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.templates.Templates;
 
@@ -22,7 +24,8 @@ import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
  * @author bmary
  * 
  */
-public class DocTestTest {
+@RunWith(MockitoJUnitRunner.class)
+public class LogicDocTestUnitTest {
 
     private static final String NULL = "NULL";
     private static final String OBJECT = "OBJECT";
@@ -39,7 +42,7 @@ public class DocTestTest {
     @Mock
     private Templates templates;
 
-    private DocTest docTest;
+    private LogicDocTest docTest;
     private URI uri;
     private ApiResponse apiResponse;
 
@@ -115,14 +118,7 @@ public class DocTestTest {
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
     }
 
-    private DocTest instantiateAbstractDocTest() {
-        return new DocTest(docTestMachine, apiTest, jsonHelper, templates) {
-
-            @Override
-            protected Class<?> getTestClass() {
-                // TODO Auto-generated method stub
-                return null;
-            }
-        };
+    private LogicDocTest instantiateAbstractDocTest() {
+        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, templates);
     }
 }
