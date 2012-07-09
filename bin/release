@@ -1,0 +1,5 @@
+#!/bin/sh
+
+CMD_MVN=`which mvn`
+
+$CMD_MVN clean install release:prepare release:perform
