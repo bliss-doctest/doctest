@@ -1,10 +1,9 @@
 CHANGES
 =============
 
-develop
--------
+Version 0.2.0: 09.07.2012
+-------------------------
  - implement assertTrue and assertFalse methods
-
 
 Version 0.1: 09.07.2012
 -----------------------
