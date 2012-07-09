@@ -1,5 +1,6 @@
 package com.devbliss.doctest;
 
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -129,9 +130,12 @@ public class LogicDocTestUnitTest {
     public void assertTrueIsFalse() throws Exception {
         try {
             docTest.assertTrueAndSay(false);
+            fail();
         } catch (AssertionError e) {
+            verify(docTestMachine, never()).sayVerify("true");
+        } catch (Exception e) {
+            fail();
         }
-        verify(docTestMachine, never()).sayVerify("true");
     }
 
     @Test
@@ -144,9 +148,12 @@ public class LogicDocTestUnitTest {
     public void assertFalseIsFalse() throws Exception {
         try {
             docTest.assertFalseAndSay(true);
+            fail();
         } catch (AssertionError e) {
+            verify(docTestMachine, never()).sayVerify("false");
+        } catch (Exception e) {
+            fail();
         }
-        verify(docTestMachine, never()).sayVerify("false");
     }
 
     @Test
@@ -159,9 +166,12 @@ public class LogicDocTestUnitTest {
     public void assertStringAreNotEquals() throws Exception {
         try {
             docTest.assertEqualsAndSay("expected", "result");
+            fail();
         } catch (AssertionError e) {
+            verify(docTestMachine, never()).sayVerify("expected");
+        } catch (Exception e) {
+            fail();
         }
-        verify(docTestMachine, never()).sayVerify("expected");
     }
 
     @Test
@@ -174,9 +184,12 @@ public class LogicDocTestUnitTest {
     public void assertIntAreNotEquals() throws Exception {
         try {
             docTest.assertEqualsAndSay(100, 105);
+            fail();
         } catch (AssertionError e) {
+            verify(docTestMachine, never()).sayVerify("100");
+        } catch (Exception e) {
+            fail();
         }
-        verify(docTestMachine, never()).sayVerify("100");
     }
 
     private LogicDocTest instantiateAbstractDocTest() {
