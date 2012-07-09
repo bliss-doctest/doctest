@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import com.devbliss.doctest.templates.Templates;
-import com.google.gson.Gson;
+import com.google.inject.Inject;
 
 import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
@@ -19,13 +19,18 @@ public abstract class DocTest {
 
     protected static DocTestMachine docTest;
 
-    private final ApiTest apiTest = new ApiTest();
+    // private final ApiTest apiTest = new ApiTest();
+    private final ApiTest apiTest;
+
+    private final JSONHelper jsonHelper;
+
+    private final Templates templates;
 
     protected abstract Class<?> getTestClass();
 
     @BeforeClass
     public static void initDocTest() {
-        docTest = new DocTestMachineImpl();
+        // docTest = new DocTestMachineImpl();
     }
 
     @Before
@@ -36,6 +41,18 @@ public abstract class DocTest {
     @AfterClass
     public static void finishDocTest() {
         docTest.endDocTest();
+    }
+
+    @Inject
+    public DocTest(
+            DocTestMachine docTest,
+            ApiTest apiTest,
+            JSONHelper jsonHelper,
+            Templates templates) {
+        DocTest.docTest = docTest;
+        this.apiTest = apiTest;
+        this.jsonHelper = jsonHelper;
+        this.templates = templates;
     }
 
     public void say(String say) {
@@ -51,7 +68,7 @@ public abstract class DocTest {
     }
 
     protected void sayUri(URI uri, Object obj, HTTP_REQUEST httpRequest) throws Exception {
-        docTest.sayRequest(uri, new Gson().toJson(obj), httpRequest);
+        docTest.sayRequest(uri, jsonHelper.toJson(obj), httpRequest);
     }
 
     protected ApiResponse makeGetRequestSilent(URI uri) throws Exception {
@@ -108,7 +125,7 @@ public abstract class DocTest {
     }
 
     protected ApiResponse makeDeleteRequest(URI uri, Object obj) throws Exception {
-        sayUri(uri, HTTP_REQUEST.DELETE);
+        sayUri(uri, obj, HTTP_REQUEST.DELETE);
         ApiResponse response = makeDeleteRequestSilent(uri, obj);
         docTest.sayResponse(response.httpStatus, response.payload);
         return response;
@@ -116,7 +133,7 @@ public abstract class DocTest {
 
     protected void assertEqualsAndSay(String expected, String result) {
         assertEquals(expected, result);
-        docTest.say(Templates.getVerifyTemplate(expected, result));
+        docTest.say(templates.getVerifyTemplate(expected, result));
     }
 
     protected void assertEqualsAndSay(int expected, int result) {

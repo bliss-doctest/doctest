@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import com.devbliss.doctest.templates.Templates;
+
 /**
  * Unit tests for the {@link DocTestMachineImpl}
  * 
@@ -17,9 +19,11 @@ public class DocTestMachineImplTest {
 
     private DocTestMachineImpl machine;
 
+    private Templates templates;
+
     @Before
     public void setUp() {
-        machine = new DocTestMachineImpl();
+        machine = new DocTestMachineImpl(templates);
     }
 
     @Test

@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.devbliss.doctest.templates.Templates;
+import com.google.inject.Inject;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
@@ -42,6 +43,13 @@ public class DocTestMachineImpl implements DocTestMachine {
     public Class classUnderTest;
 
     public StringBuffer outputOfTestsBuffer = new StringBuffer();
+
+    private final Templates templates;
+
+    @Inject
+    public DocTestMachineImpl(Templates templates) {
+        this.templates = templates;
+    }
 
     /**
      * Main method => this lets you write out stuff.
@@ -134,7 +142,7 @@ public class DocTestMachineImpl implements DocTestMachine {
 
     private String getJson(String json) throws JSONException {
         if (isJsonValid(json)) {
-            return Templates.getJsonTemplate(new JSONObject(json).toString(2));
+            return templates.getJsonTemplate(new JSONObject(json).toString(2));
         } else {
             return "";
         }
@@ -146,11 +154,11 @@ public class DocTestMachineImpl implements DocTestMachine {
 
     public void sayRequest(URI uri, String payload, HTTP_REQUEST httpRequest) throws JSONException {
         if (uri != null) {
-            say(Templates.getUriTemplate(uri.toString(), getJson(payload), httpRequest));
+            say(templates.getUriTemplate(uri.toString(), getJson(payload), httpRequest));
         }
     }
 
     public void sayResponse(int responseCode, String payload) throws Exception {
-        say(Templates.getResponseTemplate(responseCode, getJson(payload)));
+        say(templates.getResponseTemplate(responseCode, getJson(payload)));
     }
 }
