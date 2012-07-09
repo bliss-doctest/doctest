@@ -1,6 +1,5 @@
 package com.devbliss.doctest;
 
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -52,7 +51,6 @@ public class DocTestMachineImpl implements DocTestMachine {
      */
     public void say(String say) {
         outputOfTestsBuffer.append(String.format(simpleLine, say));
-
     }
 
     /**
@@ -69,9 +67,7 @@ public class DocTestMachineImpl implements DocTestMachine {
      * This would be a header. Maybe a new test inside a testcase.
      */
     public void sayNextSection(String sectionName) {
-
         outputOfTestsBuffer.append(String.format(h1, sectionName));
-
     }
 
     /**
