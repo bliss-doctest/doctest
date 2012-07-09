@@ -7,7 +7,7 @@
         <version>7</version>
     </parent>
 
-    <groupId>com.devbliss.doctest</groupId>
+    <groupId>com.devbliss</groupId>
     <name>doctest</name>
     <artifactId>doctest</artifactId>
     <version>0.2-SNAPSHOT</version>
