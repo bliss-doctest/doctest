@@ -1,5 +1,6 @@
 package com.devbliss.doctest;
 
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -124,10 +125,13 @@ public class LogicDocTestUnitTest {
         verify(docTestMachine).sayVerify("true");
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void assertTrueIsFalse() throws Exception {
-        docTest.assertTrueAndSay(false);
-        verify(docTestMachine).sayVerify("true");
+        try {
+            docTest.assertTrueAndSay(false);
+        } catch (AssertionError e) {
+        }
+        verify(docTestMachine, never()).sayVerify("true");
     }
 
     @Test
@@ -136,10 +140,13 @@ public class LogicDocTestUnitTest {
         verify(docTestMachine).sayVerify("false");
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void assertFalseIsFalse() throws Exception {
-        docTest.assertFalseAndSay(true);
-        verify(docTestMachine).sayVerify("false");
+        try {
+            docTest.assertFalseAndSay(true);
+        } catch (AssertionError e) {
+        }
+        verify(docTestMachine, never()).sayVerify("false");
     }
 
     @Test
@@ -148,10 +155,13 @@ public class LogicDocTestUnitTest {
         verify(docTestMachine).sayVerify("expected");
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void assertStringAreNotEquals() throws Exception {
-        docTest.assertEqualsAndSay("expected", "result");
-        verify(docTestMachine).sayVerify("expected");
+        try {
+            docTest.assertEqualsAndSay("expected", "result");
+        } catch (AssertionError e) {
+        }
+        verify(docTestMachine, never()).sayVerify("expected");
     }
 
     @Test
@@ -160,10 +170,13 @@ public class LogicDocTestUnitTest {
         verify(docTestMachine).sayVerify("100");
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void assertIntAreNotEquals() throws Exception {
-        docTest.assertEqualsAndSay(100, 105);
-        verify(docTestMachine).sayVerify("100");
+        try {
+            docTest.assertEqualsAndSay(100, 105);
+        } catch (AssertionError e) {
+        }
+        verify(docTestMachine, never()).sayVerify("100");
     }
 
     private LogicDocTest instantiateAbstractDocTest() {
