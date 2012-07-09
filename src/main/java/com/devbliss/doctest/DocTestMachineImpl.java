@@ -161,4 +161,8 @@ public class DocTestMachineImpl implements DocTestMachine {
     public void sayResponse(int responseCode, String payload) throws Exception {
         say(templates.getResponseTemplate(responseCode, getJson(payload)));
     }
+
+    public void sayVerify(String condition) {
+        say(templates.getVerifyTemplate(condition));
+    }
 }

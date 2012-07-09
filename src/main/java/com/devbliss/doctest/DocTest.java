@@ -22,6 +22,10 @@ public abstract class DocTest extends LogicDocTest {
         TEMPLATES = injector.getInstance(Templates.class);
     }
 
+    protected static void setApi(ApiTest api) {
+        API_TEST = api;
+    }
+
     public DocTest() {
         super(DOC_TEST_MACHINE, API_TEST, JSON_HELPER, TEMPLATES);
     }

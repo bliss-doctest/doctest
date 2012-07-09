@@ -48,7 +48,7 @@ public class Templates {
         return response;
     }
 
-    public String getVerifyTemplate(String expected, String result) {
+    public String getVerifyTemplate(String expected) {
         return VERIFY.replace("{value}", expected);
     }
 }

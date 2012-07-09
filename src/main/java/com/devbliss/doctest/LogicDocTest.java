@@ -1,6 +1,8 @@
 package com.devbliss.doctest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
 
@@ -20,7 +22,6 @@ public class LogicDocTest {
 
     private final ApiTest apiTest;
     private final JSONHelper jsonHelper;
-    private final Templates templates;
 
     @Before
     public void ensureDocTestClassSet() {
@@ -41,7 +42,6 @@ public class LogicDocTest {
         LogicDocTest.docTest = docTest;
         this.apiTest = apiTest;
         this.jsonHelper = jsonHelper;
-        this.templates = templates;
     }
 
     public void say(String say) {
@@ -122,10 +122,20 @@ public class LogicDocTest {
 
     protected void assertEqualsAndSay(String expected, String result) {
         assertEquals(expected, result);
-        docTest.say(templates.getVerifyTemplate(expected, result));
+        docTest.sayVerify(expected.toString());
     }
 
     protected void assertEqualsAndSay(int expected, int result) {
         assertEqualsAndSay(String.valueOf(expected), String.valueOf(result));
+    }
+
+    protected void assertTrueAndSay(Boolean condition) {
+        assertTrue(condition);
+        docTest.sayVerify(condition.toString());
+    }
+
+    protected void assertFalseAndSay(Boolean condition) {
+        assertFalse(condition);
+        docTest.sayVerify(condition.toString());
     }
 }

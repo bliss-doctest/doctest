@@ -118,6 +118,54 @@ public class LogicDocTestUnitTest {
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
     }
 
+    @Test
+    public void assertTrue() throws Exception {
+        docTest.assertTrueAndSay(true);
+        verify(docTestMachine).sayVerify("true");
+    }
+
+    @Test(expected = AssertionError.class)
+    public void assertTrueIsFalse() throws Exception {
+        docTest.assertTrueAndSay(false);
+        verify(docTestMachine).sayVerify("true");
+    }
+
+    @Test
+    public void assertFalse() throws Exception {
+        docTest.assertFalseAndSay(false);
+        verify(docTestMachine).sayVerify("false");
+    }
+
+    @Test(expected = AssertionError.class)
+    public void assertFalseIsFalse() throws Exception {
+        docTest.assertFalseAndSay(true);
+        verify(docTestMachine).sayVerify("false");
+    }
+
+    @Test
+    public void assertEqualsString() throws Exception {
+        docTest.assertEqualsAndSay("expected", "expected");
+        verify(docTestMachine).sayVerify("expected");
+    }
+
+    @Test(expected = AssertionError.class)
+    public void assertStringAreNotEquals() throws Exception {
+        docTest.assertEqualsAndSay("expected", "result");
+        verify(docTestMachine).sayVerify("expected");
+    }
+
+    @Test
+    public void assertEqualsInt() throws Exception {
+        docTest.assertEqualsAndSay(100, 100);
+        verify(docTestMachine).sayVerify("100");
+    }
+
+    @Test(expected = AssertionError.class)
+    public void assertIntAreNotEquals() throws Exception {
+        docTest.assertEqualsAndSay(100, 105);
+        verify(docTestMachine).sayVerify("100");
+    }
+
     private LogicDocTest instantiateAbstractDocTest() {
         return new LogicDocTest(docTestMachine, apiTest, jsonHelper, templates);
     }

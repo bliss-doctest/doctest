@@ -1,14 +1,19 @@
 package integration;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.net.URI;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.devbliss.doctest.DocTest;
 
 import de.devbliss.apitester.ApiResponse;
+import de.devbliss.apitester.ApiTest;
 
 /**
  * Example implementation of a unit test class extending the {@link DocTest}.
@@ -20,9 +25,60 @@ import de.devbliss.apitester.ApiResponse;
  */
 public class ExampleIntegrationTest extends DocTest {
 
+    private static final String PAYLOAD = "payload";
+    private static final int HTTP_STATUS = 230;
+    private static ApiTest api;
+
+    @BeforeClass
+    public static void beforeClass() {
+        api = mock(ApiTest.class);
+        DocTest.setApi(api);
+    }
+
+    private Object obj;
+    private ApiResponse response;
+    private URI uri;
+
+    @Before
+    public void setUp() throws Exception {
+        obj = new Object();
+        response = new ApiResponse(HTTP_STATUS, PAYLOAD);
+        uri = new URI("http://www.google.com");
+    }
+
     @Test
     public void get() throws Exception {
-        ApiResponse resp = makeGetRequest(new URI("http://www.google.com"));
-        assertEquals(200, resp.httpStatus);
+        when(api.get(uri)).thenReturn(response);
+        ApiResponse resp = makeGetRequest(uri);
+
+        assertEquals(HTTP_STATUS, resp.httpStatus);
+        assertEquals(PAYLOAD, resp.payload);
+    }
+
+    @Test
+    public void delete() throws Exception {
+        when(api.delete(uri, null)).thenReturn(response);
+        ApiResponse response = makeDeleteRequest(uri);
+
+        assertEquals(HTTP_STATUS, response.httpStatus);
+        assertEquals(PAYLOAD, response.payload);
+    }
+
+    @Test
+    public void post() throws Exception {
+        when(api.post(uri, obj)).thenReturn(response);
+        ApiResponse response = makePostRequest(uri, obj);
+
+        assertEquals(HTTP_STATUS, response.httpStatus);
+        assertEquals(PAYLOAD, response.payload);
+    }
+
+    @Test
+    public void put() throws Exception {
+        when(api.put(uri, obj)).thenReturn(response);
+        ApiResponse response = makePutRequest(uri, obj);
+
+        assertEquals(HTTP_STATUS, response.httpStatus);
+        assertEquals(PAYLOAD, response.payload);
     }
 }
