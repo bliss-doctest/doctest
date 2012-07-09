@@ -13,6 +13,8 @@ import de.devbliss.apitester.ApiResponse;
 /**
  * Example implementation of a unit test class extending the {@link DocTest}.
  * 
+ * @Warning This class is used in the {@link ReportCreatedIntegrationTest} class.
+ * 
  * @author bmary
  * 
  */

@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.JUnitCore;
 
 /**
+ * This integration test checks that a report file is created after a DocTest class is run.
  * 
  * @author bmary
  * 
