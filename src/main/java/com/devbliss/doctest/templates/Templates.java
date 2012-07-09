@@ -24,11 +24,11 @@ public class Templates {
     public final static String VERIFY = "<div style =\"" + STYLE_VERIFY
             + "\">important: the value '{value}' is correct!</div>" + CLEAR_FLOAT;
 
-    public static String getJsonTemplate(String json) {
+    public String getJsonTemplate(String json) {
         return JSON.replace("{data}", json);
     }
 
-    public static String getUriTemplate(String uri, String payload, HTTP_REQUEST httpRequest) {
+    public String getUriTemplate(String uri, String payload, HTTP_REQUEST httpRequest) {
         String request = REQUEST.replace("{uri}", uri);
         if (!payload.isEmpty()) {
             request = request.replace("{payload}", payload);
@@ -38,7 +38,7 @@ public class Templates {
         return request.replace("{HTTP}", httpRequest.name());
     }
 
-    public static String getResponseTemplate(int responseCode, String payload) {
+    public String getResponseTemplate(int responseCode, String payload) {
         String response = RESPONSE.replace("{responseCode}", String.valueOf(responseCode));
         if (!payload.isEmpty()) {
             response = response.replace("{payload}", payload);
@@ -48,7 +48,7 @@ public class Templates {
         return response;
     }
 
-    public static String getVerifyTemplate(String expected, String result) {
+    public String getVerifyTemplate(String expected, String result) {
         return VERIFY.replace("{value}", expected);
     }
 }
