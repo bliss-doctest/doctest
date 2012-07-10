@@ -7,10 +7,9 @@ develop
 - assertEqualsAndSay(...) takes Object as parameters and has optional message
 - removed "important" from assert...AndSay() output
 
-Version 0.2: 10.07.2012
------------------------
+Version 0.2.0: 09.07.2012
+-------------------------
  - implement assertTrue and assertFalse methods
-
 
 Version 0.1: 09.07.2012
 -----------------------

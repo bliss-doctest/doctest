@@ -66,8 +66,10 @@ public class ReportCreatedIntegrationTest {
         File outputDirectory = new File(OUTPUT_DIRECTORY);
 
         File[] files = outputDirectory.listFiles();
-        for (File file : files) {
-            file.delete();
+        if (files != null) {
+            for (File file : files) {
+                file.delete();
+            }
         }
         assertEquals(0, outputDirectory.listFiles().length);
     }
