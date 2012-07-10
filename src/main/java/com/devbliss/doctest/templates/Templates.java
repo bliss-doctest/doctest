@@ -22,7 +22,7 @@ public class Templates {
             + "\"><span>Response</span><ul><li>ResponseCode: {responseCode}</li>" + PAYLOAD_LI
             + "</ul></div>" + CLEAR_FLOAT;
     public final static String VERIFY = "<div style =\"" + STYLE_VERIFY
-            + "\">important: the value '{value}' is correct!</div>" + CLEAR_FLOAT;
+            + "\">: '{value}' which is correct!</div>" + CLEAR_FLOAT;
 
     public String getJsonTemplate(String json) {
         return JSON.replace("{data}", json);
