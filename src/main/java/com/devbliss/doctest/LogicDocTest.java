@@ -12,7 +12,6 @@ import org.junit.Before;
 import com.devbliss.doctest.templates.Templates;
 import com.google.inject.Inject;
 
-import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
@@ -60,62 +59,62 @@ public class LogicDocTest {
         docTest.sayRequest(uri, jsonHelper.toJson(obj), httpRequest);
     }
 
-    protected ApiResponse makeGetRequestSilent(URI uri) throws Exception {
-        return apiTest.get(uri);
+    protected Response makeGetRequestSilent(URI uri) throws Exception {
+        return (Response) apiTest.get(uri);
     }
 
-    protected ApiResponse makeGetRequest(URI uri) throws Exception {
+    protected Response makeGetRequest(URI uri) throws Exception {
         sayUri(uri, HTTP_REQUEST.GET);
-        ApiResponse response = makeGetRequestSilent(uri);
+        Response response = makeGetRequestSilent(uri);
         docTest.sayResponse(response.httpStatus, response.payload);
         return response;
     }
 
-    protected ApiResponse makePostRequestSilent(URI uri, Object obj) throws Exception {
-        return apiTest.post(uri, obj);
+    protected Response makePostRequestSilent(URI uri, Object obj) throws Exception {
+        return (Response) apiTest.post(uri, obj);
     }
 
-    protected ApiResponse makePostRequest(URI uri) throws Exception {
+    protected Response makePostRequest(URI uri) throws Exception {
         return makePostRequest(uri, null);
     }
 
-    protected ApiResponse makePostRequest(URI uri, Object obj) throws Exception {
+    protected Response makePostRequest(URI uri, Object obj) throws Exception {
         sayUri(uri, obj, HTTP_REQUEST.POST);
-        ApiResponse response = makePostRequestSilent(uri, obj);
+        Response response = makePostRequestSilent(uri, obj);
         docTest.sayResponse(response.httpStatus, response.payload);
         return response;
     }
 
-    protected ApiResponse makePutRequestSilent(URI uri, Object obj) throws Exception {
-        return apiTest.put(uri, obj);
+    protected Response makePutRequestSilent(URI uri, Object obj) throws Exception {
+        return (Response) apiTest.put(uri, obj);
     }
 
-    protected ApiResponse makePutRequest(URI uri) throws Exception {
+    protected Response makePutRequest(URI uri) throws Exception {
         return makePutRequest(uri, null);
     }
 
-    protected ApiResponse makePutRequest(URI uri, Object obj) throws Exception {
+    protected Response makePutRequest(URI uri, Object obj) throws Exception {
         sayUri(uri, obj, HTTP_REQUEST.PUT);
-        ApiResponse response = makePutRequestSilent(uri, obj);
+        Response response = makePutRequestSilent(uri, obj);
         docTest.sayResponse(response.httpStatus, response.payload);
         return response;
     }
 
-    protected ApiResponse makeDeleteRequestSilent(URI uri) throws Exception {
-        return apiTest.delete(uri);
+    protected Response makeDeleteRequestSilent(URI uri) throws Exception {
+        return (Response) apiTest.delete(uri);
     }
 
-    protected ApiResponse makeDeleteRequestSilent(URI uri, Object obj) throws Exception {
-        return apiTest.delete(uri, obj);
+    protected Response makeDeleteRequestSilent(URI uri, Object obj) throws Exception {
+        return (Response) apiTest.delete(uri, obj);
     }
 
-    protected ApiResponse makeDeleteRequest(URI uri) throws Exception {
+    protected Response makeDeleteRequest(URI uri) throws Exception {
         return makeDeleteRequest(uri, null);
     }
 
-    protected ApiResponse makeDeleteRequest(URI uri, Object obj) throws Exception {
+    protected Response makeDeleteRequest(URI uri, Object obj) throws Exception {
         sayUri(uri, obj, HTTP_REQUEST.DELETE);
-        ApiResponse response = makeDeleteRequestSilent(uri, obj);
+        Response response = makeDeleteRequestSilent(uri, obj);
         docTest.sayResponse(response.httpStatus, response.payload);
         return response;
     }

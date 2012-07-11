@@ -11,8 +11,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.devbliss.doctest.DocTest;
+import com.devbliss.doctest.Response;
 
-import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
 
 /**
@@ -36,20 +36,20 @@ public class ExampleIntegrationTest extends DocTest {
     }
 
     private Object obj;
-    private ApiResponse response;
+    private Response response;
     private URI uri;
 
     @Before
     public void setUp() throws Exception {
         obj = new Object();
-        response = new ApiResponse(HTTP_STATUS, PAYLOAD);
+        response = new Response(HTTP_STATUS, PAYLOAD);
         uri = new URI("http://www.google.com");
     }
 
     @Test
     public void get() throws Exception {
         when(api.get(uri)).thenReturn(response);
-        ApiResponse resp = makeGetRequest(uri);
+        Response resp = makeGetRequest(uri);
 
         assertEquals(HTTP_STATUS, resp.httpStatus);
         assertEquals(PAYLOAD, resp.payload);
@@ -58,7 +58,7 @@ public class ExampleIntegrationTest extends DocTest {
     @Test
     public void delete() throws Exception {
         when(api.delete(uri, null)).thenReturn(response);
-        ApiResponse response = makeDeleteRequest(uri);
+        Response response = makeDeleteRequest(uri);
 
         assertEquals(HTTP_STATUS, response.httpStatus);
         assertEquals(PAYLOAD, response.payload);
@@ -67,7 +67,7 @@ public class ExampleIntegrationTest extends DocTest {
     @Test
     public void post() throws Exception {
         when(api.post(uri, obj)).thenReturn(response);
-        ApiResponse response = makePostRequest(uri, obj);
+        Response response = makePostRequest(uri, obj);
 
         assertEquals(HTTP_STATUS, response.httpStatus);
         assertEquals(PAYLOAD, response.payload);
@@ -76,7 +76,7 @@ public class ExampleIntegrationTest extends DocTest {
     @Test
     public void put() throws Exception {
         when(api.put(uri, obj)).thenReturn(response);
-        ApiResponse response = makePutRequest(uri, obj);
+        Response response = makePutRequest(uri, obj);
 
         assertEquals(HTTP_STATUS, response.httpStatus);
         assertEquals(PAYLOAD, response.payload);

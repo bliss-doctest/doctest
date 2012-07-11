@@ -16,7 +16,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.templates.Templates;
 
-import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
@@ -46,13 +45,13 @@ public class LogicDocTestUnitTest {
 
     private LogicDocTest docTest;
     private URI uri;
-    private ApiResponse apiResponse;
+    private Response response;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         uri = new URI("");
-        apiResponse = new ApiResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
+        response = new Response(HTTP_STATUS, RESPONSE_PAYLOAD);
         when(jsonHelper.toJson(null)).thenReturn(NULL);
         when(jsonHelper.toJson(obj)).thenReturn(OBJECT);
         docTest = instantiateAbstractDocTest();
@@ -66,7 +65,7 @@ public class LogicDocTestUnitTest {
 
     @Test
     public void makeGetRequest() throws Exception {
-        when(apiTest.get(uri)).thenReturn(apiResponse);
+        when(apiTest.get(uri)).thenReturn(response);
         docTest.makeGetRequest(uri);
         verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.GET);
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
@@ -74,7 +73,7 @@ public class LogicDocTestUnitTest {
 
     @Test
     public void makeDeleteRequest() throws Exception {
-        when(apiTest.delete(uri, null)).thenReturn(apiResponse);
+        when(apiTest.delete(uri, null)).thenReturn(response);
         docTest.makeDeleteRequest(uri);
         verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.DELETE);
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
@@ -82,7 +81,7 @@ public class LogicDocTestUnitTest {
 
     @Test
     public void makeDeleteRequestWithBody() throws Exception {
-        when(apiTest.delete(uri, obj)).thenReturn(apiResponse);
+        when(apiTest.delete(uri, obj)).thenReturn(response);
         docTest.makeDeleteRequest(uri, obj);
         verify(docTestMachine).sayRequest(uri, OBJECT, HTTP_REQUEST.DELETE);
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
@@ -90,7 +89,7 @@ public class LogicDocTestUnitTest {
 
     @Test
     public void makePostRequest() throws Exception {
-        when(apiTest.post(uri, null)).thenReturn(apiResponse);
+        when(apiTest.post(uri, null)).thenReturn(response);
         docTest.makePostRequest(uri);
         verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.POST);
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
@@ -98,7 +97,7 @@ public class LogicDocTestUnitTest {
 
     @Test
     public void makePostRequestWithBody() throws Exception {
-        when(apiTest.post(uri, obj)).thenReturn(apiResponse);
+        when(apiTest.post(uri, obj)).thenReturn(response);
         docTest.makePostRequest(uri, obj);
         verify(docTestMachine).sayRequest(uri, OBJECT, HTTP_REQUEST.POST);
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
@@ -106,7 +105,7 @@ public class LogicDocTestUnitTest {
 
     @Test
     public void makePutRequest() throws Exception {
-        when(apiTest.put(uri, null)).thenReturn(apiResponse);
+        when(apiTest.put(uri, null)).thenReturn(response);
         docTest.makePutRequest(uri);
         verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.PUT);
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
@@ -114,7 +113,7 @@ public class LogicDocTestUnitTest {
 
     @Test
     public void makePutRequestWithBody() throws Exception {
-        when(apiTest.put(uri, obj)).thenReturn(apiResponse);
+        when(apiTest.put(uri, obj)).thenReturn(response);
         docTest.makePutRequest(uri, obj);
         verify(docTestMachine).sayRequest(uri, OBJECT, HTTP_REQUEST.PUT);
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
