@@ -70,7 +70,7 @@ public class ReportCreatedIntegrationTest {
             for (File file : files) {
                 file.delete();
             }
+            assertEquals(0, outputDirectory.listFiles().length);
         }
-        assertEquals(0, outputDirectory.listFiles().length);
     }
 }
