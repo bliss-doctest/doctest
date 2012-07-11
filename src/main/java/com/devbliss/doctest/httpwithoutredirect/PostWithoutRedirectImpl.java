@@ -1,5 +1,8 @@
 package com.devbliss.doctest.httpwithoutredirect;
 
+import static com.devbliss.doctest.httpwithoutredirect.HttpConstants.ENCODING;
+import static com.devbliss.doctest.httpwithoutredirect.HttpConstants.HANDLE_REDIRECTS;
+
 import java.io.IOException;
 import java.net.URI;
 
@@ -15,9 +18,14 @@ import com.google.inject.Inject;
 
 import de.devbliss.apitester.factory.PostFactory;
 
+/**
+ * Implements a POST HTTP request which does not handle any redirect.
+ * 
+ * @author bmary
+ * 
+ */
 public class PostWithoutRedirectImpl implements PostFactory {
 
-    private static final String ENCODING = "UTF-8";
     private final Gson gson;
 
     @Inject
@@ -28,7 +36,7 @@ public class PostWithoutRedirectImpl implements PostFactory {
     public HttpGet createGetRequest(URI uri) throws IOException {
         HttpGet httpGet = new HttpGet(uri);
         HttpParams params = new BasicHttpParams();
-        params.setParameter("http.protocol.handle-redirects", false);
+        params.setParameter(HANDLE_REDIRECTS, false);
         httpGet.setParams(params);
         return httpGet;
     }
@@ -36,7 +44,7 @@ public class PostWithoutRedirectImpl implements PostFactory {
     public HttpPost createPostRequest(URI uri, Object payload) throws IOException {
         HttpPost httpPost = new HttpPost(uri);
         HttpParams params = new BasicHttpParams();
-        params.setParameter("http.protocol.handle-redirects", false);
+        params.setParameter(HANDLE_REDIRECTS, false);
         httpPost.setParams(params);
 
         if (payload != null) {

@@ -1,5 +1,7 @@
 package com.devbliss.doctest.httpwithoutredirect;
 
+import static com.devbliss.doctest.httpwithoutredirect.HttpConstants.HANDLE_REDIRECTS;
+
 import java.io.IOException;
 import java.net.URI;
 
@@ -9,12 +11,18 @@ import org.apache.http.params.HttpParams;
 
 import de.devbliss.apitester.factory.GetFactory;
 
+/**
+ * Implements a GET HTTP request which does not handle any redirect.
+ * 
+ * @author bmary
+ * 
+ */
 public class GetWithoutRedirectImpl implements GetFactory {
 
     public HttpGet createGetRequest(URI uri) throws IOException {
         HttpGet httpGet = new HttpGet(uri);
         HttpParams params = new BasicHttpParams();
-        params.setParameter("http.protocol.handle-redirects", false);
+        params.setParameter(HANDLE_REDIRECTS, false);
         httpGet.setParams(params);
         return httpGet;
     }

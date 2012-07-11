@@ -7,6 +7,7 @@ develop
 - assertEqualsAndSay(...) takes Object as parameters and has optional message
 - removed "important" from assert...AndSay() output
 - create Response object to avoid consumers of this library having a dependency on the ApiTester library.
+- create GUICE bindings for the request factories (request without redirect)
 
 Version 0.2.0: 09.07.2012
 -------------------------

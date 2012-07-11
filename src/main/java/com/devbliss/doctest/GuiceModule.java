@@ -24,13 +24,13 @@ public class GuiceModule extends AbstractModule {
         bind(JSONHelper.class).in(Singleton.class);
         bind(Templates.class).in(Singleton.class);
 
-        bind(DeleteFactory.class).annotatedWith(Names.named("deleteFactory")).to(
+        bind(DeleteFactory.class).annotatedWith(Names.named(ApiTest.DELETE_FACTORY)).to(
                 DeleteWithoutRedirectImpl.class);
-        bind(GetFactory.class).annotatedWith(Names.named("getFactory")).to(
+        bind(GetFactory.class).annotatedWith(Names.named(ApiTest.GET_FACTORY)).to(
                 GetWithoutRedirectImpl.class);
-        bind(PutFactory.class).annotatedWith(Names.named("putFactory")).to(
+        bind(PutFactory.class).annotatedWith(Names.named(ApiTest.PUT_FACTORY)).to(
                 PutWithoutRedirectImpl.class);
-        bind(PostFactory.class).annotatedWith(Names.named("postFactory")).to(
+        bind(PostFactory.class).annotatedWith(Names.named(ApiTest.POST_FACTORY)).to(
                 PostWithoutRedirectImpl.class);
     }
 }

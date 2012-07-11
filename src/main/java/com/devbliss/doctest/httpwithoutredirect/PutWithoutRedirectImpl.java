@@ -1,5 +1,8 @@
 package com.devbliss.doctest.httpwithoutredirect;
 
+import static com.devbliss.doctest.httpwithoutredirect.HttpConstants.ENCODING;
+import static com.devbliss.doctest.httpwithoutredirect.HttpConstants.HANDLE_REDIRECTS;
+
 import java.io.IOException;
 import java.net.URI;
 
@@ -14,9 +17,14 @@ import com.google.inject.Inject;
 
 import de.devbliss.apitester.factory.PutFactory;
 
+/**
+ * Implements a PUT HTTP request which does not handle any redirect.
+ * 
+ * @author bmary
+ * 
+ */
 public class PutWithoutRedirectImpl implements PutFactory {
 
-    private static final String ENCODING = "UTF-8";
     private final Gson gson;
 
     @Inject
@@ -27,7 +35,7 @@ public class PutWithoutRedirectImpl implements PutFactory {
     public HttpPut createPutRequest(URI uri, Object payload) throws IOException {
         HttpPut httpPut = new HttpPut(uri);
         HttpParams params = new BasicHttpParams();
-        params.setParameter("http.protocol.handle-redirects", false);
+        params.setParameter(HANDLE_REDIRECTS, false);
         httpPut.setParams(params);
 
         if (payload != null) {
