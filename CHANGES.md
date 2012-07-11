@@ -1,6 +1,12 @@
 CHANGES
 =============
 
+develop
+-------
+- implement assertTrueAndSay() and assertFalseAndSay() with optional message
+- assertEqualsAndSay(...) takes Object as parameters and has optional message
+- removed "important" from assert...AndSay() output
+
 Version 0.2.0: 09.07.2012
 -------------------------
  - implement assertTrue and assertFalse methods

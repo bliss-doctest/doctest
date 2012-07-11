@@ -120,13 +120,14 @@ public class LogicDocTest {
         return response;
     }
 
-    protected void assertEqualsAndSay(String expected, String result) {
+    protected void assertEqualsAndSay(Object expected, Object result) {
         assertEquals(expected, result);
         docTest.sayVerify(expected.toString());
     }
 
-    protected void assertEqualsAndSay(int expected, int result) {
-        assertEqualsAndSay(String.valueOf(expected), String.valueOf(result));
+    protected void assertEqualsAndSay(Object expected, Object result, String message) {
+        assertEquals(expected, result);
+        docTest.sayVerify(message + expected.toString());
     }
 
     protected void assertTrueAndSay(Boolean condition) {
@@ -134,8 +135,18 @@ public class LogicDocTest {
         docTest.sayVerify(condition.toString());
     }
 
+    protected void assertTrueAndSay(Boolean condition, String message) {
+        assertTrue(condition);
+        docTest.sayVerify(message + condition.toString());
+    }
+
     protected void assertFalseAndSay(Boolean condition) {
         assertFalse(condition);
         docTest.sayVerify(condition.toString());
+    }
+
+    protected void assertFalseAndSay(Boolean condition, String message) {
+        assertFalse(condition);
+        docTest.sayVerify(message + condition.toString());
     }
 }
