@@ -10,7 +10,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 
 import com.devbliss.doctest.templates.Templates;
-import com.google.inject.Inject;
 
 import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
@@ -33,7 +32,6 @@ public class LogicDocTest {
         LogicDocTest.docTest.endDocTest();
     }
 
-    @Inject
     public LogicDocTest(
             DocTestMachine docTest,
             ApiTest apiTest,
