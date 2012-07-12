@@ -1,6 +1,7 @@
 package com.devbliss.doctest;
 
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,15 +23,16 @@ import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 /**
  * Unit tests for the {@link DocTest}.
- * 
+ *
  * @author bmary
- * 
+ *
  */
 @RunWith(MockitoJUnitRunner.class)
 public class LogicDocTestUnitTest {
 
     private static final String NULL = "NULL";
     private static final String OBJECT = "OBJECT";
+    private static final String OBJECT2 = "OBJECT2";
     private static final String RESPONSE_PAYLOAD = "payload";
     private static final int HTTP_STATUS = 204;
     @Mock
@@ -47,6 +49,16 @@ public class LogicDocTestUnitTest {
     private LogicDocTest docTest;
     private URI uri;
     private ApiResponse response;
+
+    protected class JsonTestClass {
+        private String test1;
+        private String test2;
+
+        public JsonTestClass(String test1, String test2) {
+            this.test1 = test1;
+            this.test2 = test2;
+        }
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -195,4 +207,33 @@ public class LogicDocTestUnitTest {
     private LogicDocTest instantiateAbstractDocTest() {
         return new LogicDocTest(docTestMachine, apiTest, jsonHelper, templates);
     }
+
+    @Test
+    public void assertEqualsJsonObjects() throws Exception {
+        JsonTestClass class1 = new JsonTestClass("content1", "content2");
+        JsonTestClass class2 = new JsonTestClass("content1", "content2");
+        when(jsonHelper.toJson(class1)).thenReturn(OBJECT);
+        when(jsonHelper.toJson(class2)).thenReturn(OBJECT);
+
+        docTest.assertJsonEqualsAndSay(class1, class2);
+        verify(docTestMachine).sayVerify(anyString());
+    }
+
+    @Test
+    public void assertStringAreNotEqualsJsonObjects() throws Exception {
+        JsonTestClass class1 = new JsonTestClass("content1", "content2");
+        JsonTestClass class2 = new JsonTestClass("sthcompletely", "different");
+        when(jsonHelper.toJson(class1)).thenReturn(OBJECT);
+        when(jsonHelper.toJson(class2)).thenReturn(OBJECT2);
+
+        try {
+            docTest.assertJsonEqualsAndSay(class1, class2);
+            fail();
+        } catch (AssertionError e) {
+            verify(docTestMachine, never()).sayVerify(anyString());
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
 }

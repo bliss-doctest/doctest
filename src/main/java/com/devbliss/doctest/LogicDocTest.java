@@ -127,6 +127,33 @@ public class LogicDocTest {
         docTest.sayVerify(message + expected.toString());
     }
 
+    /**
+     * 
+     * First converts both objects to Json and then asserts that they are equal.
+     * The resulting doc will sport the expected Json String.
+     * 
+     * @param expected POJO
+     * @param result POJO
+     */
+    protected void assertJsonEqualsAndSay(Object expected, Object result) {
+        assertJsonEqualsAndSay(expected, result, "");
+    }
+
+    /**
+     * 
+     * First converts both objects to Json and then asserts that they are equal.
+     * The resulting doc will sport the expected Json String after the given message.
+     * 
+     * @param expected POJO
+     * @param result POJO
+     * @param message Additional message to be concatenated to the expected Json
+     */
+    protected void assertJsonEqualsAndSay(Object expected, Object result, String message) {
+        String expectedJson = jsonHelper.toJson(expected);
+        assertEquals(expectedJson, jsonHelper.toJson(result));
+        docTest.sayVerify(message + expectedJson);
+    }
+
     protected void assertTrueAndSay(Boolean condition) {
         assertTrue(condition);
         docTest.sayVerify(condition.toString());
