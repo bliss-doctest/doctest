@@ -6,6 +6,7 @@ develop
 
 Version 0.2.2: 12.07.2012
 -------------------------
+- added new assertJson methods which compare the json representations of objects
 - refactor the Response object
 
 Version 0.2.1: 12.07.2012
