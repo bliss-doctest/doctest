@@ -50,16 +50,6 @@ public class LogicDocTestUnitTest {
     private URI uri;
     private ApiResponse response;
 
-    protected class JsonTestClass {
-        private String test1;
-        private String test2;
-
-        public JsonTestClass(String test1, String test2) {
-            this.test1 = test1;
-            this.test2 = test2;
-        }
-    }
-
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -210,24 +200,24 @@ public class LogicDocTestUnitTest {
 
     @Test
     public void assertEqualsJsonObjects() throws Exception {
-        JsonTestClass class1 = new JsonTestClass("content1", "content2");
-        JsonTestClass class2 = new JsonTestClass("content1", "content2");
-        when(jsonHelper.toJson(class1)).thenReturn(OBJECT);
-        when(jsonHelper.toJson(class2)).thenReturn(OBJECT);
+        Object object1 = new Object();
+        Object object2 = new Object();
+        when(jsonHelper.toJson(object1)).thenReturn(OBJECT);
+        when(jsonHelper.toJson(object2)).thenReturn(OBJECT);
 
-        docTest.assertJsonEqualsAndSay(class1, class2);
+        docTest.assertJsonEqualsAndSay(object1, object2);
         verify(docTestMachine).sayVerify(anyString());
     }
 
     @Test
     public void assertStringAreNotEqualsJsonObjects() throws Exception {
-        JsonTestClass class1 = new JsonTestClass("content1", "content2");
-        JsonTestClass class2 = new JsonTestClass("sthcompletely", "different");
-        when(jsonHelper.toJson(class1)).thenReturn(OBJECT);
-        when(jsonHelper.toJson(class2)).thenReturn(OBJECT2);
+        Object object1 = new Object();
+        Object object2 = new Object();
+        when(jsonHelper.toJson(object1)).thenReturn(OBJECT);
+        when(jsonHelper.toJson(object2)).thenReturn(OBJECT2);
 
         try {
-            docTest.assertJsonEqualsAndSay(class1, class2);
+            docTest.assertJsonEqualsAndSay(object1, object2);
             fail();
         } catch (AssertionError e) {
             verify(docTestMachine, never()).sayVerify(anyString());
