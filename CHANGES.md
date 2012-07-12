@@ -4,6 +4,10 @@ CHANGES
 develop
 -------
 
+Version 0.2.2: 12.07.2012
+-------------------------
+- refactor the Response object
+
 Version 0.2.1: 12.07.2012
 -------------------------
 - implement assertTrueAndSay() and assertFalseAndSay() with optional message

@@ -16,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.templates.Templates;
 
+import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
@@ -45,13 +46,13 @@ public class LogicDocTestUnitTest {
 
     private LogicDocTest docTest;
     private URI uri;
-    private Response response;
+    private ApiResponse response;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         uri = new URI("");
-        response = new Response(HTTP_STATUS, RESPONSE_PAYLOAD);
+        response = new ApiResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
         when(jsonHelper.toJson(null)).thenReturn(NULL);
         when(jsonHelper.toJson(obj)).thenReturn(OBJECT);
         docTest = instantiateAbstractDocTest();

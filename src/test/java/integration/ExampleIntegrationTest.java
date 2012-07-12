@@ -13,6 +13,7 @@ import org.junit.Test;
 import com.devbliss.doctest.DocTest;
 import com.devbliss.doctest.Response;
 
+import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
 
 /**
@@ -36,13 +37,13 @@ public class ExampleIntegrationTest extends DocTest {
     }
 
     private Object obj;
-    private Response response;
+    private ApiResponse response;
     private URI uri;
 
     @Before
     public void setUp() throws Exception {
         obj = new Object();
-        response = new Response(HTTP_STATUS, PAYLOAD);
+        response = new ApiResponse(HTTP_STATUS, PAYLOAD);
         uri = new URI("http://www.google.com");
     }
 

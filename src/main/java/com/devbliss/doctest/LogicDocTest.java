@@ -58,7 +58,7 @@ public class LogicDocTest {
     }
 
     protected Response makeGetRequestSilent(URI uri) throws Exception {
-        return (Response) apiTest.get(uri);
+        return new Response(apiTest.get(uri));
     }
 
     protected Response makeGetRequest(URI uri) throws Exception {
@@ -69,7 +69,7 @@ public class LogicDocTest {
     }
 
     protected Response makePostRequestSilent(URI uri, Object obj) throws Exception {
-        return (Response) apiTest.post(uri, obj);
+        return new Response(apiTest.post(uri, obj));
     }
 
     protected Response makePostRequest(URI uri) throws Exception {
@@ -84,7 +84,7 @@ public class LogicDocTest {
     }
 
     protected Response makePutRequestSilent(URI uri, Object obj) throws Exception {
-        return (Response) apiTest.put(uri, obj);
+        return new Response(apiTest.put(uri, obj));
     }
 
     protected Response makePutRequest(URI uri) throws Exception {
@@ -99,11 +99,11 @@ public class LogicDocTest {
     }
 
     protected Response makeDeleteRequestSilent(URI uri) throws Exception {
-        return (Response) apiTest.delete(uri);
+        return new Response(apiTest.delete(uri));
     }
 
     protected Response makeDeleteRequestSilent(URI uri, Object obj) throws Exception {
-        return (Response) apiTest.delete(uri, obj);
+        return new Response(apiTest.delete(uri, obj));
     }
 
     protected Response makeDeleteRequest(URI uri) throws Exception {
