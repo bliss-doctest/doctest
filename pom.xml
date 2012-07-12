@@ -10,7 +10,7 @@
     <groupId>com.devbliss.doctest</groupId>
     <name>doctest</name>
     <artifactId>doctest</artifactId>
-    <version>0.3</version>
+    <version>0.4-SNAPSHOT</version>
     <description>Test your REST-API and create an always-uptodate documentation for it</description>
     <url>https://github.com/devbliss/doctest</url>
     <organization>
