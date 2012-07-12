@@ -4,7 +4,7 @@ CHANGES
 develop
 -------
 
-Version 0.2.2: 12.07.2012
+Version 0.3: 12.07.2012
 -------------------------
 - refactor the Response object
 
