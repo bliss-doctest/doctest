@@ -10,18 +10,10 @@ import de.devbliss.apitester.ApiResponse;
  * @author bmary
  * 
  */
-public class Response {
-
-    public final int httpStatus;
-    public final String payload;
-
-    public Response(int httpStatus, String payload) {
-        this.httpStatus = httpStatus;
-        this.payload = payload;
-    }
+public class Response extends ApiResponse {
 
     public Response(ApiResponse apiResponse) {
-        this.httpStatus = apiResponse.httpStatus;
-        this.payload = apiResponse.payload;
+        super(apiResponse.httpStatus, apiResponse.payload);
     }
+
 }
