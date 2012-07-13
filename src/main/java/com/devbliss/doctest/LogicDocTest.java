@@ -59,9 +59,9 @@ public class LogicDocTest {
     }
 
     /**
-     *
+     * 
      * The given POJO will be converted to JSON and be pretty printed.
-     *
+     * 
      * @param obj
      * @throws Exception
      */
@@ -70,9 +70,9 @@ public class LogicDocTest {
     }
 
     /**
-     *
+     * 
      * The given String will be formatted as-is and be highlighted in a fancy box.
-     *
+     * 
      * @param code
      * @throws Exception
      */
@@ -192,11 +192,10 @@ public class LogicDocTest {
         String expectedJson;
         String resultingJson;
 
-        if(exceptions!=null && exceptions.size()>0) {
+        if (exceptions != null && exceptions.size() > 0) {
             expectedJson = jsonHelper.toJsonAndSkipCertainFields(expected, exceptions, true);
             resultingJson = jsonHelper.toJsonAndSkipCertainFields(result, exceptions, true);
-        }
-        else {
+        } else {
             expectedJson = jsonHelper.toJson(expected, true);
             resultingJson = jsonHelper.toJson(result, true);
         }
@@ -224,4 +223,5 @@ public class LogicDocTest {
         assertFalse(condition);
         docTest.sayVerify(message + condition.toString());
     }
+
 }

@@ -40,7 +40,7 @@ public class ReportCreatedIntegrationTest {
         listFiles = outputDirectory.listFiles();
         assertEquals(2, listFiles.length);
         verifyTheFileHasBeenCreated("/index.html");
-        verifyTheFileHasBeenCreated("/integration.ExampleIntegrationTest.html");
+        verifyTheFileHasBeenCreated("/integration.RequestsIntegrationTest.html");
     }
 
     private void verifyTheFileHasBeenCreated(String fileName) {
@@ -51,7 +51,7 @@ public class ReportCreatedIntegrationTest {
                 break;
             }
         }
-        assertTrue(isFilePresent);
+        assertTrue("The report '" + fileName + "' has not been created.", isFilePresent);
     }
 
     /**
@@ -59,7 +59,7 @@ public class ReportCreatedIntegrationTest {
      * to run a test class with the {@link JUnitCore}.
      */
     private void makeSomeTests() {
-        JUnitCore.runClasses(ExampleIntegrationTest.class);
+        JUnitCore.runClasses(RequestsIntegrationTest.class);
     }
 
     private void cleanUpTheTargetDirectory() {

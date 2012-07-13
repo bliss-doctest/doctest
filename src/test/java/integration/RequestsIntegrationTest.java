@@ -24,7 +24,7 @@ import de.devbliss.apitester.ApiTest;
  * @author bmary
  * 
  */
-public class ExampleIntegrationTest extends DocTest {
+public class RequestsIntegrationTest extends DocTest {
 
     private static final String PAYLOAD = "payload";
     private static final int HTTP_STATUS = 230;
@@ -76,6 +76,7 @@ public class ExampleIntegrationTest extends DocTest {
 
     @Test
     public void put() throws Exception {
+        sayNextSection("Making a put request");
         when(api.put(uri, obj)).thenReturn(response);
         Response response = makePutRequest(uri, obj);
 
