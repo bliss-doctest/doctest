@@ -165,4 +165,8 @@ public class DocTestMachineImpl implements DocTestMachine {
     public void sayVerify(String condition) {
         say(templates.getVerifyTemplate(condition));
     }
+
+    public void sayPreformatted(String preformattedText) {
+        say(templates.getJsonTemplate(preformattedText));
+    }
 }

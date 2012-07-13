@@ -21,4 +21,6 @@ public interface DocTestMachine {
     void sayResponse(int responseCode, String payload) throws Exception;
 
     void sayVerify(String condition);
+
+    void sayPreformatted(String preformattedText);
 }

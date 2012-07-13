@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
+import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -55,6 +56,28 @@ public class LogicDocTest {
 
     protected void sayUri(URI uri, Object obj, HTTP_REQUEST httpRequest) throws Exception {
         docTest.sayRequest(uri, jsonHelper.toJson(obj), httpRequest);
+    }
+
+    /**
+     *
+     * The given POJO will be converted to JSON and be pretty printed.
+     *
+     * @param obj
+     * @throws Exception
+     */
+    protected void sayObject(Object obj) throws Exception {
+        docTest.sayPreformatted(obj == null ? "" : new JSONHelper().toJson(obj, true));
+    }
+
+    /**
+     *
+     * The given String will be formatted as-is and be highlighted in a fancy box.
+     *
+     * @param code
+     * @throws Exception
+     */
+    protected void sayPreformattedCode(String code) throws Exception {
+        docTest.sayPreformatted(code == null ? "" : code);
     }
 
     protected Response makeGetRequestSilent(URI uri) throws Exception {
@@ -128,29 +151,30 @@ public class LogicDocTest {
     }
 
     /**
-     * 
+     *
      * First converts both objects to Json and then asserts that they are equal.
      * The resulting doc will sport the expected Json String.
-     * 
+     *
      * @param expected POJO
      * @param result POJO
      */
     protected void assertJsonEqualsAndSay(Object expected, Object result) {
-        assertJsonEqualsAndSay(expected, result, "");
+        assertJsonEqualsAndSay(expected, result, "", null);
     }
 
     /**
-     * 
+     *
      * First converts both objects to Json and then asserts that they are equal.
      * The resulting doc will sport the expected Json String after the given message.
-     * 
+     *
      * @param expected POJO
      * @param result POJO
      * @param message Additional message to be concatenated to the expected Json
      */
-    protected void assertJsonEqualsAndSay(Object expected, Object result, String message) {
-        String expectedJson = jsonHelper.toJson(expected);
-        assertEquals(expectedJson, jsonHelper.toJson(result));
+    protected void assertJsonEqualsAndSay(Object expected, Object result, String message,
+            List<String> exceptions) {
+        String expectedJson = jsonHelper.toJson(expected, true);
+        assertEquals(expectedJson, jsonHelper.toJson(result, true));
         docTest.sayVerify(message + expectedJson);
     }
 
