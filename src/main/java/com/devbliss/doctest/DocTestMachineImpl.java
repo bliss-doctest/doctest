@@ -1,39 +1,26 @@
 package com.devbliss.doctest;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.devbliss.doctest.templates.Assert;
+import com.devbliss.doctest.templates.Item;
+import com.devbliss.doctest.templates.Request;
+import com.devbliss.doctest.templates.Section;
 import com.devbliss.doctest.templates.Templates;
+import com.devbliss.doctest.templates.Text;
 import com.google.inject.Inject;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 public class DocTestMachineImpl implements DocTestMachine {
 
-    /**
-     * By convention we are using the maven project structure.
-     * Therefore doctest will be written into ./target/doctests/.
-     */
-    public static final String OUTPUT_DIRECTORY = new File("").getAbsolutePath()
-            + "/target/doctests/";
-
     // some html formatting
-
-    public String htmlFormat =
-            "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">"
-                    + "<html>%s</html>";
-    public String headerFormat = "<head><title>DocTest for class %s</title></head>";
-    public String bodyFormat = "<body><a href=\"index.html\">back to index page</a><br/>%s<body>";
-
-    public String h1 = "<h1>%s</h1>";
-    public String simpleLine = "%s<br/>";
 
     // The class under test.
     // Usually I don't like that, but we don't have another option to generate
@@ -46,8 +33,14 @@ public class DocTestMachineImpl implements DocTestMachine {
 
     private final Templates templates;
 
+    private final List<Item> listTemplates;
+
+    private final ReportRenderer reportRenderer;
+
     @Inject
-    public DocTestMachineImpl(Templates templates) {
+    public DocTestMachineImpl(Templates templates, ReportRenderer reportRenderer) {
+        listTemplates = new ArrayList<Item>();
+        this.reportRenderer = reportRenderer;
         this.templates = templates;
     }
 
@@ -58,7 +51,8 @@ public class DocTestMachineImpl implements DocTestMachine {
      * 
      */
     public void say(String say) {
-        outputOfTestsBuffer.append(String.format(simpleLine, say));
+        listTemplates.add(new Text(say));
+        // outputOfTestsBuffer.append(String.format(simpleLine, say));
     }
 
     /**
@@ -67,6 +61,7 @@ public class DocTestMachineImpl implements DocTestMachine {
     public void beginDoctest(@SuppressWarnings("rawtypes") Class clazz) {
         if (classUnderTest == null) {
             classUnderTest = clazz;
+            listTemplates.add(new Text("Doctest originally perfomed at: " + new Date()));
             say("Doctest originally perfomed at: " + new Date());
         }
     }
@@ -75,7 +70,8 @@ public class DocTestMachineImpl implements DocTestMachine {
      * This would be a header. Maybe a new test inside a testcase.
      */
     public void sayNextSection(String sectionName) {
-        outputOfTestsBuffer.append(String.format(h1, sectionName));
+        listTemplates.add(new Section(sectionName));
+        // outputOfTestsBuffer.append(String.format(h1, sectionName));
     }
 
     /**
@@ -84,59 +80,9 @@ public class DocTestMachineImpl implements DocTestMachine {
     public void endDocTest() {
         // assemble the html page:
 
-        // this will be not SaySysoutImpl, but the name of the Unit test :)
-        String finalHeader = String.format(headerFormat, classUnderTest.getCanonicalName());
-        String finalBody = String.format(bodyFormat, outputOfTestsBuffer.toString());
+        reportRenderer.render(listTemplates, classUnderTest.getCanonicalName());
 
-        String finalDocument = finalHeader + finalBody;
-
-        String fileNameForCompleteTestOutput =
-                OUTPUT_DIRECTORY + classUnderTest.getCanonicalName() + ".html";
-
-        // make sure the directories have been generated:
-        new File(fileNameForCompleteTestOutput).getParentFile().mkdirs();
-
-        writeOutFile(fileNameForCompleteTestOutput, finalDocument);
-
-        IndexFileGenerator.generatIndexFileForTests();
         classUnderTest = null;
-    }
-
-    /**
-     * This writes out the file and retries if some other task has
-     * locked the file.
-     * 
-     * This could cause a StackOverflowException, but I cannot
-     * think of any real case where this happens...
-     * 
-     * @param nameOfFile
-     */
-    public static void writeOutFile(String nameOfFile, String content) {
-        Writer fw = null;
-
-        try {
-            fw = new FileWriter(nameOfFile);
-            fw.write(content);
-
-        } catch (IOException e) {
-
-            try {
-                Thread.sleep(200);
-                writeOutFile(nameOfFile, content);
-            } catch (InterruptedException err2) {
-                writeOutFile(nameOfFile, content);
-
-            }
-
-        } finally {
-            if (fw != null)
-                try {
-                    fw.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-        }
-
     }
 
     private String getJson(String json) throws JSONException {
@@ -153,15 +99,19 @@ public class DocTestMachineImpl implements DocTestMachine {
 
     public void sayRequest(URI uri, String payload, HTTP_REQUEST httpRequest) throws JSONException {
         if (uri != null) {
+            listTemplates.add(new Request(httpRequest, uri.toString(), getJson(payload)));
             say(templates.getUriTemplate(uri.toString(), getJson(payload), httpRequest));
         }
     }
 
     public void sayResponse(int responseCode, String payload) throws Exception {
+        listTemplates.add(new com.devbliss.doctest.templates.Response(responseCode,
+                getJson(payload)));
         say(templates.getResponseTemplate(responseCode, getJson(payload)));
     }
 
     public void sayVerify(String condition) {
+        listTemplates.add(new Assert(condition));
         say(templates.getVerifyTemplate(condition));
     }
 
