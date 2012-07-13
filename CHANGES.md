@@ -6,6 +6,7 @@ develop
 
 Version 0.3: 12.07.2012
 -------------------------
+- added sayObject and sayPreformattedCode for DocTests
 - added new assertJson methods which compare the json representations of objects
 - refactor the Response object
 
