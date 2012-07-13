@@ -1,12 +1,15 @@
 package com.devbliss.doctest;
 
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.net.URI;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -218,6 +221,26 @@ public class LogicDocTestUnitTest {
 
         try {
             docTest.assertJsonEqualsAndSay(object1, object2);
+            fail();
+        } catch (AssertionError e) {
+            verify(docTestMachine, never()).sayVerify(anyString());
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void assertStringAreNotEqualsJsonObjectsExcluded() throws Exception {
+        Object object1 = new Object();
+        Object object2 = new Object();
+        when(jsonHelper.toJsonAndSkipCertainFields(eq(object1), anyList(), eq(true)))
+                .thenReturn(OBJECT);
+        when(jsonHelper.toJsonAndSkipCertainFields(eq(object2), anyList(), eq(true))).thenReturn(
+                OBJECT2);
+
+        try {
+            docTest.assertJsonEqualsAndSay(object1, object2, "", Arrays.asList(""));
             fail();
         } catch (AssertionError e) {
             verify(docTestMachine, never()).sayVerify(anyString());

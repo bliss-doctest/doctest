@@ -151,10 +151,10 @@ public class LogicDocTest {
     }
 
     /**
-     *
-     * First converts both objects to Json and then asserts that they are equal.
+     * 
+     * At first converts both objects to Json and then asserts that they are equal.
      * The resulting doc will sport the expected Json String.
-     *
+     * 
      * @param expected POJO
      * @param result POJO
      */
@@ -163,18 +163,45 @@ public class LogicDocTest {
     }
 
     /**
-     *
-     * First converts both objects to Json and then asserts that they are equal.
+     * 
+     * At first converts both objects to Json and then asserts that they are equal, except on the
+     * fields mentioned in exceptions.
+     * The resulting doc will sport the expected Json String.
+     * 
+     * @param expected POJO
+     * @param result POJO
+     */
+
+    protected void assertJsonEqualsAndSay(Object expected, Object result, List<String> exceptions) {
+        assertJsonEqualsAndSay(expected, result, "", exceptions);
+    }
+
+    /**
+     * 
+     * First converts both objects to Json and then asserts that they are equal, except on the
+     * fields mentioned in exceptions.
      * The resulting doc will sport the expected Json String after the given message.
-     *
+     * 
      * @param expected POJO
      * @param result POJO
      * @param message Additional message to be concatenated to the expected Json
+     * @param exceptions a List of fieldnames that will be omitted in comparison
      */
     protected void assertJsonEqualsAndSay(Object expected, Object result, String message,
             List<String> exceptions) {
-        String expectedJson = jsonHelper.toJson(expected, true);
-        assertEquals(expectedJson, jsonHelper.toJson(result, true));
+        String expectedJson;
+        String resultingJson;
+
+        if(exceptions!=null && exceptions.size()>0) {
+            expectedJson = jsonHelper.toJsonAndSkipCertainFields(expected, exceptions, true);
+            resultingJson = jsonHelper.toJsonAndSkipCertainFields(result, exceptions, true);
+        }
+        else {
+            expectedJson = jsonHelper.toJson(expected, true);
+            resultingJson = jsonHelper.toJson(result, true);
+        }
+
+        assertEquals(expectedJson, resultingJson);
         docTest.sayVerify(message + expectedJson);
     }
 
