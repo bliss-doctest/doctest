@@ -51,16 +51,14 @@ public class DocTestMachineImpl implements DocTestMachine {
      */
     public void say(String say) {
         listTemplates.add(new TextDocItem(say));
-        // outputOfTestsBuffer.append(String.format(simpleLine, say));
     }
 
     /**
      * Inits the new file for writing stuff out.
      */
-    public void beginDoctest(String clazz) {
-        if (className == null) {
-            className = clazz;
-            // say("Doctest originally perfomed at: " + new Date());
+    public void beginDoctest(String className) {
+        if (this.className == null) {
+            this.className = className;
         }
     }
 
@@ -69,7 +67,6 @@ public class DocTestMachineImpl implements DocTestMachine {
      */
     public void sayNextSection(String sectionName) {
         listTemplates.add(new SectionDocItem(sectionName));
-        // outputOfTestsBuffer.append(String.format(h1, sectionName));
     }
 
     /**
@@ -83,19 +80,16 @@ public class DocTestMachineImpl implements DocTestMachine {
     public void sayRequest(URI uri, String payload, HTTP_REQUEST httpRequest) throws JSONException {
         if (uri != null) {
             listTemplates.add(new RequestDocItem(httpRequest, uri.toString(), getJson(payload)));
-            // say(templates.getUriTemplate(uri.toString(), getJson(payload), httpRequest));
         }
     }
 
     public void sayResponse(int responseCode, String payload) throws Exception {
         listTemplates.add(new com.devbliss.doctest.templates.ResponseDocItem(responseCode,
                 getJson(payload)));
-        // say(templates.getResponseTemplate(responseCode, getJson(payload)));
     }
 
     public void sayVerify(String condition) {
         listTemplates.add(new AssertDocItem(condition));
-        // say(templates.getVerifyTemplate(condition));
     }
 
     public void sayPreformatted(String preformattedText) {
@@ -105,9 +99,7 @@ public class DocTestMachineImpl implements DocTestMachine {
     private String getJson(String json) throws JSONException {
         if (jsonHelper.isJsonValid(json)) {
             return json;
-            // return templates.getJsonTemplate(new JSONObject(json).toString(2));
         } else {
-            // throw new JSONException("The string '" + json + "' can not be converted to JSON");
             return "";
         }
     }
