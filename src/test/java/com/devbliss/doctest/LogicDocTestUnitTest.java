@@ -202,8 +202,8 @@ public class LogicDocTestUnitTest {
     public void assertEqualsJsonObjects() throws Exception {
         Object object1 = new Object();
         Object object2 = new Object();
-        when(jsonHelper.toJson(object1)).thenReturn(OBJECT);
-        when(jsonHelper.toJson(object2)).thenReturn(OBJECT);
+        when(jsonHelper.toJson(object1, true)).thenReturn(OBJECT);
+        when(jsonHelper.toJson(object2, true)).thenReturn(OBJECT);
 
         docTest.assertJsonEqualsAndSay(object1, object2);
         verify(docTestMachine).sayVerify(anyString());
@@ -213,8 +213,8 @@ public class LogicDocTestUnitTest {
     public void assertStringAreNotEqualsJsonObjects() throws Exception {
         Object object1 = new Object();
         Object object2 = new Object();
-        when(jsonHelper.toJson(object1)).thenReturn(OBJECT);
-        when(jsonHelper.toJson(object2)).thenReturn(OBJECT2);
+        when(jsonHelper.toJson(object1, true)).thenReturn(OBJECT);
+        when(jsonHelper.toJson(object2, true)).thenReturn(OBJECT2);
 
         try {
             docTest.assertJsonEqualsAndSay(object1, object2);
