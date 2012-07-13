@@ -38,9 +38,10 @@ public class ReportCreatedIntegrationTest {
         // verify that two files have been created
         File outputDirectory = new File(OUTPUT_DIRECTORY);
         listFiles = outputDirectory.listFiles();
-        assertEquals(2, listFiles.length);
+        assertEquals(3, listFiles.length);
         verifyTheFileHasBeenCreated("/index.html");
         verifyTheFileHasBeenCreated("/integration.RequestsIntegrationTest.html");
+        verifyTheFileHasBeenCreated("/integration.CompareObjectsIntegrationTest.html");
     }
 
     private void verifyTheFileHasBeenCreated(String fileName) {
@@ -59,7 +60,7 @@ public class ReportCreatedIntegrationTest {
      * to run a test class with the {@link JUnitCore}.
      */
     private void makeSomeTests() {
-        JUnitCore.runClasses(RequestsIntegrationTest.class);
+        JUnitCore.runClasses(RequestsIntegrationTest.class, CompareObjectsIntegrationTest.class);
     }
 
     private void cleanUpTheTargetDirectory() {

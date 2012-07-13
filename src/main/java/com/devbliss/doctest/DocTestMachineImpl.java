@@ -99,7 +99,7 @@ public class DocTestMachineImpl implements DocTestMachine {
         writeOutFile(fileNameForCompleteTestOutput, finalDocument);
 
         IndexFileGenerator.generatIndexFileForTests();
-
+        classUnderTest = null;
     }
 
     /**
@@ -112,7 +112,6 @@ public class DocTestMachineImpl implements DocTestMachine {
      * @param nameOfFile
      */
     public static void writeOutFile(String nameOfFile, String content) {
-
         Writer fw = null;
 
         try {
