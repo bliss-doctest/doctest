@@ -1,4 +1,4 @@
-package com.devbliss.doctest;
+package com.devbliss.doctest.utils;
 
 import java.util.List;
 
@@ -26,10 +26,10 @@ public class JSONHelper {
     }
 
     /**
-     *
+     * 
      * Converts the given POJO into a Json representation.
      * If prettyPrint is true, the output will be nicely formatted.
-     *
+     * 
      * @param obj
      * @param prettyPrint
      * @return
@@ -45,9 +45,9 @@ public class JSONHelper {
     }
 
     /**
-     *
+     * 
      * Converts the given POJO to Json and will skip the given fields while doing so.
-     *
+     * 
      * @param obj
      * @param excludedFields
      * @return
@@ -57,10 +57,10 @@ public class JSONHelper {
     }
 
     /**
-     *
+     * 
      * Converts the given POJO and will skip the given fields while doing so.
      * If prettyPrint is true, the output will be nicely formatted.
-     *
+     * 
      * @param obj
      * @param excludedFields
      * @param prettyPrint
@@ -82,13 +82,18 @@ public class JSONHelper {
             }
         };
 
-        GsonBuilder builder = new GsonBuilder().addSerializationExclusionStrategy(strategy)
+        GsonBuilder builder =
+                new GsonBuilder().addSerializationExclusionStrategy(strategy)
                         .addDeserializationExclusionStrategy(strategy);
 
         if (prettyPrint)
             builder.setPrettyPrinting();
 
         return builder.create().toJson(obj);
+    }
+
+    public boolean isJsonValid(String json) {
+        return json != null && !json.equals("null") && !json.isEmpty() && json.startsWith("{");
     }
 
 }

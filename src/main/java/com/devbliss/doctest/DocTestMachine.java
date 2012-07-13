@@ -12,7 +12,7 @@ public interface DocTestMachine {
 
     void sayNextSection(String sectionName);
 
-    void beginDoctest(@SuppressWarnings("rawtypes") Class clazz);
+    void beginDoctest(String clazz);
 
     public void endDocTest();
 

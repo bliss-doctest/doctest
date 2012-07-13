@@ -11,6 +11,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 
 import com.devbliss.doctest.templates.Templates;
+import com.devbliss.doctest.utils.JSONHelper;
 
 import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
@@ -24,7 +25,7 @@ public class LogicDocTest {
 
     @Before
     public void ensureDocTestClassSet() {
-        docTest.beginDoctest(this.getClass());
+        docTest.beginDoctest(this.getClass().getCanonicalName());
     }
 
     @AfterClass

@@ -19,6 +19,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.templates.Templates;
+import com.devbliss.doctest.utils.JSONHelper;
 
 import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
