@@ -1,5 +1,7 @@
 package com.devbliss.doctest.templates;
 
-public interface Item {
+
+public interface DocItem {
+
 
 }

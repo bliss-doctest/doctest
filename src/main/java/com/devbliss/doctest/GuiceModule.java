@@ -24,6 +24,7 @@ public class GuiceModule extends AbstractModule {
         bind(ApiTest.class).in(Singleton.class);
         bind(JSONHelper.class).in(Singleton.class);
         bind(Templates.class).in(Singleton.class);
+        bind(ReportRenderer.class).to(HtmlRenderer.class).in(Singleton.class);
 
         bind(DeleteFactory.class).annotatedWith(Names.named(ApiTest.DELETE_FACTORY)).to(
                 DeleteWithoutRedirectImpl.class);

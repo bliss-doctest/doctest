@@ -1,10 +1,10 @@
 package com.devbliss.doctest.templates;
 
-public class Assert implements Item {
+public class AssertDocItem implements DocItem {
 
     public final String expected;
 
-    public Assert(String expected) {
+    public AssertDocItem(String expected) {
         this.expected = expected;
     }
 }

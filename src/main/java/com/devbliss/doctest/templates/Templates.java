@@ -24,6 +24,8 @@ public class Templates {
     public final static String VERIFY = "<div style =\"" + STYLE_VERIFY
             + "\">: '{value}' which is correct!</div>" + CLEAR_FLOAT;
 
+    public final static String SECTION = "<h1> {value} </h1>";
+
     public String getJsonTemplate(String json) {
         return JSON.replace("{data}", json);
     }
@@ -50,5 +52,9 @@ public class Templates {
 
     public String getVerifyTemplate(String expected) {
         return VERIFY.replace("{value}", expected);
+    }
+
+    public String getSectionTemplate(String title) {
+        return SECTION.replace("{value}", title);
     }
 }

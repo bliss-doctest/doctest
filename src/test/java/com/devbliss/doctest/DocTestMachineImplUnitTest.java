@@ -18,13 +18,13 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.devbliss.doctest.templates.Assert;
-import com.devbliss.doctest.templates.Item;
-import com.devbliss.doctest.templates.Request;
-import com.devbliss.doctest.templates.Response;
-import com.devbliss.doctest.templates.Section;
+import com.devbliss.doctest.templates.AssertDocItem;
+import com.devbliss.doctest.templates.DocItem;
+import com.devbliss.doctest.templates.RequestDocItem;
+import com.devbliss.doctest.templates.ResponseDocItem;
+import com.devbliss.doctest.templates.SectionDocItem;
 import com.devbliss.doctest.templates.Templates;
-import com.devbliss.doctest.templates.Text;
+import com.devbliss.doctest.templates.TextDocItem;
 import com.devbliss.doctest.utils.JSONHelper;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
@@ -50,7 +50,7 @@ public class DocTestMachineImplUnitTest {
     @Mock
     private JSONHelper jsonHelper;
     @Captor
-    private ArgumentCaptor<List<Item>> listItemCaptor;
+    private ArgumentCaptor<List<DocItem>> listItemCaptor;
 
     private DocTestMachineImpl machine;
     private final HTTP_REQUEST httpRequest = HTTP_REQUEST.GET;
@@ -71,10 +71,10 @@ public class DocTestMachineImplUnitTest {
 
         verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
 
-        List<Item> listItems = listItemCaptor.getValue();
+        List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
-        assertTrue(listItems.get(0) instanceof Text);
-        assertEquals(TEXT, ((Text) listItems.get(0)).text);
+        assertTrue(listItems.get(0) instanceof TextDocItem);
+        assertEquals(TEXT, ((TextDocItem) listItems.get(0)).text);
     }
 
     @Test
@@ -84,10 +84,10 @@ public class DocTestMachineImplUnitTest {
 
         verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
 
-        List<Item> listItems = listItemCaptor.getValue();
+        List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
-        assertTrue(listItems.get(0) instanceof Section);
-        assertEquals(TEXT, ((Section) listItems.get(0)).title);
+        assertTrue(listItems.get(0) instanceof SectionDocItem);
+        assertEquals(TEXT, ((SectionDocItem) listItems.get(0)).title);
     }
 
     @Test
@@ -97,10 +97,10 @@ public class DocTestMachineImplUnitTest {
 
         verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
 
-        List<Item> listItems = listItemCaptor.getValue();
+        List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
-        assertTrue(listItems.get(0) instanceof Assert);
-        assertEquals(TEXT, ((Assert) listItems.get(0)).expected);
+        assertTrue(listItems.get(0) instanceof AssertDocItem);
+        assertEquals(TEXT, ((AssertDocItem) listItems.get(0)).expected);
     }
 
     @Test
@@ -110,11 +110,11 @@ public class DocTestMachineImplUnitTest {
 
         verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
 
-        List<Item> listItems = listItemCaptor.getValue();
+        List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
-        assertTrue(listItems.get(0) instanceof Response);
-        assertEquals(JSON_VALID, ((Response) listItems.get(0)).payload);
-        assertEquals(RESPONSE_CODE, ((Response) listItems.get(0)).responseCode);
+        assertTrue(listItems.get(0) instanceof ResponseDocItem);
+        assertEquals(JSON_VALID, ((ResponseDocItem) listItems.get(0)).payload);
+        assertEquals(RESPONSE_CODE, ((ResponseDocItem) listItems.get(0)).responseCode);
     }
 
     @Test
@@ -124,12 +124,12 @@ public class DocTestMachineImplUnitTest {
 
         verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
 
-        List<Item> listItems = listItemCaptor.getValue();
+        List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
-        assertTrue(listItems.get(0) instanceof Request);
-        assertEquals(JSON_VALID, ((Request) listItems.get(0)).payload);
-        assertEquals(httpRequest, ((Request) listItems.get(0)).http);
-        assertEquals(uri.toString(), ((Request) listItems.get(0)).uri);
+        assertTrue(listItems.get(0) instanceof RequestDocItem);
+        assertEquals(JSON_VALID, ((RequestDocItem) listItems.get(0)).payload);
+        assertEquals(httpRequest, ((RequestDocItem) listItems.get(0)).http);
+        assertEquals(uri.toString(), ((RequestDocItem) listItems.get(0)).uri);
     }
 
 }
