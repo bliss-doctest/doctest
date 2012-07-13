@@ -1,10 +1,10 @@
 package com.devbliss.doctest.templates;
 
-public class Text implements Item {
+public class TextDocItem implements DocItem {
 
     public final String text;
 
-    public Text(String text) {
+    public TextDocItem(String text) {
         super();
         this.text = text;
     }

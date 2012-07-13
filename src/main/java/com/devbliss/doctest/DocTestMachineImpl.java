@@ -8,12 +8,12 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.devbliss.doctest.templates.Assert;
-import com.devbliss.doctest.templates.Item;
-import com.devbliss.doctest.templates.Request;
-import com.devbliss.doctest.templates.Section;
+import com.devbliss.doctest.templates.AssertDocItem;
+import com.devbliss.doctest.templates.DocItem;
+import com.devbliss.doctest.templates.RequestDocItem;
+import com.devbliss.doctest.templates.SectionDocItem;
 import com.devbliss.doctest.templates.Templates;
-import com.devbliss.doctest.templates.Text;
+import com.devbliss.doctest.templates.TextDocItem;
 import com.google.inject.Inject;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
@@ -33,13 +33,13 @@ public class DocTestMachineImpl implements DocTestMachine {
 
     private final Templates templates;
 
-    private final List<Item> listTemplates;
+    private final List<DocItem> listTemplates;
 
     private final ReportRenderer reportRenderer;
 
     @Inject
     public DocTestMachineImpl(Templates templates, ReportRenderer reportRenderer) {
-        listTemplates = new ArrayList<Item>();
+        listTemplates = new ArrayList<DocItem>();
         this.reportRenderer = reportRenderer;
         this.templates = templates;
     }
@@ -51,7 +51,7 @@ public class DocTestMachineImpl implements DocTestMachine {
      * 
      */
     public void say(String say) {
-        listTemplates.add(new Text(say));
+        listTemplates.add(new TextDocItem(say));
         // outputOfTestsBuffer.append(String.format(simpleLine, say));
     }
 
@@ -61,7 +61,7 @@ public class DocTestMachineImpl implements DocTestMachine {
     public void beginDoctest(@SuppressWarnings("rawtypes") Class clazz) {
         if (classUnderTest == null) {
             classUnderTest = clazz;
-            listTemplates.add(new Text("Doctest originally perfomed at: " + new Date()));
+            listTemplates.add(new TextDocItem("Doctest originally perfomed at: " + new Date()));
             say("Doctest originally perfomed at: " + new Date());
         }
     }
@@ -70,7 +70,7 @@ public class DocTestMachineImpl implements DocTestMachine {
      * This would be a header. Maybe a new test inside a testcase.
      */
     public void sayNextSection(String sectionName) {
-        listTemplates.add(new Section(sectionName));
+        listTemplates.add(new SectionDocItem(sectionName));
         // outputOfTestsBuffer.append(String.format(h1, sectionName));
     }
 
@@ -99,19 +99,19 @@ public class DocTestMachineImpl implements DocTestMachine {
 
     public void sayRequest(URI uri, String payload, HTTP_REQUEST httpRequest) throws JSONException {
         if (uri != null) {
-            listTemplates.add(new Request(httpRequest, uri.toString(), getJson(payload)));
+            listTemplates.add(new RequestDocItem(httpRequest, uri.toString(), getJson(payload)));
             say(templates.getUriTemplate(uri.toString(), getJson(payload), httpRequest));
         }
     }
 
     public void sayResponse(int responseCode, String payload) throws Exception {
-        listTemplates.add(new com.devbliss.doctest.templates.Response(responseCode,
+        listTemplates.add(new com.devbliss.doctest.templates.ResponseDocItem(responseCode,
                 getJson(payload)));
         say(templates.getResponseTemplate(responseCode, getJson(payload)));
     }
 
     public void sayVerify(String condition) {
-        listTemplates.add(new Assert(condition));
+        listTemplates.add(new AssertDocItem(condition));
         say(templates.getVerifyTemplate(condition));
     }
 
