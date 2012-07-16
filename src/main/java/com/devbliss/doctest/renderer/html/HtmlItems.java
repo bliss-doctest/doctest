@@ -14,8 +14,11 @@ public class HtmlItems {
             "<div class=\"box\"><span>Response</span><ul><li>ResponseCode: {responseCode}</li>"
                     + PAYLOAD_LI + "</ul></div>";
     public final static String VERIFY = "<div class=\"box correct\">'{value}' is correct!</div>";
-
-    public final static String SECTION = "<h1> {value} </h1>";
+    public final static String SECTION =
+            "<h1><a name=\"{name}\"> {value} </a><a class=\"link-to-top\" href=\"#\">(top)</a></h1>";
+    public final static String MENU_SECTION =
+            "<div class=\"menu\">Sections of this test class:<ul>{sections}</ul></div>";
+    public final static String LI_SECTION = "<li><a href=\"#{sectionId}\">{sectionName}</a></li>";
 
     public String getJsonTemplate(String json) {
         return JSON.replace("{data}", json);
@@ -45,7 +48,15 @@ public class HtmlItems {
         return VERIFY.replace("{value}", expected);
     }
 
-    public String getSectionTemplate(String title) {
-        return SECTION.replace("{value}", title);
+    public String getSectionTemplate(String title, String sectionId) {
+        return SECTION.replace("{value}", title).replace("{name}", sectionId);
+    }
+
+    public String getLiSectionTemplate(String sectionId, String sectionName) {
+        return LI_SECTION.replace("{sectionId}", sectionId).replace("{sectionName}", sectionName);
+    }
+
+    public String getLiMenuTemplate(String sections) {
+        return MENU_SECTION.replace("{sections}", sections);
     }
 }

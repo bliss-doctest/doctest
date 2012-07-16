@@ -15,6 +15,11 @@ a {
 	text-decoration:none;
 }
 
+h1 a, h1 a:hover {
+	color: #42485A;
+	text-decoration: none;	
+}
+
 a:hover {
 	text-decoration: underline;
 }
@@ -91,6 +96,16 @@ h2 {
 
 .top-menu li a:hover {
 	color:#333;
+}
+
+.link-to-top {
+	font-size: 0.5em;
+}
+
+/* = Menu
+-------------------------------------------------------------- */
+.menu {
+	margin: 10px;
 }
 
 /* = Content
