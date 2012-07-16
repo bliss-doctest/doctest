@@ -1,8 +1,10 @@
 package com.devbliss.doctest.renderer.html;
 
 import java.io.File;
+import java.util.List;
 
-import com.devbliss.doctest.renderer.AbstractReportRenderer;
+import com.devbliss.doctest.templates.DocItem;
+import com.google.inject.Inject;
 
 /**
  * Simply gets all files from the doctests directory and lists them in a
@@ -14,59 +16,54 @@ import com.devbliss.doctest.renderer.AbstractReportRenderer;
  * Means each test driven by DocTestMachineImpl generates a new index.html. But
  * this should be cheap in terms of time consumed.
  * 
- * @author rbauer
+ * @author rbauer, bmary
  * 
  */
-public class IndexFileGenerator {
+public class IndexFileGenerator extends AbstractHtmlReportRenderer {
 
-    /**
-     * The html page.
-     */
-    public static String fullPageFormat =
-            "<html><head><title>Doctest result</title></head><body>%s</body></html>";
+    @Inject
+    public IndexFileGenerator(HtmlItems htmlItems) {
+        super(htmlItems);
+    }
 
-    public static String br = "<br/>";
+    public void render(List<DocItem> listTemplates, String name) {
+        String finalHeader = htmlItems.getHeaderFormatTemplate(name);
+        String indexFileWithCompletePath = getCompleteFileName(name, HTML_EXTENSION);
 
-    public static String anchorFormat = "<a href=\"%s\">%s</a>";
+        String hrefs = getListOfFileAsString(indexFileWithCompletePath, name);
 
-    /**
-     * Default name of the index file.
-     */
-    public final static String INDEX_FILE = "index";
+        String body = htmlItems.getLiMenuTemplate("List of test cases", hrefs);;
+        String finalDoc = finalHeader + htmlItems.getBodyTemplate(body);
 
-    public void generatIndexFileForTests() {
+        finalDoc = htmlItems.getHtmlTemplate(finalDoc);
 
-        String indexFileWithCompletePath =
-                AbstractReportRenderer.getCompleteFileName(INDEX_FILE, ".html");
+        writeFile(indexFileWithCompletePath, finalDoc);
+    }
 
-        new File(indexFileWithCompletePath).getParentFile().mkdirs();
-
-        // fetch all files in the directory
-        // => these are the tests.
-        File[] files = new File(indexFileWithCompletePath).getParentFile().listFiles();
-
+    private String getListOfFileAsString(String nameWithCompletePath, String shortName) {
+        File[] files = fetchFilesInDirectory(nameWithCompletePath);
         StringBuffer hrefs = new StringBuffer();
 
+        // fetch neither the file itself nor the hidden files
         for (File file : files) {
-            // don't fetch the index file itself:
-            if (!file.getName().equals(INDEX_FILE)) {
-
-                // and don't fetch hidden files (eg. .DS_STORE on Mac)
+            if (!file.getName().equals(shortName + HTML_EXTENSION)) {
                 if (!file.isHidden()) {
-                    // if the file is okay simply generate an anchor and add
-                    // it to the list of other testcases.
-                    hrefs.append(String.format(anchorFormat, file.getName(), file.getName() + br));
+                    hrefs.append(htmlItems.getLiWithLinkTemplate(file.getName(), file.getName()));
                 }
             }
 
         }
+        return hrefs.toString();
+    }
 
-        // format the final html
-        String finalDoc = String.format(fullPageFormat, hrefs.toString());
-
-        // and write it out...
-        AbstractReportRenderer.writeOutFile(indexFileWithCompletePath, finalDoc);
-
+    /**
+     * Fetch all the files of the doctests directory. Each file corresponds to a test case.
+     * 
+     * @param indexFileWithCompletePath
+     * @return
+     */
+    private File[] fetchFilesInDirectory(String indexFileWithCompletePath) {
+        return new File(indexFileWithCompletePath).getParentFile().listFiles();
     }
 
 }

@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-
 /**
  * Defines some general methods used by a {@link ReportRenderer} and which do not depend on the
  * format of the
@@ -62,11 +61,13 @@ public abstract class AbstractReportRenderer implements ReportRenderer {
 
     }
 
-    protected void createTheDirectory(String fileNameForCompleteTestOutput) {
-        new File(fileNameForCompleteTestOutput).getParentFile().mkdirs();
+    protected void writeFile(String nameCompletePath, String finalDoc) {
+        // make sure the directory exists
+        new File(nameCompletePath).getParentFile().mkdirs();
+        writeOutFile(nameCompletePath, finalDoc);
     }
 
-    public static String getCompleteFileName(String name, String extension) {
+    protected static String getCompleteFileName(String name, String extension) {
         return OUTPUT_DIRECTORY + name + extension;
     }
 }
