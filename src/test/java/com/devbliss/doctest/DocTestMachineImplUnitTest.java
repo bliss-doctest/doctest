@@ -18,6 +18,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.devbliss.doctest.renderer.ReportRenderer;
 import com.devbliss.doctest.templates.AssertDocItem;
 import com.devbliss.doctest.templates.DocItem;
 import com.devbliss.doctest.templates.JsonDocItem;

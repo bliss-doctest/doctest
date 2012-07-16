@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.Before;
 
-import com.devbliss.doctest.templates.Templates;
+import com.devbliss.doctest.renderer.html.HtmlItems;
 import com.devbliss.doctest.utils.JSONHelper;
 
 import de.devbliss.apitester.ApiTest;
@@ -37,7 +37,7 @@ public class LogicDocTest {
             DocTestMachine docTest,
             ApiTest apiTest,
             JSONHelper jsonHelper,
-            Templates templates) {
+            HtmlItems templates) {
         LogicDocTest.docTest = docTest;
         this.apiTest = apiTest;
         this.jsonHelper = jsonHelper;

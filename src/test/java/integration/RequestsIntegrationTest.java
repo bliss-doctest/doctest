@@ -1,6 +1,5 @@
 package integration;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -53,8 +52,8 @@ public class RequestsIntegrationTest extends DocTest {
         when(api.get(uri)).thenReturn(response);
         Response resp = makeGetRequest(uri);
 
-        assertEquals(HTTP_STATUS, resp.httpStatus);
-        assertEquals(PAYLOAD, resp.payload);
+        assertEqualsAndSay(HTTP_STATUS, resp.httpStatus);
+        assertEqualsAndSay(PAYLOAD, resp.payload);
     }
 
     @Test
@@ -63,8 +62,8 @@ public class RequestsIntegrationTest extends DocTest {
         when(api.delete(uri, null)).thenReturn(response);
         Response response = makeDeleteRequest(uri);
 
-        assertEquals(HTTP_STATUS, response.httpStatus);
-        assertEquals(PAYLOAD, response.payload);
+        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
+        assertEqualsAndSay(PAYLOAD, response.payload);
     }
 
     @Test
@@ -73,8 +72,8 @@ public class RequestsIntegrationTest extends DocTest {
         when(api.post(uri, obj)).thenReturn(response);
         Response response = makePostRequest(uri, obj);
 
-        assertEquals(HTTP_STATUS, response.httpStatus);
-        assertEquals(PAYLOAD, response.payload);
+        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
+        assertEqualsAndSay(PAYLOAD, response.payload);
     }
 
     @Test
@@ -83,7 +82,7 @@ public class RequestsIntegrationTest extends DocTest {
         when(api.put(uri, obj)).thenReturn(response);
         Response response = makePutRequest(uri, obj);
 
-        assertEquals(HTTP_STATUS, response.httpStatus);
-        assertEquals(PAYLOAD, response.payload);
+        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
+        assertEqualsAndSay(PAYLOAD, response.payload);
     }
 }

@@ -1,28 +1,19 @@
-package com.devbliss.doctest.templates;
+package com.devbliss.doctest.renderer.html;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
-public class Templates {
+public class HtmlItems {
 
-    private static final String CLEAR_FLOAT = "<div style=\"clear:left;\"></div>";
     private static final String PAYLOAD_LI = "<li><div>payload:</div>{payload}</li>";
-    private static final String STYLE_REQUEST =
-            "margin-left:20px; border: 1px solid grey; padding: 5px; float:left;";
-    private static final String STYLE_JSON =
-            "margin-left:20px; background: #F1F8E0; border: 1px solid #0B3B0B; padding: 5px; color:#0B3B0B; float:left;";
-    private static final String STYLE_VERIFY =
-            "margin-left: 100px; padding: 5px; border: 5px solid green; float: left;";
 
-    public final static String REQUEST = "<div style=\"" + STYLE_REQUEST
-            + "\"><span>Request</span><ul><li>HTTP:{HTTP}</li><li>URI:{uri}</li>" + PAYLOAD_LI
-            + "</ul></div>" + CLEAR_FLOAT;
-    public final static String JSON = "<pre style=\"" + STYLE_JSON + "\">" + "<code>{data}</code>"
-            + "</pre>" + CLEAR_FLOAT;
-    public final static String RESPONSE = "<div style=\"" + STYLE_REQUEST
-            + "\"><span>Response</span><ul><li>ResponseCode: {responseCode}</li>" + PAYLOAD_LI
-            + "</ul></div>" + CLEAR_FLOAT;
-    public final static String VERIFY = "<div style =\"" + STYLE_VERIFY
-            + "\">: '{value}' which is correct!</div>" + CLEAR_FLOAT;
+    public final static String REQUEST =
+            "<div class=\"box\"><span>Request</span><ul><li>HTTP:{HTTP}</li><li>URI:{uri}</li>"
+                    + PAYLOAD_LI + "</ul></div>";
+    public final static String JSON = "<pre>" + "<code>{data}</code>" + "</pre>";
+    public final static String RESPONSE =
+            "<div class=\"box\"><span>Response</span><ul><li>ResponseCode: {responseCode}</li>"
+                    + PAYLOAD_LI + "</ul></div>";
+    public final static String VERIFY = "<div class=\"box correct\">'{value}' is correct!</div>";
 
     public final static String SECTION = "<h1> {value} </h1>";
 

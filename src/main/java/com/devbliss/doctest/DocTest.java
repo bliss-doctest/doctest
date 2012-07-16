@@ -1,6 +1,6 @@
 package com.devbliss.doctest;
 
-import com.devbliss.doctest.templates.Templates;
+import com.devbliss.doctest.renderer.html.HtmlItems;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -10,7 +10,7 @@ import de.devbliss.apitester.ApiTest;
 public abstract class DocTest extends LogicDocTest {
 
     private static Injector injector;
-    private static Templates TEMPLATES;
+    private static HtmlItems TEMPLATES;
     private static JSONHelper JSON_HELPER;
     private static ApiTest API_TEST;
     private static DocTestMachine DOC_TEST_MACHINE;
@@ -20,7 +20,7 @@ public abstract class DocTest extends LogicDocTest {
         DOC_TEST_MACHINE = injector.getInstance(DocTestMachine.class);
         API_TEST = injector.getInstance(ApiTest.class);
         JSON_HELPER = injector.getInstance(JSONHelper.class);
-        TEMPLATES = injector.getInstance(Templates.class);
+        TEMPLATES = injector.getInstance(HtmlItems.class);
     }
 
     protected static void setApi(ApiTest api) {

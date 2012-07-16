@@ -4,7 +4,9 @@ import com.devbliss.doctest.httpwithoutredirect.DeleteWithoutRedirectImpl;
 import com.devbliss.doctest.httpwithoutredirect.GetWithoutRedirectImpl;
 import com.devbliss.doctest.httpwithoutredirect.PostWithoutRedirectImpl;
 import com.devbliss.doctest.httpwithoutredirect.PutWithoutRedirectImpl;
-import com.devbliss.doctest.templates.Templates;
+import com.devbliss.doctest.renderer.ReportRenderer;
+import com.devbliss.doctest.renderer.html.HtmlRenderer;
+import com.devbliss.doctest.renderer.html.HtmlItems;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
@@ -23,7 +25,7 @@ public class GuiceModule extends AbstractModule {
         bind(DocTestMachine.class).to(DocTestMachineImpl.class).in(Singleton.class);
         bind(ApiTest.class).in(Singleton.class);
         bind(JSONHelper.class).in(Singleton.class);
-        bind(Templates.class).in(Singleton.class);
+        bind(HtmlItems.class).in(Singleton.class);
         bind(ReportRenderer.class).to(HtmlRenderer.class).in(Singleton.class);
 
         bind(DeleteFactory.class).annotatedWith(Names.named(ApiTest.DELETE_FACTORY)).to(

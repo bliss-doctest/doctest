@@ -1,9 +1,10 @@
-package com.devbliss.doctest;
+package com.devbliss.doctest.renderer;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+
 
 /**
  * Defines some general methods used by a {@link ReportRenderer} and which do not depend on the

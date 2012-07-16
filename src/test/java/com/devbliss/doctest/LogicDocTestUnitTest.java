@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.devbliss.doctest.templates.Templates;
+import com.devbliss.doctest.renderer.html.HtmlItems;
 import com.devbliss.doctest.utils.JSONHelper;
 
 import de.devbliss.apitester.ApiResponse;
@@ -48,7 +48,7 @@ public class LogicDocTestUnitTest {
     @Mock
     private Object obj;
     @Mock
-    private Templates templates;
+    private HtmlItems templates;
 
     private LogicDocTest docTest;
     private URI uri;

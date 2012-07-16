@@ -1,6 +1,8 @@
-package com.devbliss.doctest;
+package com.devbliss.doctest.renderer.html;
 
 import java.io.File;
+
+import com.devbliss.doctest.renderer.AbstractReportRenderer;
 
 /**
  * Simply gets all files from the doctests directory and lists them in a
