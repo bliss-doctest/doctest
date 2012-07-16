@@ -8,15 +8,26 @@ import org.json.JSONException;
 
 import com.devbliss.doctest.templates.AssertDocItem;
 import com.devbliss.doctest.templates.DocItem;
+import com.devbliss.doctest.templates.JsonDocItem;
 import com.devbliss.doctest.templates.RequestDocItem;
+import com.devbliss.doctest.templates.ResponseDocItem;
 import com.devbliss.doctest.templates.SectionDocItem;
-import com.devbliss.doctest.templates.Templates;
 import com.devbliss.doctest.templates.TextDocItem;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.google.inject.Inject;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
+/**
+ * Default implementation of {@link DocTestMachine}.
+ * This class ownes a list of {@link DocItem} : {@link #listItem}. Each time a say method is
+ * called, a {@link DocItem} is added to {@link #listItem}.
+ * At the end of the workflow, the method {@link #endDocTest()} is called and uses a
+ * {@link ReportRenderer} to render the {@link #listItem}.
+ * 
+ * @author bmary
+ * 
+ */
 public class DocTestMachineImpl implements DocTestMachine {
 
     // The class under test.
@@ -26,81 +37,63 @@ public class DocTestMachineImpl implements DocTestMachine {
     private String className;
 
     public StringBuffer outputOfTestsBuffer = new StringBuffer();
-    private final Templates templates;
-    private final List<DocItem> listTemplates;
+    private final List<DocItem> listItem;
 
     private final ReportRenderer reportRenderer;
     private final JSONHelper jsonHelper;
 
     @Inject
-    public DocTestMachineImpl(
-            Templates templates,
-            ReportRenderer reportRenderer,
-            JSONHelper jsonHelper) {
-        listTemplates = new ArrayList<DocItem>();
+    public DocTestMachineImpl(ReportRenderer reportRenderer, JSONHelper jsonHelper) {
+        listItem = new ArrayList<DocItem>();
         this.reportRenderer = reportRenderer;
-        this.templates = templates;
         this.jsonHelper = jsonHelper;
     }
 
-    /**
-     * Main method => this lets you write out stuff.
-     * 
-     * Usually after a say a newline is appended.
-     * 
-     */
-    public void say(String say) {
-        listTemplates.add(new TextDocItem(say));
-    }
-
-    /**
-     * Inits the new file for writing stuff out.
-     */
     public void beginDoctest(String className) {
         if (this.className == null) {
             this.className = className;
         }
     }
 
-    /**
-     * This would be a header. Maybe a new test inside a testcase.
-     */
-    public void sayNextSection(String sectionName) {
-        listTemplates.add(new SectionDocItem(sectionName));
+    public void endDocTest() {
+        reportRenderer.render(listItem, className);
+        className = null;
     }
 
-    /**
-     * At the end of a successful test stuff gets written out.
-     */
-    public void endDocTest() {
-        reportRenderer.render(listTemplates, className);
-        className = null;
+    public void say(String say) {
+        listItem.add(new TextDocItem(say));
+    }
+
+    public void sayNextSectionTitle(String sectionName) {
+        listItem.add(new SectionDocItem(sectionName));
     }
 
     public void sayRequest(URI uri, String payload, HTTP_REQUEST httpRequest) throws JSONException {
         if (uri != null) {
-            listTemplates.add(new RequestDocItem(httpRequest, uri.toString(), getJson(payload)));
+            listItem.add(new RequestDocItem(httpRequest, uri.toString(), getJson(payload)));
         }
     }
 
     public void sayResponse(int responseCode, String payload) throws Exception {
-        listTemplates.add(new com.devbliss.doctest.templates.ResponseDocItem(responseCode,
-                getJson(payload)));
+        listItem.add(new ResponseDocItem(responseCode, getJson(payload)));
     }
 
     public void sayVerify(String condition) {
-        listTemplates.add(new AssertDocItem(condition));
+        listItem.add(new AssertDocItem(condition));
     }
 
     public void sayPreformatted(String preformattedText) {
-        say(templates.getJsonTemplate(preformattedText));
+        listItem.add(new JsonDocItem(preformattedText));
     }
 
-    private String getJson(String json) throws JSONException {
+    private String getJson(String json) {
+        String jsonToShow;
         if (jsonHelper.isJsonValid(json)) {
-            return json;
+            jsonToShow = json;
         } else {
-            return "";
+            jsonToShow = NOT_VALID_JSON + json;
         }
+        return jsonToShow;
     }
+
 }

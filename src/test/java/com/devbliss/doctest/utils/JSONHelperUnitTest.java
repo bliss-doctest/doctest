@@ -40,5 +40,4 @@ public class JSONHelperUnitTest {
     public void jsonNotValidStringIsEmpty() {
         assertFalse(helper.isJsonValid(""));
     }
-
 }

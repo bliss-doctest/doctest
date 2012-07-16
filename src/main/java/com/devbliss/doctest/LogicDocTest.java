@@ -48,7 +48,7 @@ public class LogicDocTest {
     }
 
     public void sayNextSection(String sectionName) {
-        docTest.sayNextSection(sectionName);
+        docTest.sayNextSectionTitle(sectionName);
     }
 
     protected void sayUri(URI uri, HTTP_REQUEST httpRequest) throws Exception {

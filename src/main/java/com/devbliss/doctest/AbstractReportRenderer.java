@@ -11,7 +11,7 @@ public abstract class AbstractReportRenderer implements ReportRenderer {
      * By convention we are using the maven project structure.
      * Therefore doctest will be written into ./target/doctests/.
      */
-    public static final String OUTPUT_DIRECTORY = new File("").getAbsolutePath()
+    private static final String OUTPUT_DIRECTORY = new File("").getAbsolutePath()
             + "/target/doctests/";
 
     /**
@@ -49,5 +49,14 @@ public abstract class AbstractReportRenderer implements ReportRenderer {
                 }
         }
 
+    }
+
+    protected void createTheDirectory(String fileNameForCompleteTestOutput) {
+        new File(fileNameForCompleteTestOutput).getParentFile().mkdirs();
+    }
+
+    public static String getCompleteFileName(String name, String extension) {
+        String fileNameForCompleteTestOutput = OUTPUT_DIRECTORY + name + extension;
+        return fileNameForCompleteTestOutput;
     }
 }

@@ -20,10 +20,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.templates.AssertDocItem;
 import com.devbliss.doctest.templates.DocItem;
+import com.devbliss.doctest.templates.JsonDocItem;
 import com.devbliss.doctest.templates.RequestDocItem;
 import com.devbliss.doctest.templates.ResponseDocItem;
 import com.devbliss.doctest.templates.SectionDocItem;
-import com.devbliss.doctest.templates.Templates;
 import com.devbliss.doctest.templates.TextDocItem;
 import com.devbliss.doctest.utils.JSONHelper;
 
@@ -42,9 +42,8 @@ public class DocTestMachineImplUnitTest {
     private static final String TEXT = "text";
     private static final int RESPONSE_CODE = 130;
     private static final String JSON_VALID = "{'abc':'a'}";
+    private static final String JSON_INVALID = "invalid";
 
-    @Mock
-    private Templates templates;
     @Mock
     private ReportRenderer renderer;
     @Mock
@@ -60,7 +59,7 @@ public class DocTestMachineImplUnitTest {
     public void setUp() throws URISyntaxException {
         when(jsonHelper.isJsonValid(JSON_VALID)).thenReturn(true);
         uri = new URI("");
-        machine = new DocTestMachineImpl(templates, renderer, jsonHelper);
+        machine = new DocTestMachineImpl(renderer, jsonHelper);
         machine.beginDoctest(CLASS_NAME);
     }
 
@@ -79,7 +78,7 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addSectionItem() {
-        machine.sayNextSection(TEXT);
+        machine.sayNextSectionTitle(TEXT);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
@@ -130,6 +129,55 @@ public class DocTestMachineImplUnitTest {
         assertEquals(JSON_VALID, ((RequestDocItem) listItems.get(0)).payload);
         assertEquals(httpRequest, ((RequestDocItem) listItems.get(0)).http);
         assertEquals(uri.toString(), ((RequestDocItem) listItems.get(0)).uri);
+    }
+
+    @Test
+    public void addRequestItemWihtoutUri() throws Exception {
+        machine.sayRequest(null, JSON_VALID, httpRequest);
+        machine.endDocTest();
+
+        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+
+        List<DocItem> listItems = listItemCaptor.getValue();
+        assertTrue(listItems.isEmpty());
+    }
+
+    @Test
+    public void addRequestItemWihtInvalidJson() throws Exception {
+        machine.sayRequest(uri, JSON_INVALID, httpRequest);
+        machine.endDocTest();
+
+        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+
+        List<DocItem> listItems = listItemCaptor.getValue();
+        assertEquals(1, listItems.size());
+        assertTrue(listItems.get(0) instanceof RequestDocItem);
+        assertEquals(DocTestMachine.NOT_VALID_JSON + JSON_INVALID, ((RequestDocItem) listItems
+                .get(0)).payload);
+        assertEquals(httpRequest, ((RequestDocItem) listItems.get(0)).http);
+        assertEquals(uri.toString(), ((RequestDocItem) listItems.get(0)).uri);
+    }
+
+    @Test
+    public void addJsonDocItem() throws Exception {
+        machine.sayPreformatted(JSON_VALID);
+        machine.endDocTest();
+
+        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+
+        List<DocItem> listItems = listItemCaptor.getValue();
+        assertEquals(1, listItems.size());
+        assertTrue(listItems.get(0) instanceof JsonDocItem);
+        assertEquals(JSON_VALID, ((JsonDocItem) listItems.get(0)).expected);
+    }
+
+    @Test
+    public void testNameOfTheReport() {
+        machine.beginDoctest(CLASS_NAME);
+        machine.beginDoctest("blabla");
+        machine.endDocTest();
+
+        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
     }
 
 }

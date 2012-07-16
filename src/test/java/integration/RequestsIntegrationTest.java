@@ -26,7 +26,7 @@ import de.devbliss.apitester.ApiTest;
  */
 public class RequestsIntegrationTest extends DocTest {
 
-    private static final String PAYLOAD = "payload";
+    private static final String PAYLOAD = "{'abc':'123'}";
     private static final int HTTP_STATUS = 230;
     private static ApiTest api;
 
@@ -49,6 +49,7 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void get() throws Exception {
+        sayNextSection("Making a get request");
         when(api.get(uri)).thenReturn(response);
         Response resp = makeGetRequest(uri);
 
@@ -58,6 +59,7 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void delete() throws Exception {
+        sayNextSection("Making a delete request");
         when(api.delete(uri, null)).thenReturn(response);
         Response response = makeDeleteRequest(uri);
 
@@ -67,6 +69,7 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void post() throws Exception {
+        sayNextSection("Making a post request");
         when(api.post(uri, obj)).thenReturn(response);
         Response response = makePostRequest(uri, obj);
 

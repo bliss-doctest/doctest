@@ -30,11 +30,12 @@ public class IndexFileGenerator {
     /**
      * Default name of the index file.
      */
-    public final static String INDEX_FILE = "index.html";
+    public final static String INDEX_FILE = "index";
 
     public void generatIndexFileForTests() {
 
-        String indexFileWithCompletePath = AbstractReportRenderer.OUTPUT_DIRECTORY + INDEX_FILE;
+        String indexFileWithCompletePath =
+                AbstractReportRenderer.getCompleteFileName(INDEX_FILE, ".html");
 
         new File(indexFileWithCompletePath).getParentFile().mkdirs();
 
