@@ -1,5 +1,12 @@
 package com.devbliss.doctest.renderer.html;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 public class HtmlItems {
@@ -20,7 +27,7 @@ public class HtmlItems {
             "<div class=\"menu\">{title}:<ul>{elements}</ul></div>";
     private final static String LI = "<li><a href=\"{sectionId}\">{sectionName}</a></li>";
     private final static String LINK = "<a href=\"{href}\">{text}</a><br/>";
-    private final static String HEADER_FORMAT = "<head><style>" + HtmlStyle.getCss() + "</style>"
+    private final static String HEADER_FORMAT = "<head><style>" + getCss() + "</style>"
             + "<title>DocTest for class {name}</title></head>";
     private final static String HTML_FORMAT =
             "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">"
@@ -83,5 +90,26 @@ public class HtmlItems {
 
     public String getBodyTemplate(String body) {
         return BODY_FORMAT.replace("{body}", body);
+    }
+
+    private static String getCss() {
+        try {
+            return readFile(new File(new File("").getAbsolutePath()
+                    + "/src/main/java/com/devbliss/doctest/renderer/html/htmlStyle.css"));
+        } catch (IOException e) {
+            return "no css";
+        }
+    }
+
+    private static String readFile(File file) throws IOException {
+        FileInputStream stream = new FileInputStream(file);
+        try {
+            FileChannel fc = stream.getChannel();
+            MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+            /* Instead of using default, pass in a decoder. */
+            return Charset.defaultCharset().decode(bb).toString();
+        } finally {
+            stream.close();
+        }
     }
 }

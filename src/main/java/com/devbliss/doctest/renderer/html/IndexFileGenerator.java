@@ -1,9 +1,7 @@
 package com.devbliss.doctest.renderer.html;
 
 import java.io.File;
-import java.util.List;
 
-import com.devbliss.doctest.templates.DocItem;
 import com.google.inject.Inject;
 
 /**
@@ -26,11 +24,11 @@ public class IndexFileGenerator extends AbstractHtmlReportRenderer {
         super(htmlItems);
     }
 
-    public void render(List<DocItem> listTemplates, String name) {
-        String finalHeader = htmlItems.getHeaderFormatTemplate(name);
-        String indexFileWithCompletePath = getCompleteFileName(name, HTML_EXTENSION);
+    public void render() {
+        String finalHeader = htmlItems.getHeaderFormatTemplate(INDEX);
+        String indexFileWithCompletePath = getCompleteFileName(INDEX, HTML_EXTENSION);
 
-        String hrefs = getListOfFileAsString(indexFileWithCompletePath, name);
+        String hrefs = getListOfFileAsString(indexFileWithCompletePath, INDEX);
 
         String body = htmlItems.getLiMenuTemplate("List of test cases", hrefs);;
         String finalDoc = finalHeader + htmlItems.getBodyTemplate(body);

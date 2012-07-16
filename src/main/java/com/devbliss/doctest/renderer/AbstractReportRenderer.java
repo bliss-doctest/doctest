@@ -7,15 +7,15 @@ import java.io.Writer;
 
 /**
  * Defines some general methods used by a {@link ReportRenderer} and which do not depend on the
- * format of the
- * report.
+ * format of the report.
  * 
- * Each {@link ReportRenderer} should extend this class.
+ * Each {@link ReportRenderer} should extend this class to write the file and build its correct
+ * name.
  * 
  * @author bmary
  * 
  */
-public abstract class AbstractReportRenderer implements ReportRenderer {
+public abstract class AbstractReportRenderer {
 
     /**
      * By convention we are using the maven project structure.

@@ -4,6 +4,7 @@ import com.devbliss.doctest.renderer.AbstractReportRenderer;
 
 public abstract class AbstractHtmlReportRenderer extends AbstractReportRenderer {
 
+    protected final static String INDEX = "index";
     protected final static String HTML_EXTENSION = ".html";
     protected final HtmlItems htmlItems;
 
