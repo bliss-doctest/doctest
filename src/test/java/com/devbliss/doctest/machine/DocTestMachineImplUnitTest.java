@@ -1,4 +1,4 @@
-package com.devbliss.doctest;
+package com.devbliss.doctest.machine;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -25,8 +25,6 @@ import com.devbliss.doctest.items.RequestDocItem;
 import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
-import com.devbliss.doctest.machine.DocTestMachine;
-import com.devbliss.doctest.machine.DocTestMachineImpl;
 import com.devbliss.doctest.renderer.ReportRenderer;
 import com.devbliss.doctest.utils.JSONHelper;
 
@@ -172,6 +170,31 @@ public class DocTestMachineImplUnitTest {
         assertEquals(1, listItems.size());
         assertTrue(listItems.get(0) instanceof JsonDocItem);
         assertEquals(JSON_VALID, ((JsonDocItem) listItems.get(0)).expected);
+    }
+
+    @Test
+    public void testAddSeveralItems() throws Exception {
+        machine.say(TEXT + "_first");
+        machine.sayPreformatted(JSON_VALID);
+        machine.say(TEXT + "_second");
+        machine.sayRequest(uri, JSON_VALID, httpRequest);
+        machine.sayResponse(RESPONSE_CODE, JSON_VALID);
+        machine.sayVerify(TEXT);
+        machine.sayNextSectionTitle(TEXT);
+        machine.endDocTest();
+
+        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+        List<DocItem> items = listItemCaptor.getValue();
+        assertEquals(7, items.size());
+        assertTrue(items.get(0) instanceof TextDocItem);
+        assertEquals(TEXT + "_first", ((TextDocItem) items.get(0)).text);
+        assertTrue(items.get(1) instanceof JsonDocItem);
+        assertTrue(items.get(2) instanceof TextDocItem);
+        assertEquals(TEXT + "_second", ((TextDocItem) items.get(2)).text);
+        assertTrue(items.get(3) instanceof RequestDocItem);
+        assertTrue(items.get(4) instanceof ResponseDocItem);
+        assertTrue(items.get(5) instanceof AssertDocItem);
+        assertTrue(items.get(6) instanceof SectionDocItem);
     }
 
     @Test
