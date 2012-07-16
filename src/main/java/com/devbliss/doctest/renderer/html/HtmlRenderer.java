@@ -28,7 +28,7 @@ import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
  * @author bmary
  * 
  */
-public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRenderer {
+public class HtmlRenderer extends AbstractHtmlReportRenderer {
 
     private final IndexFileGenerator indexFileGenerator;
     private int sectionNumber = 0;
@@ -57,7 +57,7 @@ public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRe
         String fileNameForCompleteTestOutput = getCompleteFileName(name, HTML_EXTENSION);
         writeFile(fileNameForCompleteTestOutput, finalDocument);
 
-        indexFileGenerator.render();
+        indexFileGenerator.render(null, INDEX);
     }
 
     private void appendItemsToBuffer(List<DocItem> listTemplates, StringBuffer buffer) {

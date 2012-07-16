@@ -1,7 +1,9 @@
 package com.devbliss.doctest.renderer.html;
 
 import java.io.File;
+import java.util.List;
 
+import com.devbliss.doctest.items.DocItem;
 import com.google.inject.Inject;
 
 /**
@@ -24,7 +26,7 @@ public class IndexFileGenerator extends AbstractHtmlReportRenderer {
         super(htmlItems);
     }
 
-    public void render() {
+    public void render(List<DocItem> listItems, String name) {
         String finalHeader = htmlItems.getHeaderFormatTemplate(INDEX);
         String indexFileWithCompletePath = getCompleteFileName(INDEX, HTML_EXTENSION);
 

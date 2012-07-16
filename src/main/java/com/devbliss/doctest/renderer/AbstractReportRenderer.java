@@ -15,7 +15,7 @@ import java.io.Writer;
  * @author bmary
  * 
  */
-public abstract class AbstractReportRenderer {
+public abstract class AbstractReportRenderer implements ReportRenderer {
 
     /**
      * By convention we are using the maven project structure.

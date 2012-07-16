@@ -101,7 +101,7 @@ public class HtmlItems {
     private static String getCss() {
         try {
             return readFile(new File(new File("").getAbsolutePath()
-                    + "/src/main/java/com/devbliss/doctest/renderer/html/htmlStyle.css"));
+                    + "/src/main/resources/htmlStyle.css"));
         } catch (IOException e) {
             return "no css";
         }
