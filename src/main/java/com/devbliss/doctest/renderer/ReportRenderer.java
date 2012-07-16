@@ -2,7 +2,7 @@ package com.devbliss.doctest.renderer;
 
 import java.util.List;
 
-import com.devbliss.doctest.templates.DocItem;
+import com.devbliss.doctest.items.DocItem;
 
 /**
  * Renders a report in a special format.

@@ -9,6 +9,12 @@ import java.nio.charset.Charset;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
+/**
+ * Items used by the {@link HtmlRenderer} to build the html report.
+ * 
+ * @author bmary
+ * 
+ */
 public class HtmlItems {
 
     private static final String PAYLOAD_LI = "<li><div>payload:</div>{payload}</li>";

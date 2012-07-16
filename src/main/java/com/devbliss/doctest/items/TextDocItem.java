@@ -1,4 +1,4 @@
-package com.devbliss.doctest.templates;
+package com.devbliss.doctest.items;
 
 public class TextDocItem implements DocItem {
 

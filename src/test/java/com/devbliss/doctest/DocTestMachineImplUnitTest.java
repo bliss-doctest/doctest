@@ -18,14 +18,14 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.devbliss.doctest.items.AssertDocItem;
+import com.devbliss.doctest.items.DocItem;
+import com.devbliss.doctest.items.JsonDocItem;
+import com.devbliss.doctest.items.RequestDocItem;
+import com.devbliss.doctest.items.ResponseDocItem;
+import com.devbliss.doctest.items.SectionDocItem;
+import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
-import com.devbliss.doctest.templates.AssertDocItem;
-import com.devbliss.doctest.templates.DocItem;
-import com.devbliss.doctest.templates.JsonDocItem;
-import com.devbliss.doctest.templates.RequestDocItem;
-import com.devbliss.doctest.templates.ResponseDocItem;
-import com.devbliss.doctest.templates.SectionDocItem;
-import com.devbliss.doctest.templates.TextDocItem;
 import com.devbliss.doctest.utils.JSONHelper;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;

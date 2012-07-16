@@ -6,20 +6,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.devbliss.doctest.items.AssertDocItem;
+import com.devbliss.doctest.items.DocItem;
+import com.devbliss.doctest.items.JsonDocItem;
+import com.devbliss.doctest.items.RequestDocItem;
+import com.devbliss.doctest.items.ResponseDocItem;
+import com.devbliss.doctest.items.SectionDocItem;
+import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
-import com.devbliss.doctest.templates.AssertDocItem;
-import com.devbliss.doctest.templates.DocItem;
-import com.devbliss.doctest.templates.JsonDocItem;
-import com.devbliss.doctest.templates.RequestDocItem;
-import com.devbliss.doctest.templates.ResponseDocItem;
-import com.devbliss.doctest.templates.SectionDocItem;
-import com.devbliss.doctest.templates.TextDocItem;
 import com.google.inject.Inject;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 /**
  * Html-implementation of the {@link ReportRenderer}.
+ * <p>
+ * Each time that the function {@link #render(List, String)} is called, a report file is created for
+ * the test case and an index file will be generated.
+ * </p>
  * 
  * @author bmary
  * 

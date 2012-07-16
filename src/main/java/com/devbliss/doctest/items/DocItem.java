@@ -1,4 +1,4 @@
-package com.devbliss.doctest.templates;
+package com.devbliss.doctest.items;
 
 /**
  * A {@link DocItem} is a part of a report which could appear several times in it. In other words, a

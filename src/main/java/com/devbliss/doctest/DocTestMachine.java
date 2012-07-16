@@ -4,12 +4,12 @@ import java.net.URI;
 
 import org.json.JSONException;
 
-import com.devbliss.doctest.templates.AssertDocItem;
-import com.devbliss.doctest.templates.JsonDocItem;
-import com.devbliss.doctest.templates.RequestDocItem;
-import com.devbliss.doctest.templates.ResponseDocItem;
-import com.devbliss.doctest.templates.SectionDocItem;
-import com.devbliss.doctest.templates.TextDocItem;
+import com.devbliss.doctest.items.AssertDocItem;
+import com.devbliss.doctest.items.JsonDocItem;
+import com.devbliss.doctest.items.RequestDocItem;
+import com.devbliss.doctest.items.ResponseDocItem;
+import com.devbliss.doctest.items.SectionDocItem;
+import com.devbliss.doctest.items.TextDocItem;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
