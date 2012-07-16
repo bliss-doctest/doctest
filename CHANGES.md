@@ -3,6 +3,7 @@ CHANGES
 
 develop
 -------
+- separate the generation logic from the rendering logic. A ReportRenderer gets a list of DocItems and render it the way he wants.
 
 Version 0.3: 12.07.2012
 -------------------------
