@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.Before;
 
+import com.devbliss.doctest.machine.DocTestMachine;
 import com.devbliss.doctest.renderer.html.HtmlItems;
 import com.devbliss.doctest.utils.JSONHelper;
 

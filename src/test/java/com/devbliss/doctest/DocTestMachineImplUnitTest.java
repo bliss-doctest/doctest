@@ -25,6 +25,8 @@ import com.devbliss.doctest.items.RequestDocItem;
 import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
+import com.devbliss.doctest.machine.DocTestMachine;
+import com.devbliss.doctest.machine.DocTestMachineImpl;
 import com.devbliss.doctest.renderer.ReportRenderer;
 import com.devbliss.doctest.utils.JSONHelper;
 
