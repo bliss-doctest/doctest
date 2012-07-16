@@ -3,6 +3,9 @@ CHANGES
 
 develop
 -------
+
+Version 0.4: 16.07.2012
+-------------------------
 - improve the style of the html report
 - separate the generation logic from the rendering logic. A ReportRenderer gets a list of DocItems and render it the way he wants.
 
