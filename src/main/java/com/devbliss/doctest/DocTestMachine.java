@@ -14,12 +14,12 @@ import com.devbliss.doctest.templates.TextDocItem;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 /**
- * The {@link DocTestMachine} offers method to create a report. <code>
+ * The {@link DocTestMachine} offers method to generate a report. <code>
  * <ol>
- * <li>First of all, the {@link #beginDoctest(String)} method must be called to create a report.</li>
+ * <li>First of all, the {@link #beginDoctest(String)} method must be called to initialize the report.</li>
  * <li>Then, the different say methods give the possibility to write some informations into the report
  * by using several templates (Request, response, assert)</li>
- * <li>The method {@link #endDocTest()} ends up the generation of the generation of the file.</li>
+ * <li>The method {@link #endDocTest()} ends up the generation of the file.</li>
  * </ol>
  * </code>
  * 

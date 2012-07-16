@@ -5,6 +5,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+/**
+ * Defines some general methods used by a {@link ReportRenderer} and which do not depend on the
+ * format of the
+ * report.
+ * 
+ * Each {@link ReportRenderer} should extend this class.
+ * 
+ * @author bmary
+ * 
+ */
 public abstract class AbstractReportRenderer implements ReportRenderer {
 
     /**
@@ -56,7 +66,6 @@ public abstract class AbstractReportRenderer implements ReportRenderer {
     }
 
     public static String getCompleteFileName(String name, String extension) {
-        String fileNameForCompleteTestOutput = OUTPUT_DIRECTORY + name + extension;
-        return fileNameForCompleteTestOutput;
+        return OUTPUT_DIRECTORY + name + extension;
     }
 }

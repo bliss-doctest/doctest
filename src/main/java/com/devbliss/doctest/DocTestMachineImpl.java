@@ -20,10 +20,12 @@ import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 /**
  * Default implementation of {@link DocTestMachine}.
- * This class ownes a list of {@link DocItem} : {@link #listItem}. Each time a say method is
- * called, a {@link DocItem} is added to {@link #listItem}.
+ * <p>
+ * This class ownes a list of {@link DocItem} : {@link #listItem}. Each time a say method is called,
+ * a {@link DocItem} is added to {@link #listItem}. <br/>
  * At the end of the workflow, the method {@link #endDocTest()} is called and uses a
- * {@link ReportRenderer} to render the {@link #listItem}.
+ * {@link ReportRenderer} to render the {@link #listItem} .
+ * </p>
  * 
  * @author bmary
  * 
