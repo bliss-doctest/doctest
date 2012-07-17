@@ -58,7 +58,7 @@ public class DocTestMachineImpl implements DocTestMachine {
         }
     }
 
-    public void endDocTest() {
+    public void endDocTest() throws Exception {
         reportRenderer.render(listItem, className);
         className = null;
     }

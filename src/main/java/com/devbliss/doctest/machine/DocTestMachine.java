@@ -39,8 +39,10 @@ public interface DocTestMachine {
 
     /**
      * Ends up the generation of the report.
+     * 
+     * @throws Exception
      */
-    void endDocTest();
+    void endDocTest() throws Exception;
 
     /**
      * Writes a new {@link TextDocItem} into the report.

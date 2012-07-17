@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+import com.devbliss.doctest.utils.InvalidReportException;
+
 /**
  * Defines some general methods used by a {@link ReportRenderer} and which do not depend on the
  * format of the report.
@@ -32,39 +34,46 @@ public abstract class AbstractReportRenderer implements ReportRenderer {
      * think of any real case where this happens...
      * 
      * @param nameOfFile
+     * @throws InvalidReportException
      */
-    public static void writeOutFile(String nameOfFile, String content) {
-        Writer fw = null;
-
+    protected void writeFile(String nameCompletePath, String finalDoc)
+            throws InvalidReportException {
         try {
-            fw = new FileWriter(nameOfFile);
-            fw.write(content);
-
-        } catch (IOException e) {
-
-            try {
-                Thread.sleep(200);
-                writeOutFile(nameOfFile, content);
-            } catch (InterruptedException err2) {
-                writeOutFile(nameOfFile, content);
-
-            }
-
-        } finally {
-            if (fw != null)
-                try {
-                    fw.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            // make sure the directory exists
+            new File(nameCompletePath).getParentFile().mkdirs();
+            writeOutFile(nameCompletePath, finalDoc);
+        } catch (Exception e) {
+            throw new InvalidReportException();
         }
-
     }
 
-    protected void writeFile(String nameCompletePath, String finalDoc) {
-        // make sure the directory exists
-        new File(nameCompletePath).getParentFile().mkdirs();
-        writeOutFile(nameCompletePath, finalDoc);
+    private void writeOutFile(String nameOfFile, String content) {
+        Writer fw = null;
+        if (content != null) {
+            try {
+                fw = new FileWriter(nameOfFile);
+                fw.write(content);
+            } catch (IOException e) {
+                try {
+                    Thread.sleep(200);
+                    writeOutFile(nameOfFile, content);
+                } catch (InterruptedException err2) {
+                    writeOutFile(nameOfFile, content);
+                }
+            } finally {
+                closeFileWriter(fw);
+            }
+        }
+    }
+
+    private void closeFileWriter(Writer fw) {
+        if (fw != null) {
+            try {
+                fw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     protected static String getCompleteFileName(String name, String extension) {

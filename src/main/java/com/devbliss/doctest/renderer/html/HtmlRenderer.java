@@ -41,7 +41,7 @@ public class HtmlRenderer extends AbstractHtmlReportRenderer {
         sections = new HashMap<String, String>();
     }
 
-    public void render(List<DocItem> listTemplates, String name) {
+    public void render(List<DocItem> listTemplates, String name) throws Exception {
         String finalHeader = htmlItems.getHeaderFormatTemplate(name);
 
         StringBuffer buffer = new StringBuffer();

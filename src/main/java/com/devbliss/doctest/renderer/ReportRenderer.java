@@ -12,6 +12,6 @@ import com.devbliss.doctest.items.DocItem;
  */
 public interface ReportRenderer {
 
-    void render(List<DocItem> listTemplates, String string);
+    void render(List<DocItem> listTemplates, String string) throws Exception;
 
 }

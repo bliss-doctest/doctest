@@ -1,7 +1,9 @@
 package integration;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static testutils.Utils.cleanUpTheTargetDirectory;
+import static testutils.Utils.getFilesInOutputDirectory;
+import static testutils.Utils.verifyTheFileHasBeenCreated;
 
 import java.io.File;
 
@@ -18,9 +20,6 @@ import org.junit.runner.JUnitCore;
  */
 public class ReportCreatedIntegrationTest {
 
-    private static final String OUTPUT_DIRECTORY = "./target/doctests";
-    private File[] listFiles;
-
     @Before
     public void setUp() {
         cleanUpTheTargetDirectory();
@@ -32,27 +31,15 @@ public class ReportCreatedIntegrationTest {
     }
 
     @Test
-    public void verifyThatTheReportIsCreated() {
+    public void verifyThatTheReportsAreCreated() {
         makeSomeTests();
 
-        // verify that two files have been created
-        File outputDirectory = new File(OUTPUT_DIRECTORY);
-        listFiles = outputDirectory.listFiles();
+        // verify that new files have been created
+        File[] listFiles = getFilesInOutputDirectory();
         assertEquals(3, listFiles.length);
-        verifyTheFileHasBeenCreated("/index.html");
-        verifyTheFileHasBeenCreated("/integration.RequestsIntegrationTest.html");
-        verifyTheFileHasBeenCreated("/integration.CompareObjectsIntegrationTest.html");
-    }
-
-    private void verifyTheFileHasBeenCreated(String fileName) {
-        boolean isFilePresent = false;
-        for (File f : listFiles) {
-            if (f.getPath().equals(OUTPUT_DIRECTORY + fileName)) {
-                isFilePresent = true;
-                break;
-            }
-        }
-        assertTrue("The report '" + fileName + "' has not been created.", isFilePresent);
+        verifyTheFileHasBeenCreated("index.html");
+        verifyTheFileHasBeenCreated("integration.RequestsIntegrationTest.html");
+        verifyTheFileHasBeenCreated("integration.CompareObjectsIntegrationTest.html");
     }
 
     /**
@@ -61,17 +48,5 @@ public class ReportCreatedIntegrationTest {
      */
     private void makeSomeTests() {
         JUnitCore.runClasses(RequestsIntegrationTest.class, CompareObjectsIntegrationTest.class);
-    }
-
-    private void cleanUpTheTargetDirectory() {
-        File outputDirectory = new File(OUTPUT_DIRECTORY);
-
-        File[] files = outputDirectory.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                file.delete();
-            }
-            assertEquals(0, outputDirectory.listFiles().length);
-        }
     }
 }

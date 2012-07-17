@@ -30,7 +30,7 @@ public class LogicDocTest {
     }
 
     @AfterClass
-    public static void finishDocTest() {
+    public static void finishDocTest() throws Exception {
         LogicDocTest.docTest.endDocTest();
     }
 

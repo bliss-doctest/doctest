@@ -26,7 +26,7 @@ public class IndexFileGenerator extends AbstractHtmlReportRenderer {
         super(htmlItems);
     }
 
-    public void render(List<DocItem> listItems, String name) {
+    public void render(List<DocItem> listItems, String name) throws Exception {
         String finalHeader = htmlItems.getHeaderFormatTemplate(INDEX);
         String indexFileWithCompletePath = getCompleteFileName(INDEX, HTML_EXTENSION);
 

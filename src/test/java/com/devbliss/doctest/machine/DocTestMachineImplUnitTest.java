@@ -65,7 +65,7 @@ public class DocTestMachineImplUnitTest {
     }
 
     @Test
-    public void addTextItem() {
+    public void addTextItem() throws Exception {
         machine.say(TEXT);
         machine.endDocTest();
 
@@ -78,7 +78,7 @@ public class DocTestMachineImplUnitTest {
     }
 
     @Test
-    public void addSectionItem() {
+    public void addSectionItem() throws Exception {
         machine.sayNextSectionTitle(TEXT);
         machine.endDocTest();
 
@@ -91,7 +91,7 @@ public class DocTestMachineImplUnitTest {
     }
 
     @Test
-    public void addAssertItem() {
+    public void addAssertItem() throws Exception {
         machine.sayVerify(TEXT);
         machine.endDocTest();
 
@@ -198,7 +198,7 @@ public class DocTestMachineImplUnitTest {
     }
 
     @Test
-    public void testNameOfTheReport() {
+    public void testNameOfTheReport() throws Exception {
         machine.beginDoctest(CLASS_NAME);
         machine.beginDoctest("blabla");
         machine.endDocTest();
