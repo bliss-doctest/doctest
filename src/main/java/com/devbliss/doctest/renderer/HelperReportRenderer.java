@@ -11,13 +11,13 @@ import com.devbliss.doctest.utils.InvalidReportException;
  * Defines some general methods used by a {@link ReportRenderer} and which do not depend on the
  * format of the report.
  * 
- * Each {@link ReportRenderer} should extend this class to write the file and build its correct
+ * Each {@link ReportRenderer} must use this class to write the file and build its correct
  * name.
  * 
  * @author bmary
  * 
  */
-public abstract class AbstractReportRenderer implements ReportRenderer {
+public class HelperReportRenderer {
 
     /**
      * By convention we are using the maven project structure.
@@ -36,8 +36,7 @@ public abstract class AbstractReportRenderer implements ReportRenderer {
      * @param nameOfFile
      * @throws InvalidReportException
      */
-    protected void writeFile(String nameCompletePath, String finalDoc)
-            throws InvalidReportException {
+    public void writeFile(String nameCompletePath, String finalDoc) throws InvalidReportException {
         try {
             // make sure the directory exists
             new File(nameCompletePath).getParentFile().mkdirs();
@@ -76,7 +75,7 @@ public abstract class AbstractReportRenderer implements ReportRenderer {
         }
     }
 
-    protected static String getCompleteFileName(String name, String extension) {
+    public String getCompleteFileName(String name, String extension) {
         return OUTPUT_DIRECTORY + name + extension;
     }
 }

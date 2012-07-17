@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import com.devbliss.doctest.items.DocItem;
+import com.devbliss.doctest.renderer.HelperReportRenderer;
 import com.google.inject.Inject;
 
 /**
@@ -21,14 +22,17 @@ import com.google.inject.Inject;
  */
 public class IndexFileGenerator extends AbstractHtmlReportRenderer {
 
+    private final HelperReportRenderer helper;
+
     @Inject
-    public IndexFileGenerator(HtmlItems htmlItems) {
+    public IndexFileGenerator(HtmlItems htmlItems, HelperReportRenderer abstractReportRenderer) {
         super(htmlItems);
+        this.helper = abstractReportRenderer;
     }
 
     public void render(List<DocItem> listItems, String name) throws Exception {
         String finalHeader = htmlItems.getHeaderFormatTemplate(INDEX);
-        String indexFileWithCompletePath = getCompleteFileName(INDEX, HTML_EXTENSION);
+        String indexFileWithCompletePath = helper.getCompleteFileName(INDEX, HTML_EXTENSION);
 
         String hrefs = getListOfFileAsString(indexFileWithCompletePath, INDEX);
 
@@ -37,7 +41,7 @@ public class IndexFileGenerator extends AbstractHtmlReportRenderer {
 
         finalDoc = htmlItems.getHtmlTemplate(finalDoc);
 
-        writeFile(indexFileWithCompletePath, finalDoc);
+        helper.writeFile(indexFileWithCompletePath, finalDoc);
     }
 
     private String getListOfFileAsString(String nameWithCompletePath, String shortName) {

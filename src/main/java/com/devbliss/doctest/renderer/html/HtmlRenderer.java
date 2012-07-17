@@ -1,7 +1,7 @@
 package com.devbliss.doctest.renderer.html;
 
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,6 +13,7 @@ import com.devbliss.doctest.items.RequestDocItem;
 import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
+import com.devbliss.doctest.renderer.HelperReportRenderer;
 import com.devbliss.doctest.renderer.ReportRenderer;
 import com.google.inject.Inject;
 
@@ -28,36 +29,43 @@ import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
  * @author bmary
  * 
  */
-public class HtmlRenderer extends AbstractHtmlReportRenderer {
+public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRenderer {
 
     private final IndexFileGenerator indexFileGenerator;
     private int sectionNumber = 0;
     private final Map<String, String> sections;
+    private final HelperReportRenderer helper;
 
     @Inject
-    public HtmlRenderer(IndexFileGenerator indexFileGenerator, HtmlItems htmlItems) {
+    public HtmlRenderer(
+            IndexFileGenerator indexFileGenerator,
+            HtmlItems htmlItems,
+            HelperReportRenderer abstractReportRenderer) {
         super(htmlItems);
         this.indexFileGenerator = indexFileGenerator;
-        sections = new HashMap<String, String>();
+        this.helper = abstractReportRenderer;
+        sections = new LinkedHashMap<String, String>();
     }
 
     public void render(List<DocItem> listTemplates, String name) throws Exception {
-        String finalHeader = htmlItems.getHeaderFormatTemplate(name);
+        if (listTemplates != null && !listTemplates.isEmpty()) {
+            String finalHeader = htmlItems.getHeaderFormatTemplate(name);
 
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(htmlItems.getLinkTemplate(INDEX + HTML_EXTENSION, "back to index page"));
-        buffer.append("Doctest originally perfomed at: " + new Date());
-        appendItemsToBuffer(listTemplates, buffer);
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(htmlItems.getLinkTemplate(INDEX + HTML_EXTENSION, "back to index page"));
+            buffer.append("Doctest originally perfomed at: " + new Date());
+            appendItemsToBuffer(listTemplates, buffer);
 
-        String finalBody = htmlItems.getBodyTemplate(buffer.toString());
+            String finalBody = htmlItems.getBodyTemplate(buffer.toString());
 
-        String finalDocument = finalHeader + finalBody;
-        finalDocument = htmlItems.getHtmlTemplate(finalDocument);
+            String finalDocument = finalHeader + finalBody;
+            finalDocument = htmlItems.getHtmlTemplate(finalDocument);
 
-        String fileNameForCompleteTestOutput = getCompleteFileName(name, HTML_EXTENSION);
-        writeFile(fileNameForCompleteTestOutput, finalDocument);
+            String fileNameForCompleteTestOutput = helper.getCompleteFileName(name, HTML_EXTENSION);
+            helper.writeFile(fileNameForCompleteTestOutput, finalDocument);
 
-        indexFileGenerator.render(null, INDEX);
+            indexFileGenerator.render(null, INDEX);
+        }
     }
 
     private void appendItemsToBuffer(List<DocItem> listTemplates, StringBuffer buffer) {

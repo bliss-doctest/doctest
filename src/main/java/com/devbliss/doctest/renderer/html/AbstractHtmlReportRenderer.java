@@ -1,6 +1,6 @@
 package com.devbliss.doctest.renderer.html;
 
-import com.devbliss.doctest.renderer.AbstractReportRenderer;
+import com.devbliss.doctest.renderer.ReportRenderer;
 
 /**
  * Abstract ReportRenderer for the html output format which defines some variables used both in
@@ -9,7 +9,7 @@ import com.devbliss.doctest.renderer.AbstractReportRenderer;
  * @author bmary
  * 
  */
-public abstract class AbstractHtmlReportRenderer extends AbstractReportRenderer {
+public abstract class AbstractHtmlReportRenderer implements ReportRenderer {
 
     protected final static String INDEX = "index";
     protected final static String HTML_EXTENSION = ".html";

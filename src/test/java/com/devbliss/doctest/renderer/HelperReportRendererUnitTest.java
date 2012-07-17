@@ -6,36 +6,29 @@ import static testutils.Utils.cleanUpTheTargetDirectory;
 import static testutils.Utils.getFilesInOutputDirectory;
 import static testutils.Utils.verifyTheFileHasBeenCreated;
 
-import java.util.List;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.devbliss.doctest.items.DocItem;
 import com.devbliss.doctest.utils.InvalidReportException;
 
 /**
- * Unit test for {@link AbstractReportRenderer}
+ * Unit test for {@link HelperReportRenderer}
  * 
  * @author bmary
  * 
  */
-public class AbstractReportRendererUnitTest {
+public class HelperReportRendererUnitTest {
 
     private static final String FILE = "test.txt";
     private static final String EXTENSION = ".extension";
     private static final String NAME = "name";
     private static final String DOC = "finaleDoc";
-    private AbstractReportRenderer renderer;
+    private HelperReportRenderer renderer;
 
     @Before
     public void setUp() {
-        renderer = new AbstractReportRenderer() {
-
-            public void render(List<DocItem> listTemplates, String string) {
-            }
-        };
+        renderer = new HelperReportRenderer();
         cleanUpTheTargetDirectory();
     }
 
@@ -46,7 +39,7 @@ public class AbstractReportRendererUnitTest {
 
     @Test
     public void getCompleteFileName() {
-        String result = AbstractReportRenderer.getCompleteFileName(NAME, EXTENSION);
+        String result = renderer.getCompleteFileName(NAME, EXTENSION);
         assertEquals(OUTPUT_DIRECTORY + NAME + EXTENSION, result);
     }
 
