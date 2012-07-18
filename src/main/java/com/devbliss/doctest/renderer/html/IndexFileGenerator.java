@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import com.devbliss.doctest.items.DocItem;
-import com.devbliss.doctest.renderer.HelperReportRenderer;
+import com.devbliss.doctest.utils.FileHelper;
 import com.google.inject.Inject;
 
 /**
@@ -22,10 +22,10 @@ import com.google.inject.Inject;
  */
 public class IndexFileGenerator extends AbstractHtmlReportRenderer {
 
-    private final HelperReportRenderer helper;
+    private final FileHelper helper;
 
     @Inject
-    public IndexFileGenerator(HtmlItems htmlItems, HelperReportRenderer abstractReportRenderer) {
+    public IndexFileGenerator(HtmlItems htmlItems, FileHelper abstractReportRenderer) {
         super(htmlItems);
         this.helper = abstractReportRenderer;
     }

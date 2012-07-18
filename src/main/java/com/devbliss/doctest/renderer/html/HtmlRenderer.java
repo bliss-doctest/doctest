@@ -13,8 +13,8 @@ import com.devbliss.doctest.items.RequestDocItem;
 import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
-import com.devbliss.doctest.renderer.HelperReportRenderer;
 import com.devbliss.doctest.renderer.ReportRenderer;
+import com.devbliss.doctest.utils.FileHelper;
 import com.google.inject.Inject;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
@@ -34,13 +34,13 @@ public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRe
     private final IndexFileGenerator indexFileGenerator;
     private int sectionNumber = 0;
     private final Map<String, String> sections;
-    private final HelperReportRenderer helper;
+    private final FileHelper helper;
 
     @Inject
     public HtmlRenderer(
             IndexFileGenerator indexFileGenerator,
             HtmlItems htmlItems,
-            HelperReportRenderer abstractReportRenderer) {
+            FileHelper abstractReportRenderer) {
         super(htmlItems);
         this.indexFileGenerator = indexFileGenerator;
         this.helper = abstractReportRenderer;

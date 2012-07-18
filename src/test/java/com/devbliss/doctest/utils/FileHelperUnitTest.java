@@ -1,4 +1,4 @@
-package com.devbliss.doctest.renderer;
+package com.devbliss.doctest.utils;
 
 import static org.junit.Assert.assertEquals;
 import static testutils.Utils.OUTPUT_DIRECTORY;
@@ -10,25 +10,26 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.devbliss.doctest.utils.FileHelper;
 import com.devbliss.doctest.utils.InvalidReportException;
 
 /**
- * Unit test for {@link HelperReportRenderer}
+ * Unit test for {@link FileHelper}
  * 
  * @author bmary
  * 
  */
-public class HelperReportRendererUnitTest {
+public class FileHelperUnitTest {
 
     private static final String FILE = "test.txt";
     private static final String EXTENSION = ".extension";
     private static final String NAME = "name";
     private static final String DOC = "finaleDoc";
-    private HelperReportRenderer renderer;
+    private FileHelper renderer;
 
     @Before
     public void setUp() {
-        renderer = new HelperReportRenderer();
+        renderer = new FileHelper();
         cleanUpTheTargetDirectory();
     }
 

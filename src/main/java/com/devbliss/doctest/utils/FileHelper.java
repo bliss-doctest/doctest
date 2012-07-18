@@ -1,15 +1,14 @@
-package com.devbliss.doctest.renderer;
+package com.devbliss.doctest.utils;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.devbliss.doctest.utils.InvalidReportException;
+import com.devbliss.doctest.renderer.ReportRenderer;
 
 /**
- * Defines some general methods used by a {@link ReportRenderer} and which do not depend on the
- * format of the report.
+ * Defines some general methods to write a file and defines its name.
  * 
  * Each {@link ReportRenderer} must use this class to write the file and build its correct
  * name.
@@ -17,7 +16,7 @@ import com.devbliss.doctest.utils.InvalidReportException;
  * @author bmary
  * 
  */
-public class HelperReportRenderer {
+public class FileHelper {
 
     /**
      * By convention we are using the maven project structure.

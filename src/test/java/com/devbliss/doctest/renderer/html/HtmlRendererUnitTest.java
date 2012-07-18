@@ -22,7 +22,7 @@ import com.devbliss.doctest.items.DocItem;
 import com.devbliss.doctest.items.RequestDocItem;
 import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
-import com.devbliss.doctest.renderer.HelperReportRenderer;
+import com.devbliss.doctest.utils.FileHelper;
 import com.devbliss.doctest.utils.InvalidReportException;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
@@ -53,7 +53,7 @@ public class HtmlRendererUnitTest {
     @Mock
     private IndexFileGenerator indexFileGenerator;
     @Mock
-    private HelperReportRenderer helper;
+    private FileHelper helper;
     @Mock
     private DocItem docItem;
 

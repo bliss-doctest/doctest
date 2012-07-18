@@ -6,10 +6,10 @@ import com.devbliss.doctest.httpwithoutredirect.PostWithoutRedirectImpl;
 import com.devbliss.doctest.httpwithoutredirect.PutWithoutRedirectImpl;
 import com.devbliss.doctest.machine.DocTestMachine;
 import com.devbliss.doctest.machine.DocTestMachineImpl;
-import com.devbliss.doctest.renderer.HelperReportRenderer;
 import com.devbliss.doctest.renderer.ReportRenderer;
 import com.devbliss.doctest.renderer.html.HtmlItems;
 import com.devbliss.doctest.renderer.html.HtmlRenderer;
+import com.devbliss.doctest.utils.FileHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
@@ -29,7 +29,7 @@ public class GuiceModule extends AbstractModule {
         bind(ApiTest.class).in(Singleton.class);
         bind(JSONHelper.class).in(Singleton.class);
         bind(HtmlItems.class).in(Singleton.class);
-        bind(HelperReportRenderer.class).in(Singleton.class);
+        bind(FileHelper.class).in(Singleton.class);
         bind(ReportRenderer.class).to(HtmlRenderer.class).in(Singleton.class);
 
         bind(DeleteFactory.class).annotatedWith(Names.named(ApiTest.DELETE_FACTORY)).to(
