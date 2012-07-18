@@ -23,7 +23,7 @@ public class FileHelper {
      * Therefore doctest will be written into ./target/doctests/.
      */
     private static final String OUTPUT_DIRECTORY = new File("").getAbsolutePath()
-            + "/target/doctests/";
+            + "/target/site/doctests/";
 
     /**
      * This writes out the file and retries if some other task has

@@ -10,9 +10,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.devbliss.doctest.utils.FileHelper;
-import com.devbliss.doctest.utils.InvalidReportException;
-
 /**
  * Unit test for {@link FileHelper}
  * 
@@ -53,24 +50,24 @@ public class FileHelperUnitTest {
     @Test
     public void writeFileContentIsNull() throws Exception {
         renderer.writeFile(OUTPUT_DIRECTORY + FILE, null);
-        assertEquals(0, getFilesInOutputDirectory().length);
+        assertEquals(0, getFilesInOutputDirectory().size());
     }
 
     @Test(expected = InvalidReportException.class)
     public void writeFileNameIsEmpty() throws Exception {
         renderer.writeFile("", DOC);
-        assertEquals(0, getFilesInOutputDirectory().length);
+        assertEquals(0, getFilesInOutputDirectory().size());
     }
 
     @Test(expected = InvalidReportException.class)
     public void writeFileNameIsNull() throws Exception {
         renderer.writeFile(null, DOC);
-        assertEquals(0, getFilesInOutputDirectory().length);
+        assertEquals(0, getFilesInOutputDirectory().size());
     }
 
     @Test(expected = InvalidReportException.class)
     public void writeFileNameIsInvalid() throws Exception {
         renderer.writeFile("blabla", DOC);
-        assertEquals(0, getFilesInOutputDirectory().length);
+        assertEquals(0, getFilesInOutputDirectory().size());
     }
 }

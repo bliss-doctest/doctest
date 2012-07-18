@@ -6,6 +6,7 @@ import static testutils.Utils.getFilesInOutputDirectory;
 import static testutils.Utils.verifyTheFileHasBeenCreated;
 
 import java.io.File;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -35,8 +36,8 @@ public class ReportCreatedIntegrationTest {
         makeSomeTests();
 
         // verify that new files have been created
-        File[] listFiles = getFilesInOutputDirectory();
-        assertEquals(3, listFiles.length);
+        List<File> listFiles = getFilesInOutputDirectory();
+        assertEquals(3, listFiles.size());
         verifyTheFileHasBeenCreated("index.html");
         verifyTheFileHasBeenCreated("integration.RequestsIntegrationTest.html");
         verifyTheFileHasBeenCreated("integration.CompareObjectsIntegrationTest.html");

@@ -4,11 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
 
     public static final String OUTPUT_DIRECTORY = new File("").getAbsolutePath()
-            + "/target/doctests/";
+            + "/target/site/doctests/";
 
     public static void verifyTheFileHasBeenCreated(String fileName) {
         verifyTheFileHasBeenCreated(fileName, new File(OUTPUT_DIRECTORY).listFiles());
@@ -48,11 +50,23 @@ public class Utils {
             for (File file : files) {
                 file.delete();
             }
-            assertEquals(0, outputDirectory.listFiles().length);
+            assertEquals(0, getFilesInOutputDirectory().size());
         }
     }
 
-    public static File[] getFilesInOutputDirectory() {
-        return new File(OUTPUT_DIRECTORY).listFiles();
+    /**
+     * Returns all the files from the output directory without taking care of the directories (/css,
+     * /images)
+     * 
+     * @return
+     */
+    public static List<File> getFilesInOutputDirectory() {
+        List<File> files = new ArrayList<File>();
+        for (File file : new File(OUTPUT_DIRECTORY).listFiles()) {
+            if (!file.isDirectory()) {
+                files.add(file);
+            }
+        }
+        return files;
     }
 }
