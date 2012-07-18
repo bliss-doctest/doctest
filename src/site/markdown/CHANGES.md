@@ -1,8 +1,14 @@
 CHANGES
-=============
+=======
 
 develop
 -------
+
+Version 0.4.1: 18.07.2012
+-------------------------
+- move the generated documentation to target/site
+- add site plugin to generate the documentation
+- create a fileHelper class and corresponding unit tests
 
 Version 0.4: 16.07.2012
 -------------------------
