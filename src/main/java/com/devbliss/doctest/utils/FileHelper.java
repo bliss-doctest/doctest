@@ -35,14 +35,10 @@ public class FileHelper {
      * @param nameOfFile
      * @throws InvalidReportException
      */
-    public void writeFile(String nameCompletePath, String finalDoc) throws InvalidReportException {
-        try {
-            // make sure the directory exists
-            new File(nameCompletePath).getParentFile().mkdirs();
-            writeOutFile(nameCompletePath, finalDoc);
-        } catch (Exception e) {
-            throw new InvalidReportException();
-        }
+    public void writeFile(String nameCompletePath, String finalDoc) {
+        // make sure the directory exists
+        new File(nameCompletePath).getParentFile().mkdirs();
+        writeOutFile(nameCompletePath, finalDoc);
     }
 
     private void writeOutFile(String nameOfFile, String content) {

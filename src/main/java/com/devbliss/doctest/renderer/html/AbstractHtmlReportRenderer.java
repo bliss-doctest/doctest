@@ -4,7 +4,7 @@ import com.devbliss.doctest.renderer.ReportRenderer;
 
 /**
  * Abstract ReportRenderer for the html output format which defines some variables used both in
- * {@link HtmlRenderer} and {@link IndexFileGenerator}.
+ * {@link HtmlRenderer} and {@link HtmlIndexFileRenderer}.
  * 
  * @author bmary
  * 

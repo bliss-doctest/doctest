@@ -23,7 +23,6 @@ import com.devbliss.doctest.items.RequestDocItem;
 import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.utils.FileHelper;
-import com.devbliss.doctest.utils.InvalidReportException;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
@@ -51,7 +50,7 @@ public class HtmlRendererUnitTest {
     @Mock
     private HtmlItems htmlItems;
     @Mock
-    private IndexFileGenerator indexFileGenerator;
+    private HtmlIndexFileRenderer indexFileGenerator;
     @Mock
     private FileHelper helper;
     @Mock
@@ -153,7 +152,7 @@ public class HtmlRendererUnitTest {
         verifyFilesAreCreated();
     }
 
-    private void verifyFilesAreCreated() throws InvalidReportException, Exception {
+    private void verifyFilesAreCreated() throws Exception {
         verify(helper).writeFile(COMPLETE_NAME, HTML);
         verify(indexFileGenerator).render(null, "index");
     }

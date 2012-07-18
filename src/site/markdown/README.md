@@ -1,5 +1,5 @@
-java-doctests
-=============
+doctest
+=======
 
 idea based on python doctests, transfered into java world
 unittests / integration tests / regressions tests

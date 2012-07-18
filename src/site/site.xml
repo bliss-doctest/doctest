@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/DECORATION/1.1.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.1.0 http://maven.apache.org/xsd/decoration-1.1.0.xsd"
+         name="Doctest">
+    <bannerLeft>
+        <name>Doctest internal documentation and Api documentation</name>
+        <href>http://devbliss.de</href>
+    </bannerLeft>
+    <body>
+        <menu name="Overview">
+            <item name="README" href="readme.html"/>
+            <item name="CHANGES" href="changes.html"/>
+            <item name="TODOS" href="todo.html"/>
+        </menu>
+        <menu name="Example">
+            <item name="Example of a doctest report" href="./doctests/index.html"/>
+        </menu>
+    </body>
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.0</version>
+    </skin>
+</project>

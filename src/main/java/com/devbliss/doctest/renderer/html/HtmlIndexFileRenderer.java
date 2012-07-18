@@ -20,12 +20,12 @@ import com.google.inject.Inject;
  * @author rbauer, bmary
  * 
  */
-public class IndexFileGenerator extends AbstractHtmlReportRenderer {
+public class HtmlIndexFileRenderer extends AbstractHtmlReportRenderer {
 
     private final FileHelper helper;
 
     @Inject
-    public IndexFileGenerator(HtmlItems htmlItems, FileHelper abstractReportRenderer) {
+    public HtmlIndexFileRenderer(HtmlItems htmlItems, FileHelper abstractReportRenderer) {
         super(htmlItems);
         this.helper = abstractReportRenderer;
     }

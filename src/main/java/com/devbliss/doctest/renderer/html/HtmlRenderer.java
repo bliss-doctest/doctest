@@ -31,14 +31,14 @@ import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
  */
 public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRenderer {
 
-    private final IndexFileGenerator indexFileGenerator;
+    private final HtmlIndexFileRenderer indexFileGenerator;
     private int sectionNumber = 0;
     private final Map<String, String> sections;
     private final FileHelper helper;
 
     @Inject
     public HtmlRenderer(
-            IndexFileGenerator indexFileGenerator,
+            HtmlIndexFileRenderer indexFileGenerator,
             HtmlItems htmlItems,
             FileHelper abstractReportRenderer) {
         super(htmlItems);

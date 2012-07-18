@@ -53,19 +53,19 @@ public class FileHelperUnitTest {
         assertEquals(0, getFilesInOutputDirectory().size());
     }
 
-    @Test(expected = InvalidReportException.class)
+    @Test(expected = NullPointerException.class)
     public void writeFileNameIsEmpty() throws Exception {
         renderer.writeFile("", DOC);
         assertEquals(0, getFilesInOutputDirectory().size());
     }
 
-    @Test(expected = InvalidReportException.class)
+    @Test(expected = NullPointerException.class)
     public void writeFileNameIsNull() throws Exception {
         renderer.writeFile(null, DOC);
         assertEquals(0, getFilesInOutputDirectory().size());
     }
 
-    @Test(expected = InvalidReportException.class)
+    @Test(expected = NullPointerException.class)
     public void writeFileNameIsInvalid() throws Exception {
         renderer.writeFile("blabla", DOC);
         assertEquals(0, getFilesInOutputDirectory().size());
