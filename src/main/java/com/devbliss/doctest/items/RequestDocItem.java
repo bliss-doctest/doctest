@@ -6,9 +6,13 @@ public class RequestDocItem implements DocItem {
 
     private final HTTP_REQUEST http;
     private final String uri;
-    private final String payload;
+    private final JsonDocItem payload;
 
     public RequestDocItem(HTTP_REQUEST http, String uri, String payload) {
+        this(http, uri, new JsonDocItem(payload));
+    }
+
+    public RequestDocItem(HTTP_REQUEST http, String uri, JsonDocItem payload) {
         this.http = http;
         this.uri = uri;
         this.payload = payload;
@@ -22,7 +26,7 @@ public class RequestDocItem implements DocItem {
         return uri;
     }
 
-    public String getPayload() {
+    public JsonDocItem getPayload() {
         return payload;
     }
 }

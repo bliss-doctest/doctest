@@ -1,6 +1,6 @@
 package com.devbliss.doctest.renderer.html;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +8,10 @@ import java.util.Map.Entry;
 
 import com.devbliss.doctest.items.AssertDocItem;
 import com.devbliss.doctest.items.DocItem;
+import com.devbliss.doctest.items.FileDocItem;
 import com.devbliss.doctest.items.JsonDocItem;
+import com.devbliss.doctest.items.LinkDocItem;
+import com.devbliss.doctest.items.MenuDocItem;
 import com.devbliss.doctest.items.RequestDocItem;
 import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
@@ -16,8 +19,6 @@ import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
 import com.devbliss.doctest.utils.FileHelper;
 import com.google.inject.Inject;
-
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 /**
  * Html-implementation of the {@link ReportRenderer}.
@@ -49,94 +50,76 @@ public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRe
 
     public void render(List<DocItem> listTemplates, String name) throws Exception {
         if (listTemplates != null && !listTemplates.isEmpty()) {
-            String finalHeader = htmlItems.getHeaderFormatTemplate(name);
-
-            StringBuffer buffer = new StringBuffer();
-            buffer.append(htmlItems.getLinkTemplate(INDEX + HTML_EXTENSION, "back to index page"));
-            buffer.append("Doctest originally perfomed at: " + new Date());
-            appendItemsToBuffer(listTemplates, buffer);
-
-            String finalBody = htmlItems.getBodyTemplate(buffer.toString());
-
-            String finalDocument = finalHeader + finalBody;
-            finalDocument = htmlItems.getHtmlTemplate(finalDocument);
-
-            String fileNameForCompleteTestOutput = helper.getCompleteFileName(name, HTML_EXTENSION);
-            helper.writeFile(fileNameForCompleteTestOutput, finalDocument);
+            String items = appendItemsToBuffer(listTemplates);
+            FileDocItem report = new FileDocItem(name, items);
+            String nameWithExtension = helper.getCompleteFileName(name, HTML_EXTENSION);
+            helper.writeFile(nameWithExtension, htmlItems.getReportTemplate(report));
 
             indexFileGenerator.render(null, INDEX);
         }
     }
 
-    private void appendItemsToBuffer(List<DocItem> listTemplates, StringBuffer buffer) {
+    private String appendItemsToBuffer(List<DocItem> listTemplates) {
+        StringBuffer buffer = new StringBuffer();
         StringBuffer tempBuffer = new StringBuffer();
-        for (DocItem myitem : listTemplates) {
-            if (myitem instanceof AssertDocItem) {
-                tempBuffer.append(getAssertDocItem(myitem));
-            } else if (myitem instanceof RequestDocItem) {
-                tempBuffer.append(getRequestDocItem(myitem));
-            } else if (myitem instanceof ResponseDocItem) {
-                tempBuffer.append(getResponseDocItem(myitem));
-            } else if (myitem instanceof SectionDocItem) {
-                tempBuffer.append(getSectionDocItem(myitem));
-            } else if (myitem instanceof TextDocItem) {
-                tempBuffer.append(getTextDocItem(myitem));
-            } else if (myitem instanceof JsonDocItem) {
-                tempBuffer.append(getJsonDocItem(myitem));
+        for (DocItem item : listTemplates) {
+            if (item instanceof AssertDocItem) {
+                tempBuffer.append(getAssertDocItem((AssertDocItem) item));
+            } else if (item instanceof RequestDocItem) {
+                tempBuffer.append(getRequestDocItem((RequestDocItem) item));
+            } else if (item instanceof ResponseDocItem) {
+                tempBuffer.append(getResponseDocItem((ResponseDocItem) item));
+            } else if (item instanceof SectionDocItem) {
+                tempBuffer.append(getSectionDocItem((SectionDocItem) item));
+            } else if (item instanceof TextDocItem) {
+                tempBuffer.append(getTextDocItem((TextDocItem) item));
+            } else if (item instanceof JsonDocItem) {
+                tempBuffer.append(getJsonDocItem((JsonDocItem) item));
             }
         }
 
         appendSectionList(buffer);
         buffer.append(tempBuffer);
+        return buffer.toString();
     }
 
     private void appendSectionList(StringBuffer buffer) {
-        StringBuffer tmpBuffer = new StringBuffer();
+        List<LinkDocItem> files = new ArrayList<LinkDocItem>();
         for (Entry<String, String> section : sections.entrySet()) {
-            tmpBuffer.append(getLiSection(section));
+            files.add(new LinkDocItem(section.getKey(), section.getValue()));
         }
-
-        buffer.append(htmlItems.getLiMenuTemplate("Sections of this test class", tmpBuffer
-                .toString()));
+        buffer.append(htmlItems.getListFilesTemplate(new MenuDocItem("", files)));
     }
 
-    private String getLiSection(Entry<String, String> section) {
-        return htmlItems.getLiWithLinkTemplate(section.getKey(), section.getValue());
+    private String getAssertDocItem(AssertDocItem item) {
+        return htmlItems.getAssertTemplate(item);
     }
 
-    private String getAssertDocItem(DocItem myitem) {
-        return htmlItems.getVerifyTemplate(((AssertDocItem) myitem).getExpected());
+    private String getRequestDocItem(RequestDocItem item) {
+        return htmlItems.getRequestTemplate(item);
     }
 
-    private String getRequestDocItem(DocItem myitem) {
-        String payload = htmlItems.getJsonTemplate(((RequestDocItem) myitem).getPayload());
-        String uri = ((RequestDocItem) myitem).getUri();
-        HTTP_REQUEST http = ((RequestDocItem) myitem).getHttp();
-        return htmlItems.getUriTemplate(uri, payload, http);
+    private String getJsonDocItem(JsonDocItem item) {
+        return htmlItems.getJsonTemplate(item);
     }
 
-    private String getJsonDocItem(DocItem myitem) {
-        return htmlItems.getJsonTemplate(((JsonDocItem) myitem).getExpected());
+    private String getTextDocItem(TextDocItem item) {
+        return item.getText();
     }
 
-    private String getTextDocItem(DocItem myitem) {
-        return ((TextDocItem) myitem).getText();
-    }
-
-    private String getSectionDocItem(DocItem myitem) {
+    private String getSectionDocItem(SectionDocItem item) {
         String sectionId = getSectionId();
-        String sectionName = ((SectionDocItem) myitem).getTitle();
+        String sectionName = item.getTitle();
         sections.put("#" + sectionId, sectionName);
-        return htmlItems.getSectionTemplate(sectionName, sectionId);
+        item.setHref(sectionId);
+        return htmlItems.getSectionTemplate(item);
     }
 
     private String getSectionId() {
         return "section" + ++sectionNumber;
     }
 
-    private String getResponseDocItem(DocItem myitem) {
-        String payload = htmlItems.getJsonTemplate(((ResponseDocItem) myitem).getPayload());
-        int responseCode = ((ResponseDocItem) myitem).getResponseCode();
-        return htmlItems.getResponseTemplate(responseCode, payload);
+    private String getResponseDocItem(ResponseDocItem item) {
+        return htmlItems.getResponseTemplate(item);
     }
 }

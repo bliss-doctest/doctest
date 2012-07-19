@@ -113,7 +113,7 @@ public class DocTestMachineImplUnitTest {
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
         assertTrue(listItems.get(0) instanceof ResponseDocItem);
-        assertEquals(JSON_VALID, ((ResponseDocItem) listItems.get(0)).getPayload());
+        assertEquals(JSON_VALID, ((ResponseDocItem) listItems.get(0)).getPayload().getExpected());
         assertEquals(RESPONSE_CODE, ((ResponseDocItem) listItems.get(0)).getResponseCode());
     }
 
@@ -127,7 +127,7 @@ public class DocTestMachineImplUnitTest {
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
         assertTrue(listItems.get(0) instanceof RequestDocItem);
-        assertEquals(JSON_VALID, ((RequestDocItem) listItems.get(0)).getPayload());
+        assertEquals(JSON_VALID, ((RequestDocItem) listItems.get(0)).getPayload().getExpected());
         assertEquals(httpRequest, ((RequestDocItem) listItems.get(0)).getHttp());
         assertEquals(uri.toString(), ((RequestDocItem) listItems.get(0)).getUri());
     }
@@ -154,7 +154,7 @@ public class DocTestMachineImplUnitTest {
         assertEquals(1, listItems.size());
         assertTrue(listItems.get(0) instanceof RequestDocItem);
         assertEquals(DocTestMachine.NOT_VALID_JSON + JSON_INVALID, ((RequestDocItem) listItems
-                .get(0)).getPayload());
+                .get(0)).getPayload().getExpected());
         assertEquals(httpRequest, ((RequestDocItem) listItems.get(0)).getHttp());
         assertEquals(uri.toString(), ((RequestDocItem) listItems.get(0)).getUri());
     }

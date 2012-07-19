@@ -5,7 +5,7 @@
 		<#if payload??>
 			<li>
 				<div>payload:</div>
-				${payload}
+				${payload.expected}
 			</li>
 		</#if>
     </ul>

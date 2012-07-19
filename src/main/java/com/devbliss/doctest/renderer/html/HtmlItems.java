@@ -8,10 +8,18 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.Map;
 
+import com.devbliss.doctest.items.AssertDocItem;
+import com.devbliss.doctest.items.DocItem;
+import com.devbliss.doctest.items.FileDocItem;
+import com.devbliss.doctest.items.JsonDocItem;
+import com.devbliss.doctest.items.MenuDocItem;
+import com.devbliss.doctest.items.RequestDocItem;
+import com.devbliss.doctest.items.ResponseDocItem;
+import com.devbliss.doctest.items.SectionDocItem;
 import com.google.inject.Inject;
 
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
@@ -23,110 +31,43 @@ import freemarker.template.Template;
  */
 public class HtmlItems {
 
-    private static final String PAYLOAD_LI = "<li><div>payload:</div>{payload}</li>";
-
-    private final static String REQUEST =
-            "<div class=\"box\"><span>Request</span><ul><li>HTTP:{HTTP}</li><li>URI:{uri}</li>"
-                    + PAYLOAD_LI + "</ul></div>";
-    // private final static String RESPONSE =
-    // "<div class=\"box\"><span>Response</span><ul><li>ResponseCode: {responseCode}</li>"
-    // + PAYLOAD_LI + "</ul></div>";
-    private final static String VERIFY = "<div class=\"box correct\">'{value}' is correct!</div>";
-    private final static String SECTION =
-            "<h1><a name=\"{name}\"> {value} </a><a class=\"link-to-top\" href=\"#\">(top)</a></h1>";
-    private final static String MENU_SECTION =
-            "<div class=\"menu\">{title}:<ul>{elements}</ul></div>";
-    private final static String LI = "<li><a href=\"{sectionId}\">{sectionName}</a></li>";
-    private final static String LINK = "<a href=\"{href}\">{text}</a><br/>";
-    private final static String HEADER_FORMAT = "<head><style>" + getCss() + "</style>"
-            + "<title>DocTest for class {name}</title></head>";
-    private final static String HTML_FORMAT =
-            "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">"
-                    + "<html>{html}</html>";
-    private final static String BODY_FORMAT =
-            "<body><div class=\"container\"><div class=\"wrapper\">"
-                    + "<br/>{body}</div></div><body>";
-
     private final Configuration configuration;
-    private StringWriter writer;
-    private HashMap<String, String> map;
 
     @Inject
     public HtmlItems(Configuration configuration) {
         this.configuration = configuration;
     }
 
-    public String getJsonTemplate(String json) {
-        map = new HashMap<String, String>();
-        map.put("expected", json);
-        return init("json.ftl", map);;
-        // return JSON.replace("{data}", json);
+    public String getJsonTemplate(JsonDocItem item) {
+        return init("json.ftl", item);
     }
 
-    private String init() {
+    private String init(String templateName, DocItem item) {
+        StringWriter writer = new StringWriter();
+        Template template;
         try {
-            writer = new StringWriter();
-            Template template = configuration.getTemplate("test.ftl");
-            template.process(map, writer);
+            template = configuration.getTemplate(templateName);
+            template.process(item, writer);
             return writer.toString();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public String getUriTemplate(String uri, String payload, HTTP_REQUEST httpRequest) {
-        String request = REQUEST.replace("{uri}", uri);
-        if (!payload.isEmpty()) {
-            request = request.replace("{payload}", payload);
-        } else {
-            request = request.replace(PAYLOAD_LI, "");
-        }
-        return request.replace("{HTTP}", httpRequest.name());
+    public String getRequestTemplate(RequestDocItem item) {
+        return init("request.ftl", item);
     }
 
-    public String getResponseTemplate(int responseCode, String payload) {
-        init();
-        map.put("responseCode", String.valueOf(responseCode));
-        map.put("payload", payload);
-        // String response = RESPONSE.replace("{responseCode}", String.valueOf(responseCode));
-        // if (!payload.isEmpty()) {
-        // response = response.replace("{payload}", payload);
-        // } else {
-        // response = response.replace(PAYLOAD_LI, "");
-        // }
-        // return response;
+    public String getResponseTemplate(ResponseDocItem item) {
+        return init("response.ftl", item);
     }
 
-    public String getVerifyTemplate(String expected) {
-        return VERIFY.replace("{value}", expected);
+    public String getAssertTemplate(AssertDocItem item) {
+        return init("assert.ftl", item);
     }
 
-    public String getSectionTemplate(String title, String sectionId) {
-        return SECTION.replace("{value}", title).replace("{name}", sectionId);
-    }
-
-    public String getLiWithLinkTemplate(String sectionId, String sectionName) {
-        return LI.replace("{sectionId}", sectionId).replace("{sectionName}", sectionName);
-    }
-
-    public String getLiMenuTemplate(String title, String sections) {
-        return MENU_SECTION.replace("{title}", title).replace("{elements}", sections);
-    }
-
-    public String getLinkTemplate(String href, String text) {
-        return LINK.replace("{href}", href).replace("{text}", text);
-    }
-
-    public String getHeaderFormatTemplate(String name) {
-        return HEADER_FORMAT.replace("{name}", name);
-    }
-
-    public String getHtmlTemplate(String html) {
-        return HTML_FORMAT.replace("{html}", html);
-    }
-
-    public String getBodyTemplate(String body) {
-        return BODY_FORMAT.replace("{body}", body);
+    public String getSectionTemplate(SectionDocItem item) {
+        return init("section.ftl", item);
     }
 
     private static String getCss() {
@@ -147,6 +88,30 @@ public class HtmlItems {
             return Charset.defaultCharset().decode(bb).toString();
         } finally {
             stream.close();
+        }
+    }
+
+    public String getReportTemplate(FileDocItem item) {
+        item.setCss(getCss());
+        return init("htmlFile.ftl", item);
+    }
+
+    public String getIndexTemplate(FileDocItem item) {
+        item.setCss(getCss());
+        return init("index.ftl", item);
+    }
+
+    public String getListFilesTemplate(MenuDocItem item) {
+        StringWriter writer = new StringWriter();
+        Template template;
+        try {
+            template = configuration.getTemplate("listFiles.ftl");
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("files", item.getFiles());
+            template.process(map, writer);
+            return writer.toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

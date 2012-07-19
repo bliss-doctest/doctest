@@ -1,5 +1,7 @@
 package com.devbliss.doctest.renderer.html;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
@@ -12,19 +14,21 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 
 import com.devbliss.doctest.items.AssertDocItem;
 import com.devbliss.doctest.items.DocItem;
+import com.devbliss.doctest.items.FileDocItem;
+import com.devbliss.doctest.items.JsonDocItem;
+import com.devbliss.doctest.items.LinkDocItem;
+import com.devbliss.doctest.items.MenuDocItem;
 import com.devbliss.doctest.items.RequestDocItem;
 import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.utils.FileHelper;
-
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 /**
  * Unit tests for the {@link HtmlRenderer}
@@ -37,15 +41,12 @@ public class HtmlRendererUnitTest {
 
     private static final String NAME = "name";
     private static final String COMPLETE_NAME = "complete/name";
-    private static final String HEADER = "header";
-    private static final String BODY = "body";
     private static final String HTML = "html";
     private static final String SECTION_TITLE = "title";
-    private static final String PAYLOAD = "payload";
     private static final String JSON_PAYLOAD = "json_payload";
-    private static final String URI = "uri";
-    private static final String CONDITION = "condition";
-    private static final int RESPONSE_CODE = 0;
+    private static final String REQUEST = "request";
+    private static final String RESPONSE = "response";
+    private static final String ASSERT = "assert";
 
     @Mock
     private HtmlItems htmlItems;
@@ -54,25 +55,38 @@ public class HtmlRendererUnitTest {
     @Mock
     private FileHelper helper;
     @Mock
-    private DocItem docItem;
+    private AssertDocItem assertDocItem;
+    @Mock
+    private JsonDocItem jsonDocItem;
+    @Mock
+    private ResponseDocItem responseDocItem;
+    @Mock
+    private RequestDocItem requestDocItem;
+    @Mock
+    private SectionDocItem section1;
+    @Mock
+    private SectionDocItem section2;
+    @Mock
+    private SectionDocItem section3;
+    @Captor
+    private ArgumentCaptor<FileDocItem> fileCaptor;
+    @Captor
+    private ArgumentCaptor<MenuDocItem> menuCaptor;
 
     private HtmlRenderer renderer;
     private List<DocItem> listTemplates;
 
     @Before
     public void setUp() {
+        when(htmlItems.getRequestTemplate(requestDocItem)).thenReturn(REQUEST);
+        when(htmlItems.getResponseTemplate(responseDocItem)).thenReturn(RESPONSE);
+        when(htmlItems.getAssertTemplate(assertDocItem)).thenReturn(ASSERT);
+        when(htmlItems.getReportTemplate(any(FileDocItem.class))).thenReturn(HTML);
+        when(section1.getTitle()).thenReturn(SECTION_TITLE + "1");
+        when(section2.getTitle()).thenReturn(SECTION_TITLE + "2");
+        when(section3.getTitle()).thenReturn(SECTION_TITLE + "3");
         when(helper.getCompleteFileName(NAME, ".html")).thenReturn(COMPLETE_NAME);
-        when(htmlItems.getHeaderFormatTemplate(NAME)).thenReturn(HEADER);
-        when(htmlItems.getBodyTemplate(anyString())).thenReturn(BODY);
-        when(htmlItems.getHtmlTemplate(HEADER + BODY)).thenReturn(HTML);
-        when(htmlItems.getJsonTemplate(PAYLOAD)).thenReturn(JSON_PAYLOAD);
-        when(htmlItems.getLiWithLinkTemplate(anyString(), anyString())).thenAnswer(
-                new Answer<String>() {
-
-                    public String answer(InvocationOnMock invocation) throws Throwable {
-                        return (String) invocation.getArguments()[1];
-                    }
-                });
+        when(htmlItems.getJsonTemplate(jsonDocItem)).thenReturn(JSON_PAYLOAD);
         renderer = new HtmlRenderer(indexFileGenerator, htmlItems, helper);
         listTemplates = new ArrayList<DocItem>();
     }
@@ -93,67 +107,94 @@ public class HtmlRendererUnitTest {
 
     @Test
     public void renderListDocItems() throws Exception {
-        listTemplates.add(docItem);
-        listTemplates.add(docItem);
-        listTemplates.add(docItem);
+        // there is no section
+        when(htmlItems.getListFilesTemplate(any(MenuDocItem.class))).thenReturn("");
+        listTemplates.add(requestDocItem);
+        listTemplates.add(responseDocItem);
+        listTemplates.add(assertDocItem);
         renderer.render(listTemplates, NAME);
+        verify(htmlItems).getReportTemplate(fileCaptor.capture());
+        assertEquals(REQUEST + RESPONSE + ASSERT, fileCaptor.getValue().getItems());
         verifyFilesAreCreated();
     }
 
     @Test
     public void renderSections() throws Exception {
-        listTemplates.add(new SectionDocItem(SECTION_TITLE + "1"));
-        listTemplates.add(new SectionDocItem(SECTION_TITLE + "2"));
-        listTemplates.add(new SectionDocItem(SECTION_TITLE + "3"));
-        renderer.render(listTemplates, NAME);
-        verify(htmlItems).getSectionTemplate(SECTION_TITLE + "1", "section1");
-        verify(htmlItems).getSectionTemplate(SECTION_TITLE + "2", "section2");
-        verify(htmlItems).getSectionTemplate(SECTION_TITLE + "3", "section3");
+        listTemplates.add(section1);
+        listTemplates.add(section2);
+        listTemplates.add(section3);
 
-        verify(htmlItems).getLiMenuTemplate("Sections of this test class",
-                SECTION_TITLE + "1" + SECTION_TITLE + "2" + SECTION_TITLE + "3");
+        renderer.render(listTemplates, NAME);
+        verify(htmlItems).getSectionTemplate(section1);
+        verify(htmlItems).getSectionTemplate(section2);
+        verify(htmlItems).getSectionTemplate(section3);
+
+        verify(section1).setHref("section1");
+        verify(section2).setHref("section2");
+        verify(section3).setHref("section3");
+
+        verify(htmlItems).getListFilesTemplate(menuCaptor.capture());
+        List<LinkDocItem> menuFiles = menuCaptor.getValue().getFiles();
+
+        verifyLinkDocItem("#section1", SECTION_TITLE + "1", menuFiles.get(0));
+        verifyLinkDocItem("#section2", SECTION_TITLE + "2", menuFiles.get(1));
+        verifyLinkDocItem("#section3", SECTION_TITLE + "3", menuFiles.get(2));
     }
 
     @Test
     public void renderUnorderedSections() throws Exception {
-        listTemplates.add(new SectionDocItem(SECTION_TITLE + "2"));
-        listTemplates.add(new SectionDocItem(SECTION_TITLE + "3"));
-        listTemplates.add(new SectionDocItem(SECTION_TITLE + "1"));
-        renderer.render(listTemplates, NAME);
-        verify(htmlItems).getSectionTemplate(SECTION_TITLE + "2", "section1");
-        verify(htmlItems).getSectionTemplate(SECTION_TITLE + "3", "section2");
-        verify(htmlItems).getSectionTemplate(SECTION_TITLE + "1", "section3");
+        listTemplates.add(section2);
+        listTemplates.add(section3);
+        listTemplates.add(section1);
 
-        verify(htmlItems).getLiMenuTemplate("Sections of this test class",
-                SECTION_TITLE + "2" + SECTION_TITLE + "3" + SECTION_TITLE + "1");
+        renderer.render(listTemplates, NAME);
+        verify(htmlItems).getSectionTemplate(section1);
+        verify(htmlItems).getSectionTemplate(section2);
+        verify(htmlItems).getSectionTemplate(section3);
+
+        verify(section1).setHref("section3");
+        verify(section2).setHref("section1");
+        verify(section3).setHref("section2");
+
+        verify(htmlItems).getListFilesTemplate(menuCaptor.capture());
+        List<LinkDocItem> menuFiles = menuCaptor.getValue().getFiles();
+
+        verifyLinkDocItem("#section1", SECTION_TITLE + "2", menuFiles.get(0));
+        verifyLinkDocItem("#section2", SECTION_TITLE + "3", menuFiles.get(1));
+        verifyLinkDocItem("#section3", SECTION_TITLE + "1", menuFiles.get(2));
     }
 
     @Test
     public void renderRequest() throws Exception {
-        listTemplates.add(new RequestDocItem(HTTP_REQUEST.GET, URI, PAYLOAD));
+        listTemplates.add(requestDocItem);
         renderer.render(listTemplates, NAME);
-        verify(htmlItems).getUriTemplate(URI, JSON_PAYLOAD, HTTP_REQUEST.GET);
+        verify(htmlItems).getRequestTemplate(requestDocItem);
         verifyFilesAreCreated();
     }
 
     @Test
     public void renderResponse() throws Exception {
-        listTemplates.add(new ResponseDocItem(RESPONSE_CODE, PAYLOAD));
+        listTemplates.add(responseDocItem);
         renderer.render(listTemplates, NAME);
-        verify(htmlItems).getResponseTemplate(RESPONSE_CODE, JSON_PAYLOAD);
+        verify(htmlItems).getResponseTemplate(responseDocItem);
         verifyFilesAreCreated();
     }
 
     @Test
     public void renderAssert() throws Exception {
-        listTemplates.add(new AssertDocItem(CONDITION));
+        listTemplates.add(assertDocItem);
         renderer.render(listTemplates, NAME);
-        verify(htmlItems).getVerifyTemplate(CONDITION);
+        verify(htmlItems).getAssertTemplate(assertDocItem);
         verifyFilesAreCreated();
     }
 
     private void verifyFilesAreCreated() throws Exception {
         verify(helper).writeFile(COMPLETE_NAME, HTML);
         verify(indexFileGenerator).render(null, "index");
+    }
+
+    private void verifyLinkDocItem(String href, String name, LinkDocItem item) {
+        assertEquals(href, item.getHref());
+        assertEquals(name, item.getName());
     }
 }

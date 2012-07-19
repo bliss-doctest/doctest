@@ -1,9 +1,13 @@
 package com.devbliss.doctest.renderer.html;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.devbliss.doctest.items.DocItem;
+import com.devbliss.doctest.items.FileDocItem;
+import com.devbliss.doctest.items.LinkDocItem;
+import com.devbliss.doctest.items.MenuDocItem;
 import com.devbliss.doctest.utils.FileHelper;
 import com.google.inject.Inject;
 
@@ -31,33 +35,27 @@ public class HtmlIndexFileRenderer extends AbstractHtmlReportRenderer {
     }
 
     public void render(List<DocItem> listItems, String name) throws Exception {
-        String finalHeader = htmlItems.getHeaderFormatTemplate(INDEX);
-        String indexFileWithCompletePath = helper.getCompleteFileName(INDEX, HTML_EXTENSION);
-
-        String hrefs = getListOfFileAsString(indexFileWithCompletePath, INDEX);
-
-        String body = htmlItems.getLiMenuTemplate("List of test cases", hrefs);;
-        String finalDoc = finalHeader + htmlItems.getBodyTemplate(body);
-
-        finalDoc = htmlItems.getHtmlTemplate(finalDoc);
-
-        helper.writeFile(indexFileWithCompletePath, finalDoc);
+        String nameWithExtension = helper.getCompleteFileName(INDEX, HTML_EXTENSION);
+        List<LinkDocItem> files = getListOfFileAsString(nameWithExtension, INDEX);
+        MenuDocItem menu = new MenuDocItem("List of doctest files", files);
+        String body = htmlItems.getListFilesTemplate(menu);
+        FileDocItem index = new FileDocItem(name, body);
+        helper.writeFile(nameWithExtension, htmlItems.getIndexTemplate(index));
     }
 
-    private String getListOfFileAsString(String nameWithCompletePath, String shortName) {
+    private List<LinkDocItem> getListOfFileAsString(String nameWithCompletePath, String shortName) {
         File[] files = fetchFilesInDirectory(nameWithCompletePath);
-        StringBuffer hrefs = new StringBuffer();
-
+        List<LinkDocItem> list = new ArrayList<LinkDocItem>();
         // fetch neither the file itself nor the hidden files
         for (File file : files) {
             if (!file.getName().equals(shortName + HTML_EXTENSION)) {
                 if (!file.isHidden()) {
-                    hrefs.append(htmlItems.getLiWithLinkTemplate(file.getName(), file.getName()));
+                    list.add(new LinkDocItem(file.getName(), file.getName()));
                 }
             }
 
         }
-        return hrefs.toString();
+        return list;
     }
 
     /**

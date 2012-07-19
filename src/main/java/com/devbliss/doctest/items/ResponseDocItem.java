@@ -3,11 +3,16 @@ package com.devbliss.doctest.items;
 public class ResponseDocItem implements DocItem {
 
     private int responseCode;
-    private String payload;
+    private JsonDocItem payload;
 
-    public ResponseDocItem(int responseCode, String payload) {
+    public ResponseDocItem(int responseCode, JsonDocItem payload) {
         this.responseCode = responseCode;
         this.payload = payload;
+    }
+
+    public ResponseDocItem(int responseCode, String json) {
+        this.responseCode = responseCode;
+        this.payload = new JsonDocItem(json);
     }
 
     public int getResponseCode() {
@@ -18,11 +23,11 @@ public class ResponseDocItem implements DocItem {
         this.responseCode = responseCode;
     }
 
-    public String getPayload() {
+    public JsonDocItem getPayload() {
         return payload;
     }
 
-    public void setPayload(String payload) {
+    public void setPayload(JsonDocItem payload) {
         this.payload = payload;
     }
 
