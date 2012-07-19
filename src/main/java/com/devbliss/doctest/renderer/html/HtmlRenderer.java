@@ -105,27 +105,27 @@ public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRe
     }
 
     private String getAssertDocItem(DocItem myitem) {
-        return htmlItems.getVerifyTemplate(((AssertDocItem) myitem).expected);
+        return htmlItems.getVerifyTemplate(((AssertDocItem) myitem).getExpected());
     }
 
     private String getRequestDocItem(DocItem myitem) {
-        String payload = htmlItems.getJsonTemplate(((RequestDocItem) myitem).payload);
-        String uri = ((RequestDocItem) myitem).uri;
-        HTTP_REQUEST http = ((RequestDocItem) myitem).http;
+        String payload = htmlItems.getJsonTemplate(((RequestDocItem) myitem).getPayload());
+        String uri = ((RequestDocItem) myitem).getUri();
+        HTTP_REQUEST http = ((RequestDocItem) myitem).getHttp();
         return htmlItems.getUriTemplate(uri, payload, http);
     }
 
     private String getJsonDocItem(DocItem myitem) {
-        return htmlItems.getJsonTemplate(((JsonDocItem) myitem).expected);
+        return htmlItems.getJsonTemplate(((JsonDocItem) myitem).getExpected());
     }
 
     private String getTextDocItem(DocItem myitem) {
-        return ((TextDocItem) myitem).text;
+        return ((TextDocItem) myitem).getText();
     }
 
     private String getSectionDocItem(DocItem myitem) {
         String sectionId = getSectionId();
-        String sectionName = ((SectionDocItem) myitem).title;
+        String sectionName = ((SectionDocItem) myitem).getTitle();
         sections.put("#" + sectionId, sectionName);
         return htmlItems.getSectionTemplate(sectionName, sectionId);
     }
@@ -135,8 +135,8 @@ public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRe
     }
 
     private String getResponseDocItem(DocItem myitem) {
-        String payload = htmlItems.getJsonTemplate(((ResponseDocItem) myitem).payload);
-        int responseCode = ((ResponseDocItem) myitem).responseCode;
+        String payload = htmlItems.getJsonTemplate(((ResponseDocItem) myitem).getPayload());
+        int responseCode = ((ResponseDocItem) myitem).getResponseCode();
         return htmlItems.getResponseTemplate(responseCode, payload);
     }
 }

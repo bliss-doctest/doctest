@@ -2,9 +2,17 @@ package com.devbliss.doctest.items;
 
 public class AssertDocItem implements DocItem {
 
-    public final String expected;
+    private String expected;
 
     public AssertDocItem(String expected) {
+        this.setExpected(expected);
+    }
+
+    public String getExpected() {
+        return expected;
+    }
+
+    public void setExpected(String expected) {
         this.expected = expected;
     }
 }
