@@ -3,11 +3,17 @@ package com.devbliss.doctest.renderer.html;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+
+import com.google.inject.Inject;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 
 /**
  * Items used by the {@link HtmlRenderer} to build the html report.
@@ -22,10 +28,9 @@ public class HtmlItems {
     private final static String REQUEST =
             "<div class=\"box\"><span>Request</span><ul><li>HTTP:{HTTP}</li><li>URI:{uri}</li>"
                     + PAYLOAD_LI + "</ul></div>";
-    private final static String JSON = "<pre>" + "<code>{data}</code>" + "</pre>";
-    private final static String RESPONSE =
-            "<div class=\"box\"><span>Response</span><ul><li>ResponseCode: {responseCode}</li>"
-                    + PAYLOAD_LI + "</ul></div>";
+    // private final static String RESPONSE =
+    // "<div class=\"box\"><span>Response</span><ul><li>ResponseCode: {responseCode}</li>"
+    // + PAYLOAD_LI + "</ul></div>";
     private final static String VERIFY = "<div class=\"box correct\">'{value}' is correct!</div>";
     private final static String SECTION =
             "<h1><a name=\"{name}\"> {value} </a><a class=\"link-to-top\" href=\"#\">(top)</a></h1>";
@@ -42,8 +47,31 @@ public class HtmlItems {
             "<body><div class=\"container\"><div class=\"wrapper\">"
                     + "<br/>{body}</div></div><body>";
 
+    private final Configuration configuration;
+    private StringWriter writer;
+    private HashMap<String, String> map;
+
+    @Inject
+    public HtmlItems(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
     public String getJsonTemplate(String json) {
-        return JSON.replace("{data}", json);
+        map = new HashMap<String, String>();
+        map.put("expected", json);
+        return init("json.ftl", map);;
+        // return JSON.replace("{data}", json);
+    }
+
+    private String init() {
+        try {
+            writer = new StringWriter();
+            Template template = configuration.getTemplate("test.ftl");
+            template.process(map, writer);
+            return writer.toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getUriTemplate(String uri, String payload, HTTP_REQUEST httpRequest) {
@@ -57,13 +85,16 @@ public class HtmlItems {
     }
 
     public String getResponseTemplate(int responseCode, String payload) {
-        String response = RESPONSE.replace("{responseCode}", String.valueOf(responseCode));
-        if (!payload.isEmpty()) {
-            response = response.replace("{payload}", payload);
-        } else {
-            response = response.replace(PAYLOAD_LI, "");
-        }
-        return response;
+        init();
+        map.put("responseCode", String.valueOf(responseCode));
+        map.put("payload", payload);
+        // String response = RESPONSE.replace("{responseCode}", String.valueOf(responseCode));
+        // if (!payload.isEmpty()) {
+        // response = response.replace("{payload}", payload);
+        // } else {
+        // response = response.replace(PAYLOAD_LI, "");
+        // }
+        // return response;
     }
 
     public String getVerifyTemplate(String expected) {
