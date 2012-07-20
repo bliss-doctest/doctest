@@ -1,5 +1,6 @@
 package com.devbliss.doctest;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
@@ -10,10 +11,15 @@ import static org.mockito.Mockito.when;
 
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 
+import de.devbliss.apitester.Cookie;
+import de.devbliss.apitester.TestState;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -40,6 +46,7 @@ public class LogicDocTestUnitTest {
     private static final String OBJECT2 = "OBJECT2";
     private static final String RESPONSE_PAYLOAD = "payload";
     private static final int HTTP_STATUS = 204;
+    private static final String REASON_PHRASE = "No Content";
     @Mock
     private ApiTest apiTest;
     @Mock
@@ -50,6 +57,8 @@ public class LogicDocTestUnitTest {
     private Object obj;
     @Mock
     private HtmlItems templates;
+    @Mock
+    private TestState testState;
 
     private LogicDocTest docTest;
     private URI uri;
@@ -59,9 +68,11 @@ public class LogicDocTestUnitTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         uri = new URI("");
-        response = new ApiResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
+        response = new ApiResponse(HTTP_STATUS, REASON_PHRASE, RESPONSE_PAYLOAD,
+                Collections.<String, String>emptyMap());
         when(jsonHelper.toJson(null)).thenReturn(NULL);
         when(jsonHelper.toJson(obj)).thenReturn(OBJECT);
+        when(apiTest.getTestState()).thenReturn(testState);
         docTest = instantiateAbstractDocTest();
     }
 
@@ -251,4 +262,81 @@ public class LogicDocTestUnitTest {
         }
     }
 
+    @Test
+    public void assertCookieEqualsShouldPassWhenEquals() {
+        when(testState.getCookieValue("name")).thenReturn("value");
+        docTest.assertCookieEqualsAndSay("name", "value");
+        verify(docTestMachine).sayVerify(anyString());
+    }
+
+    @Test(expected = AssertionError.class)
+    public void assertCookieEqualsShouldFailWhenNotEquals() {
+        when(testState.getCookieValue("name")).thenReturn("value");
+        docTest.assertCookieEqualsAndSay("name", "notvalue");
+    }
+
+    @Test(expected = AssertionError.class)
+    public void assertCookieEqualsShouldFailWhenNotPresent() {
+        docTest.assertCookieEqualsAndSay("name", "notvalue");
+    }
+
+    @Test
+    public void assertCookiePresentShouldPassWhenPresent() {
+        when(testState.getCookieValue("name")).thenReturn("value");
+        docTest.assertCookiePresentAndSay("name");
+        verify(docTestMachine).sayVerify(anyString());
+    }
+
+    @Test(expected = AssertionError.class)
+    public void assertCookiePresentShouldFailWhenNotPresent() {
+        docTest.assertCookiePresentAndSay("name");
+    }
+
+    @Test
+    public void assertCookieNotPresentShouldPassWhenNotPresent() {
+        docTest.assertCookieNotPresentAndSay("name");
+        verify(docTestMachine).sayVerify(anyString());
+    }
+
+    @Test(expected = AssertionError.class)
+    public void assertCookieNotPresentShouldFailWhenPresent() {
+        when(testState.getCookieValue("name")).thenReturn("value");
+        docTest.assertCookieNotPresentAndSay("name");
+    }
+
+    @Test
+    public void assertCookieMatchesShouldPassWhenMatches() {
+        when(testState.getCookie("name")).thenReturn(new Cookie("name", "value"));
+        docTest.assertCookieMatchesAndSay(new Cookie("name", "value"));
+        verify(docTestMachine).sayVerify(anyString());
+    }
+
+    @Test(expected = AssertionError.class)
+    public void assertCookieMatchesShouldFailWhenNotMatches() {
+        when(testState.getCookie("name")).thenReturn(new Cookie("name", "value"));
+        docTest.assertCookieMatchesAndSay(new Cookie("name", "value", new Date()));
+    }
+
+    @Test(expected = AssertionError.class)
+    public void assertCookieMatchesShouldFailWhenNotPresent() {
+        docTest.assertCookieMatchesAndSay(new Cookie("name", "value"));
+    }
+
+    @Test
+    public void getCookieValueShouldGetCookieValue() {
+        when(testState.getCookieValue("name")).thenReturn("value");
+        assertEquals("value", docTest.getCookieValue("name"));
+    }
+
+    @Test
+    public void addCookieShouldAddCookie() {
+        docTest.addCookie("name", "value");
+        verify(testState).addCookie(new Cookie("name", "value"));
+    }
+
+    @Test
+    public void clearCookiesShouldClearCookies() {
+        docTest.clearCookies();
+        testState.clearCookies();
+    }
 }

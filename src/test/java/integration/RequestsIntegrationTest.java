@@ -4,6 +4,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.net.URI;
+import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -27,6 +28,7 @@ public class RequestsIntegrationTest extends DocTest {
 
     private static final String PAYLOAD = "{'abc':'123'}";
     private static final int HTTP_STATUS = 230;
+    private static final String REASON_PHRASE = "This is not a normal response code";
     private static ApiTest api;
 
     @BeforeClass
@@ -42,7 +44,8 @@ public class RequestsIntegrationTest extends DocTest {
     @Before
     public void setUp() throws Exception {
         obj = new Object();
-        response = new ApiResponse(HTTP_STATUS, PAYLOAD);
+        response = new ApiResponse(HTTP_STATUS, REASON_PHRASE, PAYLOAD,
+                Collections.<String, String>emptyMap());
         uri = new URI("http://www.google.com");
     }
 

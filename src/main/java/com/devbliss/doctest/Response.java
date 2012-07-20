@@ -13,7 +13,8 @@ import de.devbliss.apitester.ApiResponse;
 public class Response extends ApiResponse {
 
     public Response(ApiResponse apiResponse) {
-        super(apiResponse.httpStatus, apiResponse.payload);
+        super(apiResponse.httpStatus, apiResponse.reasonPhrase, apiResponse.payload,
+                apiResponse.headers);
     }
 
 }
