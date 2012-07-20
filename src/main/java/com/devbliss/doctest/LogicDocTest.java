@@ -306,7 +306,7 @@ public class LogicDocTest {
      * @param value The value of the cookie
      */
     protected void addCookie(String name, String value) {
-        apiTest.getTestState().addCookie(new Cookie(name, value));
+        apiTest.getTestState().addCookie(new Cookie(name, value, null, "/", "localhost", false, false));
     }
 
     /**
