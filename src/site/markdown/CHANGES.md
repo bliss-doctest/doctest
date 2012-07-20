@@ -3,6 +3,7 @@ CHANGES
 
 develop
 -------
+- use apitester 0.5 and add some functions to test the cookies
 
 Version 0.4.1: 18.07.2012
 -------------------------

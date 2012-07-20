@@ -1,12 +1,9 @@
 package com.devbliss.doctest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.net.URI;
 import java.util.List;
 
+import de.devbliss.apitester.Cookie;
 import org.junit.AfterClass;
 import org.junit.Before;
 
@@ -16,6 +13,8 @@ import com.devbliss.doctest.utils.JSONHelper;
 
 import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
+
+import static org.junit.Assert.*;
 
 public class LogicDocTest {
 
@@ -226,4 +225,94 @@ public class LogicDocTest {
         docTest.sayVerify(message + condition.toString());
     }
 
+    /**
+     * Assert that the value of the cookie with the given name equals the given value.
+     *
+     * The resulting cookie name and value will be printed, separated by a colon.
+     *
+     * @param name The name of the cookie
+     * @param expectedValue The expected value
+     */
+    protected void assertCookieEqualsAndSay(String name, String expectedValue) {
+        String value = apiTest.getTestState().getCookieValue(name);
+        assertEquals(expectedValue, value);
+        docTest.sayVerify(name + ": " + value);
+    }
+
+    /**
+     * Assert that the cookie with the given name is present.
+     *
+     * The resulting cookie name and value will be printed, separated by a colon.
+     *
+     * @param name The name of the cookie
+     */
+    protected void assertCookiePresentAndSay(String name) {
+        String value = apiTest.getTestState().getCookieValue(name);
+        assertNotNull(value);
+        docTest.sayVerify(name + ": " + value);
+    }
+
+    /**
+     * Assert that the cookie with the given name is not.
+     *
+     * The resulting cookie name and null will be printed, separated by a colon.
+     *
+     * @param name The name of the cookie
+     */
+    protected void assertCookieNotPresentAndSay(String name) {
+        String value = apiTest.getTestState().getCookieValue(name);
+        assertNull(value);
+        docTest.sayVerify(name + ": " + value);
+    }
+
+    /**
+     * Assert that a cookie is present that matches the attributes of the given
+     * cookie
+     *
+     * The resulting cookie will be output with its parameters, in JSON format.
+     *
+     * @param expected The cookie to check
+     */
+    protected void assertCookieMatchesAndSay(Cookie expected) {
+        Cookie cookie = apiTest.getTestState().getCookie(expected.name);
+        assertNotNull(cookie);
+        assertEquals(expected.value, cookie.value);
+        if (expected.expires == null) {
+            assertNull(cookie.expires);
+        } else {
+            assertNotNull(cookie.expires);
+        }
+        assertEquals(expected.path, cookie.path);
+        assertEquals(expected.domain, cookie.domain);
+        assertEquals(expected.secure, cookie.secure);
+        assertEquals(expected.httpOnly, cookie.httpOnly);
+        docTest.sayVerify(jsonHelper.toJson(cookie));
+    }
+
+    /**
+     * Get the value of the cookie with the given name
+     *
+     * @param name The name of the cookie
+     * @return The cookies value, or null if no cookie with that name was found
+     */
+    protected String getCookieValue(String name) {
+        return apiTest.getTestState().getCookieValue(name);
+    }
+
+    /**
+     * Add the cookie with the given name and value to the current state
+     *
+     * @param name The name of the cookie
+     * @param value The value of the cookie
+     */
+    protected void addCookie(String name, String value) {
+        apiTest.getTestState().addCookie(new Cookie(name, value));
+    }
+
+    /**
+     * Clear all cookies from the current state
+     */
+    protected void clearCookies() {
+        apiTest.getTestState().clearCookies();
+    }
 }
