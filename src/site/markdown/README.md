@@ -16,4 +16,4 @@ goals:
 
 based on junit, html client, ...
 
-Test your rest-API and create an always-uptodate documentation for it
+Test your rest-API and create an always-uptodate documentation for it.
