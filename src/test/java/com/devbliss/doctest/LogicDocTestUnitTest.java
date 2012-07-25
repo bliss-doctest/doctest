@@ -331,7 +331,7 @@ public class LogicDocTestUnitTest {
     @Test
     public void addCookieShouldAddCookie() {
         docTest.addCookie("name", "value");
-        verify(testState).addCookie(new Cookie("name", "value"));
+        verify(testState).addCookie(new Cookie("name", "value", null, "/", "localhost", false, false));
     }
 
     @Test
