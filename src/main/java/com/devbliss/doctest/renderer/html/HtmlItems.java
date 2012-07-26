@@ -3,6 +3,8 @@ package com.devbliss.doctest.renderer.html;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -18,6 +20,7 @@ import com.devbliss.doctest.items.MenuDocItem;
 import com.devbliss.doctest.items.RequestDocItem;
 import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
+import com.google.common.io.CharStreams;
 import com.google.inject.Inject;
 
 import freemarker.template.Configuration;
@@ -72,8 +75,8 @@ public class HtmlItems {
 
     private static String getCss() {
         try {
-            return readFile(new File(new File("").getAbsolutePath()
-                    + "/src/main/resources/htmlStyle.css"));
+            InputStream htmlCSSStream = HtmlItems.class.getResourceAsStream("/htmlStyle.css");
+            return CharStreams.toString(new InputStreamReader(htmlCSSStream));
         } catch (IOException e) {
             return "no css";
         }

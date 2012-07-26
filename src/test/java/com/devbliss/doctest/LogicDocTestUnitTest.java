@@ -14,12 +14,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 
-import de.devbliss.apitester.Cookie;
-import de.devbliss.apitester.TestState;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -31,6 +28,8 @@ import com.devbliss.doctest.utils.JSONHelper;
 import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
+import de.devbliss.apitester.Cookie;
+import de.devbliss.apitester.TestState;
 
 /**
  * Unit tests for the {@link DocTest}.
@@ -80,6 +79,13 @@ public class LogicDocTestUnitTest {
     public void say() {
         docTest.say("abc");
         verify(docTestMachine).say("abc");
+    }
+
+    @Test
+    public void finishDocTest() throws Exception {
+        LogicDocTest.finishDocTest();
+        verify(docTestMachine).endDocTest();
+        verify(docTestMachine).prepareDocTest();
     }
 
     @Test

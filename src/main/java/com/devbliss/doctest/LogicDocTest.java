@@ -1,9 +1,14 @@
 package com.devbliss.doctest;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.net.URI;
 import java.util.List;
 
-import de.devbliss.apitester.Cookie;
 import org.junit.AfterClass;
 import org.junit.Before;
 
@@ -13,8 +18,7 @@ import com.devbliss.doctest.utils.JSONHelper;
 
 import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
-
-import static org.junit.Assert.*;
+import de.devbliss.apitester.Cookie;
 
 public class LogicDocTest {
 
@@ -31,6 +35,7 @@ public class LogicDocTest {
     @AfterClass
     public static void finishDocTest() throws Exception {
         LogicDocTest.docTest.endDocTest();
+        LogicDocTest.docTest.prepareDocTest();
     }
 
     public LogicDocTest(

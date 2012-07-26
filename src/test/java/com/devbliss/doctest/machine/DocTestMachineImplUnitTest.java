@@ -3,6 +3,7 @@ package com.devbliss.doctest.machine;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -52,6 +53,9 @@ public class DocTestMachineImplUnitTest {
     @Captor
     private ArgumentCaptor<List<DocItem>> listItemCaptor;
 
+    @Mock
+    private List<DocItem> listItem;
+
     private DocTestMachineImpl machine;
     private final HTTP_REQUEST httpRequest = HTTP_REQUEST.GET;
     private URI uri;
@@ -60,8 +64,16 @@ public class DocTestMachineImplUnitTest {
     public void setUp() throws URISyntaxException {
         when(jsonHelper.isJsonValid(JSON_VALID)).thenReturn(true);
         uri = new URI("");
-        machine = new DocTestMachineImpl(renderer, jsonHelper);
+        machine = spy(new DocTestMachineImpl(renderer, jsonHelper));
         machine.beginDoctest(CLASS_NAME);
+    }
+
+    @Test
+    public void render() throws Exception {
+        when(machine.getListItem()).thenReturn(listItem);
+        machine.endDocTest();
+        machine.prepareDocTest();
+        verify(listItem).clear();
     }
 
     @Test

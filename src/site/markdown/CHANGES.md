@@ -4,6 +4,9 @@ CHANGES
 develop
 -------
 - use apitester 0.5 and add some functions to test the cookies
+- using freemarker for templates now
+- fixed bug which messed up the files itemlists and added tests
+- added template and css loading from the jar instead of the host projects filesystem
 
 Version 0.4.1: 18.07.2012
 -------------------------

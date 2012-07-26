@@ -45,6 +45,12 @@ public interface DocTestMachine {
     void endDocTest() throws Exception;
 
     /**
+     * Clears the internal state of the DocTest to be ready for another run.
+     * 
+     */
+    void prepareDocTest() throws Exception;
+
+    /**
      * Writes a new {@link TextDocItem} into the report.
      * 
      * @param say Text to add

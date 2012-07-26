@@ -60,6 +60,7 @@ public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRe
     }
 
     private String appendItemsToBuffer(List<DocItem> listTemplates) {
+        sections.clear();
         StringBuffer buffer = new StringBuffer();
         StringBuffer tempBuffer = new StringBuffer();
         for (DocItem item : listTemplates) {

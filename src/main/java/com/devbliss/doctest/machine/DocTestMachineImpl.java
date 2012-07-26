@@ -27,9 +27,9 @@ import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
  * At the end of the workflow, the method {@link #endDocTest()} is called and uses a
  * {@link ReportRenderer} to render the {@link #listItem} .
  * </p>
- * 
+ *
  * @author bmary
- * 
+ *
  */
 public class DocTestMachineImpl implements DocTestMachine {
 
@@ -61,6 +61,14 @@ public class DocTestMachineImpl implements DocTestMachine {
     public void endDocTest() throws Exception {
         reportRenderer.render(listItem, className);
         className = null;
+    }
+
+    public void prepareDocTest() {
+        getListItem().clear();
+    }
+
+    protected List<DocItem> getListItem() {
+        return listItem;
     }
 
     public void say(String say) {
