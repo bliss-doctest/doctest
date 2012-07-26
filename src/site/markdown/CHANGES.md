@@ -3,6 +3,9 @@ CHANGES
 
 develop
 -------
+
+Version 0.4.6: 26.07.2012
+-------------------------
 - use apitester 0.5 and add some functions to test the cookies
 - using freemarker for templates now
 - fixed bug which messed up the files itemlists and added tests
