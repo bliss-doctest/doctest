@@ -1,25 +1,16 @@
 package com.devbliss.doctest.renderer.html;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.devbliss.doctest.items.AssertDocItem;
 import com.devbliss.doctest.items.DocItem;
-import com.devbliss.doctest.items.FileDocItem;
-import com.devbliss.doctest.items.JsonDocItem;
+import com.devbliss.doctest.items.IndexFileDocItem;
 import com.devbliss.doctest.items.MenuDocItem;
-import com.devbliss.doctest.items.RequestDocItem;
-import com.devbliss.doctest.items.ResponseDocItem;
-import com.devbliss.doctest.items.SectionDocItem;
+import com.devbliss.doctest.items.ReportFileDocItem;
 import com.google.common.io.CharStreams;
 import com.google.inject.Inject;
 
@@ -41,10 +32,6 @@ public class HtmlItems {
         this.configuration = configuration;
     }
 
-    public String getJsonTemplate(JsonDocItem item) {
-        return init("json.ftl", item);
-    }
-
     private String init(String templateName, DocItem item) {
         StringWriter writer = new StringWriter();
         Template template;
@@ -57,22 +44,6 @@ public class HtmlItems {
         }
     }
 
-    public String getRequestTemplate(RequestDocItem item) {
-        return init("request.ftl", item);
-    }
-
-    public String getResponseTemplate(ResponseDocItem item) {
-        return init("response.ftl", item);
-    }
-
-    public String getAssertTemplate(AssertDocItem item) {
-        return init("assert.ftl", item);
-    }
-
-    public String getSectionTemplate(SectionDocItem item) {
-        return init("section.ftl", item);
-    }
-
     private static String getCss() {
         try {
             InputStream htmlCSSStream = HtmlItems.class.getResourceAsStream("/htmlStyle.css");
@@ -82,26 +53,14 @@ public class HtmlItems {
         }
     }
 
-    private static String readFile(File file) throws IOException {
-        FileInputStream stream = new FileInputStream(file);
-        try {
-            FileChannel fc = stream.getChannel();
-            MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-            /* Instead of using default, pass in a decoder. */
-            return Charset.defaultCharset().decode(bb).toString();
-        } finally {
-            stream.close();
-        }
-    }
-
-    public String getReportTemplate(FileDocItem item) {
-        item.setCss(getCss());
-        return init("htmlFile.ftl", item);
-    }
-
-    public String getIndexTemplate(FileDocItem item) {
+    public String getIndexTemplate(IndexFileDocItem item) {
         item.setCss(getCss());
         return init("index.ftl", item);
+    }
+
+    public String getReportFileTemplate(ReportFileDocItem item) {
+        item.setCss(getCss());
+        return init("htmlFile.ftl", item);
     }
 
     public String getListFilesTemplate(MenuDocItem item) {
@@ -116,5 +75,9 @@ public class HtmlItems {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String getTemplateForItem(DocItem item) {
+        return init(item.getItemName() + ".ftl", item);
     }
 }

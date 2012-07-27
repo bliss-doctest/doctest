@@ -29,4 +29,8 @@ public class RequestDocItem implements DocItem {
     public JsonDocItem getPayload() {
         return payload;
     }
+
+    public String getItemName() {
+        return "request";
+    }
 }

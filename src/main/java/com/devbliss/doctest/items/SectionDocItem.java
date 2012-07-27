@@ -29,4 +29,9 @@ public class SectionDocItem implements DocItem {
     public void setHref(String href) {
         this.href = href;
     }
+
+    public String getItemName() {
+        return "section";
+    }
+
 }

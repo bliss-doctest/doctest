@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.devbliss.doctest.items.DocItem;
-import com.devbliss.doctest.items.FileDocItem;
+import com.devbliss.doctest.items.IndexFileDocItem;
 import com.devbliss.doctest.items.LinkDocItem;
 import com.devbliss.doctest.items.MenuDocItem;
 import com.devbliss.doctest.utils.FileHelper;
@@ -39,7 +39,7 @@ public class HtmlIndexFileRenderer extends AbstractHtmlReportRenderer {
         List<LinkDocItem> files = getListOfFileAsString(nameWithExtension, INDEX);
         MenuDocItem menu = new MenuDocItem("List of doctest files", files);
         String body = htmlItems.getListFilesTemplate(menu);
-        FileDocItem index = new FileDocItem(name, body);
+        IndexFileDocItem index = new IndexFileDocItem(name, body);
         helper.writeFile(nameWithExtension, htmlItems.getIndexTemplate(index));
     }
 
@@ -53,7 +53,6 @@ public class HtmlIndexFileRenderer extends AbstractHtmlReportRenderer {
                     list.add(new LinkDocItem(file.getName(), file.getName()));
                 }
             }
-
         }
         return list;
     }

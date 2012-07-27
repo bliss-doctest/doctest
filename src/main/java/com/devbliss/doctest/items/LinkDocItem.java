@@ -25,4 +25,9 @@ public class LinkDocItem implements DocItem {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getItemName() {
+        return "listFiles";
+    }
+
 }

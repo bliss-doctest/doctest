@@ -16,4 +16,7 @@ public class TextDocItem implements DocItem {
         this.text = text;
     }
 
+    public String getItemName() {
+        return "text";
+    }
 }

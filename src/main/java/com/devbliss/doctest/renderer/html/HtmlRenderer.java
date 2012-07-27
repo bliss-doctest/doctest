@@ -6,16 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.devbliss.doctest.items.AssertDocItem;
 import com.devbliss.doctest.items.DocItem;
-import com.devbliss.doctest.items.FileDocItem;
-import com.devbliss.doctest.items.JsonDocItem;
 import com.devbliss.doctest.items.LinkDocItem;
 import com.devbliss.doctest.items.MenuDocItem;
-import com.devbliss.doctest.items.RequestDocItem;
-import com.devbliss.doctest.items.ResponseDocItem;
+import com.devbliss.doctest.items.ReportFileDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
-import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
 import com.devbliss.doctest.utils.FileHelper;
 import com.google.inject.Inject;
@@ -51,9 +46,9 @@ public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRe
     public void render(List<DocItem> listTemplates, String name) throws Exception {
         if (listTemplates != null && !listTemplates.isEmpty()) {
             String items = appendItemsToBuffer(listTemplates);
-            FileDocItem report = new FileDocItem(name, items);
+            ReportFileDocItem report = new ReportFileDocItem(name, items);
             String nameWithExtension = helper.getCompleteFileName(name, HTML_EXTENSION);
-            helper.writeFile(nameWithExtension, htmlItems.getReportTemplate(report));
+            helper.writeFile(nameWithExtension, htmlItems.getReportFileTemplate(report));
 
             indexFileGenerator.render(null, INDEX);
         }
@@ -64,24 +59,28 @@ public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRe
         StringBuffer buffer = new StringBuffer();
         StringBuffer tempBuffer = new StringBuffer();
         for (DocItem item : listTemplates) {
-            if (item instanceof AssertDocItem) {
-                tempBuffer.append(getAssertDocItem((AssertDocItem) item));
-            } else if (item instanceof RequestDocItem) {
-                tempBuffer.append(getRequestDocItem((RequestDocItem) item));
-            } else if (item instanceof ResponseDocItem) {
-                tempBuffer.append(getResponseDocItem((ResponseDocItem) item));
-            } else if (item instanceof SectionDocItem) {
+            if (item instanceof SectionDocItem) {
                 tempBuffer.append(getSectionDocItem((SectionDocItem) item));
-            } else if (item instanceof TextDocItem) {
-                tempBuffer.append(getTextDocItem((TextDocItem) item));
-            } else if (item instanceof JsonDocItem) {
-                tempBuffer.append(getJsonDocItem((JsonDocItem) item));
+            } else {
+                tempBuffer.append(getTemplateForItem(item));
             }
         }
 
         appendSectionList(buffer);
         buffer.append(tempBuffer);
         return buffer.toString();
+    }
+
+    private String getTemplateForItem(DocItem item) {
+        return htmlItems.getTemplateForItem(item);
+    }
+
+    private String getSectionDocItem(SectionDocItem item) {
+        String sectionId = getSectionId();
+        String sectionName = item.getTitle();
+        sections.put("#" + sectionId, sectionName);
+        item.setHref(sectionId);
+        return getTemplateForItem(item);
     }
 
     private void appendSectionList(StringBuffer buffer) {
@@ -92,35 +91,7 @@ public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRe
         buffer.append(htmlItems.getListFilesTemplate(new MenuDocItem("", files)));
     }
 
-    private String getAssertDocItem(AssertDocItem item) {
-        return htmlItems.getAssertTemplate(item);
-    }
-
-    private String getRequestDocItem(RequestDocItem item) {
-        return htmlItems.getRequestTemplate(item);
-    }
-
-    private String getJsonDocItem(JsonDocItem item) {
-        return htmlItems.getJsonTemplate(item);
-    }
-
-    private String getTextDocItem(TextDocItem item) {
-        return item.getText();
-    }
-
-    private String getSectionDocItem(SectionDocItem item) {
-        String sectionId = getSectionId();
-        String sectionName = item.getTitle();
-        sections.put("#" + sectionId, sectionName);
-        item.setHref(sectionId);
-        return htmlItems.getSectionTemplate(item);
-    }
-
     private String getSectionId() {
         return "section" + ++sectionNumber;
-    }
-
-    private String getResponseDocItem(ResponseDocItem item) {
-        return htmlItems.getResponseTemplate(item);
     }
 }

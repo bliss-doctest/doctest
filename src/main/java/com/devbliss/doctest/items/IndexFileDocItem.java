@@ -2,18 +2,18 @@ package com.devbliss.doctest.items;
 
 import java.util.Date;
 
-public class FileDocItem implements DocItem {
+public class IndexFileDocItem implements DocItem {
 
     private String css;
     private String name;
     private String items;
     private final String date;
 
-    public FileDocItem(String name, String items) {
+    public IndexFileDocItem(String name, String items) {
         this("", name, items);
     }
 
-    public FileDocItem(String css, String name, String items) {
+    public IndexFileDocItem(String css, String name, String items) {
         this.css = css;
         this.name = name;
         this.items = items;
@@ -47,4 +47,9 @@ public class FileDocItem implements DocItem {
     public String getDate() {
         return this.date;
     }
+
+    public String getItemName() {
+        return "index";
+    }
+
 }

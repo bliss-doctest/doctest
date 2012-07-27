@@ -16,4 +16,9 @@ public class JsonDocItem implements DocItem {
     public void setExpected(String expected) {
         this.expected = expected;
     }
+
+    public String getItemName() {
+        return "json";
+    }
+
 }

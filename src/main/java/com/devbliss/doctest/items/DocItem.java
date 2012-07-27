@@ -3,7 +3,7 @@ package com.devbliss.doctest.items;
 /**
  * A {@link DocItem} is a part of a report which could appear several times in it. In other words, a
  * report is an sorted amount of {@link DocItem}.
- * 
+ *
  * <h1>Utility</h1>
  * <p>
  * We need this common interface to have the possibility to treat all the {@link DocItem} the same
@@ -18,7 +18,7 @@ package com.devbliss.doctest.items;
  * listItems.add(new SectionDocItem("test the delete Request"));<br/>
  * listItems.add(new RequestDocItem(DELETE, "http://www.google.com", null));
  * listItems.add(new ResponseDocItem(401, "you can not delete google"));
- * 
+ *
  * htmlRenderer.render(listItems);<br/><br/>
  * </code> This example will create am html report containing:
  * <ul>
@@ -30,10 +30,10 @@ package com.devbliss.doctest.items;
  * <p>
  * If you need a new {@link DocItem}, just create a new implementation of {@link DocItem}.
  * </p>
- * 
+ *
  * @author bmary
- * 
+ *
  */
 public interface DocItem {
-
+    public String getItemName();
 }

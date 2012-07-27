@@ -21,10 +21,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.items.AssertDocItem;
 import com.devbliss.doctest.items.DocItem;
-import com.devbliss.doctest.items.FileDocItem;
+import com.devbliss.doctest.items.IndexFileDocItem;
 import com.devbliss.doctest.items.JsonDocItem;
 import com.devbliss.doctest.items.LinkDocItem;
 import com.devbliss.doctest.items.MenuDocItem;
+import com.devbliss.doctest.items.ReportFileDocItem;
 import com.devbliss.doctest.items.RequestDocItem;
 import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
@@ -32,9 +33,9 @@ import com.devbliss.doctest.utils.FileHelper;
 
 /**
  * Unit tests for the {@link HtmlRenderer}
- * 
+ *
  * @author bmary
- * 
+ *
  */
 @RunWith(MockitoJUnitRunner.class)
 public class HtmlRendererUnitTest {
@@ -54,6 +55,7 @@ public class HtmlRendererUnitTest {
     private HtmlIndexFileRenderer indexFileGenerator;
     @Mock
     private FileHelper helper;
+
     @Mock
     private AssertDocItem assertDocItem;
     @Mock
@@ -62,6 +64,7 @@ public class HtmlRendererUnitTest {
     private ResponseDocItem responseDocItem;
     @Mock
     private RequestDocItem requestDocItem;
+
     @Mock
     private SectionDocItem section1;
     @Mock
@@ -69,7 +72,7 @@ public class HtmlRendererUnitTest {
     @Mock
     private SectionDocItem section3;
     @Captor
-    private ArgumentCaptor<FileDocItem> fileCaptor;
+    private ArgumentCaptor<ReportFileDocItem> fileCaptor;
     @Captor
     private ArgumentCaptor<MenuDocItem> menuCaptor;
 
@@ -78,15 +81,19 @@ public class HtmlRendererUnitTest {
 
     @Before
     public void setUp() {
-        when(htmlItems.getRequestTemplate(requestDocItem)).thenReturn(REQUEST);
-        when(htmlItems.getResponseTemplate(responseDocItem)).thenReturn(RESPONSE);
-        when(htmlItems.getAssertTemplate(assertDocItem)).thenReturn(ASSERT);
-        when(htmlItems.getReportTemplate(any(FileDocItem.class))).thenReturn(HTML);
+        when(htmlItems.getReportFileTemplate(any(ReportFileDocItem.class))).thenReturn(HTML);
+        when(htmlItems.getIndexTemplate(any(IndexFileDocItem.class))).thenReturn(HTML);
+
+        when(htmlItems.getTemplateForItem(requestDocItem)).thenReturn(REQUEST);
+        when(htmlItems.getTemplateForItem(responseDocItem)).thenReturn(RESPONSE);
+        when(htmlItems.getTemplateForItem(assertDocItem)).thenReturn(ASSERT);
+        when(htmlItems.getTemplateForItem(jsonDocItem)).thenReturn(JSON_PAYLOAD);
+
         when(section1.getTitle()).thenReturn(SECTION_TITLE + "1");
         when(section2.getTitle()).thenReturn(SECTION_TITLE + "2");
         when(section3.getTitle()).thenReturn(SECTION_TITLE + "3");
         when(helper.getCompleteFileName(NAME, ".html")).thenReturn(COMPLETE_NAME);
-        when(htmlItems.getJsonTemplate(jsonDocItem)).thenReturn(JSON_PAYLOAD);
+
         renderer = new HtmlRenderer(indexFileGenerator, htmlItems, helper);
         listTemplates = new ArrayList<DocItem>();
     }
@@ -113,8 +120,9 @@ public class HtmlRendererUnitTest {
         listTemplates.add(responseDocItem);
         listTemplates.add(assertDocItem);
         renderer.render(listTemplates, NAME);
-        verify(htmlItems).getReportTemplate(fileCaptor.capture());
-        assertEquals(REQUEST + RESPONSE + ASSERT, fileCaptor.getValue().getItems());
+        verify(htmlItems).getReportFileTemplate(fileCaptor.capture());
+        ReportFileDocItem docItem = fileCaptor.getValue();
+        assertEquals(REQUEST + RESPONSE + ASSERT, docItem.getItems());
         verifyFilesAreCreated();
     }
 
@@ -125,9 +133,9 @@ public class HtmlRendererUnitTest {
         listTemplates.add(section3);
 
         renderer.render(listTemplates, NAME);
-        verify(htmlItems).getSectionTemplate(section1);
-        verify(htmlItems).getSectionTemplate(section2);
-        verify(htmlItems).getSectionTemplate(section3);
+        verify(htmlItems).getTemplateForItem(section1);
+        verify(htmlItems).getTemplateForItem(section2);
+        verify(htmlItems).getTemplateForItem(section3);
 
         verify(section1).setHref("section1");
         verify(section2).setHref("section2");
@@ -148,9 +156,9 @@ public class HtmlRendererUnitTest {
         listTemplates.add(section1);
 
         renderer.render(listTemplates, NAME);
-        verify(htmlItems).getSectionTemplate(section1);
-        verify(htmlItems).getSectionTemplate(section2);
-        verify(htmlItems).getSectionTemplate(section3);
+        verify(htmlItems).getTemplateForItem(section1);
+        verify(htmlItems).getTemplateForItem(section2);
+        verify(htmlItems).getTemplateForItem(section3);
 
         verify(section1).setHref("section3");
         verify(section2).setHref("section1");
@@ -168,7 +176,7 @@ public class HtmlRendererUnitTest {
     public void renderRequest() throws Exception {
         listTemplates.add(requestDocItem);
         renderer.render(listTemplates, NAME);
-        verify(htmlItems).getRequestTemplate(requestDocItem);
+        verify(htmlItems).getTemplateForItem(requestDocItem);
         verifyFilesAreCreated();
     }
 
@@ -176,7 +184,7 @@ public class HtmlRendererUnitTest {
     public void renderResponse() throws Exception {
         listTemplates.add(responseDocItem);
         renderer.render(listTemplates, NAME);
-        verify(htmlItems).getResponseTemplate(responseDocItem);
+        verify(htmlItems).getTemplateForItem(responseDocItem);
         verifyFilesAreCreated();
     }
 
@@ -184,7 +192,7 @@ public class HtmlRendererUnitTest {
     public void renderAssert() throws Exception {
         listTemplates.add(assertDocItem);
         renderer.render(listTemplates, NAME);
-        verify(htmlItems).getAssertTemplate(assertDocItem);
+        verify(htmlItems).getTemplateForItem(assertDocItem);
         verifyFilesAreCreated();
     }
 

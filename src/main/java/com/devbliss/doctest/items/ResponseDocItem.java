@@ -31,4 +31,8 @@ public class ResponseDocItem implements DocItem {
         this.payload = payload;
     }
 
+    public String getItemName() {
+        return "response";
+    }
+
 }

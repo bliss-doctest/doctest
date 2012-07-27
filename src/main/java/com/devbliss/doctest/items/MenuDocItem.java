@@ -27,4 +27,9 @@ public class MenuDocItem implements DocItem {
     public void setFiles(List<LinkDocItem> files) {
         this.files = files;
     }
+
+    public String getItemName() {
+        return "menu";
+    }
+
 }
