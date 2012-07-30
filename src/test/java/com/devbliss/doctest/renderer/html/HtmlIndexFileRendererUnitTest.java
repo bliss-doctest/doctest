@@ -23,10 +23,10 @@ import com.devbliss.doctest.utils.FileHelper;
 import com.devbliss.doctest.utils.FileListHelper;
 
 /**
- * Unit tests for the {@link HtmlRenderer}
- *
- * @author bmary
- *
+ * Unit tests for the {@link HtmlIndexFileRenderer}
+ * 
+ * @author mbankmann
+ * 
  */
 @RunWith(MockitoJUnitRunner.class)
 public class HtmlIndexFileRendererUnitTest {
