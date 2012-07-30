@@ -1,7 +1,5 @@
 package com.devbliss.doctest.renderer.html;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.devbliss.doctest.items.DocItem;
@@ -9,6 +7,7 @@ import com.devbliss.doctest.items.IndexFileDocItem;
 import com.devbliss.doctest.items.LinkDocItem;
 import com.devbliss.doctest.items.MenuDocItem;
 import com.devbliss.doctest.utils.FileHelper;
+import com.devbliss.doctest.utils.FileListHelper;
 import com.google.inject.Inject;
 
 /**
@@ -27,44 +26,25 @@ import com.google.inject.Inject;
 public class HtmlIndexFileRenderer extends AbstractHtmlReportRenderer {
 
     private final FileHelper helper;
+    private final FileListHelper fileListHelper;
 
     @Inject
-    public HtmlIndexFileRenderer(HtmlItems htmlItems, FileHelper abstractReportRenderer) {
+    public HtmlIndexFileRenderer(
+            HtmlItems htmlItems,
+            FileHelper abstractReportRenderer,
+            FileListHelper fileListHelper) {
         super(htmlItems);
         this.helper = abstractReportRenderer;
+        this.fileListHelper = fileListHelper;
     }
 
     public void render(List<DocItem> listItems, String name) throws Exception {
         String nameWithExtension = helper.getCompleteFileName(INDEX, HTML_EXTENSION);
-        List<LinkDocItem> files = getListOfFileAsString(nameWithExtension, INDEX);
+        List<LinkDocItem> files =
+                fileListHelper.getListOfFileAsString(nameWithExtension, INDEX, HTML_EXTENSION);
         MenuDocItem menu = new MenuDocItem("List of doctest files", files);
         String body = htmlItems.getListFilesTemplate(menu);
         IndexFileDocItem index = new IndexFileDocItem(name, body);
         helper.writeFile(nameWithExtension, htmlItems.getIndexTemplate(index));
     }
-
-    private List<LinkDocItem> getListOfFileAsString(String nameWithCompletePath, String shortName) {
-        File[] files = fetchFilesInDirectory(nameWithCompletePath);
-        List<LinkDocItem> list = new ArrayList<LinkDocItem>();
-        // fetch neither the file itself nor the hidden files
-        for (File file : files) {
-            if (!file.getName().equals(shortName + HTML_EXTENSION)) {
-                if (!file.isHidden()) {
-                    list.add(new LinkDocItem(file.getName(), file.getName()));
-                }
-            }
-        }
-        return list;
-    }
-
-    /**
-     * Fetch all the files of the doctests directory. Each file corresponds to a test case.
-     * 
-     * @param indexFileWithCompletePath
-     * @return
-     */
-    private File[] fetchFilesInDirectory(String indexFileWithCompletePath) {
-        return new File(indexFileWithCompletePath).getParentFile().listFiles();
-    }
-
 }
