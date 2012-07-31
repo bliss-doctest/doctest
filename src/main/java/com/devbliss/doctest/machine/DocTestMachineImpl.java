@@ -81,12 +81,12 @@ public class DocTestMachineImpl implements DocTestMachine {
 
     public void sayRequest(URI uri, String payload, HTTP_REQUEST httpRequest) throws JSONException {
         if (uri != null) {
-            listItem.add(new RequestDocItem(httpRequest, uri.toString(), getJson(payload)));
+            listItem.add(new RequestDocItem(httpRequest, uri.toString(), getPayload(payload)));
         }
     }
 
     public void sayResponse(int responseCode, String payload) throws Exception {
-        listItem.add(new ResponseDocItem(responseCode, getJson(payload)));
+        listItem.add(new ResponseDocItem(responseCode, getPayload(payload)));
     }
 
     public void sayVerify(String condition) {
@@ -97,14 +97,16 @@ public class DocTestMachineImpl implements DocTestMachine {
         listItem.add(new JsonDocItem(preformattedText));
     }
 
-    private String getJson(String json) {
-        String jsonToShow;
-        if (jsonHelper.isJsonValid(json)) {
-            jsonToShow = json;
+    private String getPayload(String payload) {
+        String payloadToShow;
+        if (jsonHelper.isJsonValid(payload)) {
+            payloadToShow = jsonHelper.prettyPrintJson(payload);
+        } else if (null == payload) {
+            payloadToShow = "";
         } else {
-            jsonToShow = NOT_VALID_JSON + json;
+            payloadToShow = payload;
         }
-        return jsonToShow;
+        return payloadToShow;
     }
 
 }

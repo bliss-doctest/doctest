@@ -63,6 +63,7 @@ public class DocTestMachineImplUnitTest {
     @Before
     public void setUp() throws URISyntaxException {
         when(jsonHelper.isJsonValid(JSON_VALID)).thenReturn(true);
+        when(jsonHelper.prettyPrintJson(JSON_VALID)).thenReturn(JSON_VALID);
         uri = new URI("");
         machine = spy(new DocTestMachineImpl(renderer, jsonHelper));
         machine.beginDoctest(CLASS_NAME);
@@ -165,7 +166,7 @@ public class DocTestMachineImplUnitTest {
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
         assertTrue(listItems.get(0) instanceof RequestDocItem);
-        assertEquals(DocTestMachine.NOT_VALID_JSON + JSON_INVALID, ((RequestDocItem) listItems
+        assertEquals(JSON_INVALID, ((RequestDocItem) listItems
                 .get(0)).getPayload().getExpected());
         assertEquals(httpRequest, ((RequestDocItem) listItems.get(0)).getHttp());
         assertEquals(uri.toString(), ((RequestDocItem) listItems.get(0)).getUri());

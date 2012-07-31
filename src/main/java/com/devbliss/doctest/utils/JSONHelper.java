@@ -4,7 +4,10 @@ import java.util.List;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 /**
  * Utils class used to transform object into json-formatted {@link String}
@@ -96,4 +99,21 @@ public class JSONHelper {
         return json != null && !json.equals("null") && !json.isEmpty() && json.startsWith("{");
     }
 
+    /**
+     * 
+     * Pretty prints any json input.
+     * 
+     * @param json
+     * @return
+     */
+    public String prettyPrintJson(String json) {
+        if (!isJsonValid(json))
+            return json;
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonParser jp = new JsonParser();
+        JsonElement je = jp.parse(json);
+        String returnvalue = gson.toJson(je);
+        return returnvalue;
+    }
 }
