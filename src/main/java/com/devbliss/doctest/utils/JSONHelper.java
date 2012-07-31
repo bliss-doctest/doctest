@@ -107,8 +107,9 @@ public class JSONHelper {
      * @return
      */
     public String prettyPrintJson(String json) {
-        if (!isJsonValid(json))
+        if (!isJsonValid(json)) {
             return json;
+        }
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonParser jp = new JsonParser();
