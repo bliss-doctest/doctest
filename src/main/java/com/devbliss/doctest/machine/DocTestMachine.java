@@ -58,6 +58,14 @@ public interface DocTestMachine {
     void say(String say);
 
     /**
+     * Writes a new {@link TextDocItem} into the report supporting %s replacements.
+     * 
+     * @param say
+     * @param strings
+     */
+    void say(String say, String[] strings);
+
+    /**
      * Writes a new {@link SectionDocItem} into the report.
      * 
      * @param sectionTitle Title of the new section

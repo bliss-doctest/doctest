@@ -6,7 +6,8 @@ develop
 - refactored htmlrenderer and htmlitems to use the same method for getting the template for all docitems
 - added HtmlIndexFileRendererUnitTest
 - added pretty printing
-- says get a cr now
+- says gets a <p> now
+- added say with a variable parameter list to enable highlighted text, object and json posting. also fixed json rendering in HTML.
 
 Version 0.4.6: 26.07.2012
 -------------------------

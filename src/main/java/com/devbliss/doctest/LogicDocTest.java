@@ -52,6 +52,20 @@ public class LogicDocTest {
         docTest.say(say);
     }
 
+    public void say(String say, Object... objects) {
+
+        String[] stringRepresentations = new String[objects.length];
+        for (int i = 0; i<objects.length; i++) {
+            if (objects[i] instanceof String) {
+                stringRepresentations[i] = (String) objects[i];
+            } else {
+                stringRepresentations[i] = jsonHelper.toJson(objects[i], true);
+            }
+        }
+
+        docTest.say(say, stringRepresentations);
+    }
+
     public void sayNextSection(String sectionName) {
         docTest.sayNextSectionTitle(sectionName);
     }
@@ -65,9 +79,9 @@ public class LogicDocTest {
     }
 
     /**
-     * 
+     *
      * The given POJO will be converted to JSON and be pretty printed.
-     * 
+     *
      * @param obj
      * @throws Exception
      */
@@ -76,9 +90,9 @@ public class LogicDocTest {
     }
 
     /**
-     * 
+     *
      * The given String will be formatted as-is and be highlighted in a fancy box.
-     * 
+     *
      * @param code
      * @throws Exception
      */
@@ -157,10 +171,10 @@ public class LogicDocTest {
     }
 
     /**
-     * 
+     *
      * At first converts both objects to Json and then asserts that they are equal.
      * The resulting doc will sport the expected Json String.
-     * 
+     *
      * @param expected POJO
      * @param result POJO
      */
@@ -169,11 +183,11 @@ public class LogicDocTest {
     }
 
     /**
-     * 
+     *
      * At first converts both objects to Json and then asserts that they are equal, except on the
      * fields mentioned in exceptions.
      * The resulting doc will sport the expected Json String.
-     * 
+     *
      * @param expected POJO
      * @param result POJO
      */
@@ -183,11 +197,11 @@ public class LogicDocTest {
     }
 
     /**
-     * 
+     *
      * First converts both objects to Json and then asserts that they are equal, except on the
      * fields mentioned in exceptions.
      * The resulting doc will sport the expected Json String after the given message.
-     * 
+     *
      * @param expected POJO
      * @param result POJO
      * @param message Additional message to be concatenated to the expected Json

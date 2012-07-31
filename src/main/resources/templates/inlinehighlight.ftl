@@ -1,0 +1,1 @@
+<span class="highlight">${text}</span>

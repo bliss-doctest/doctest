@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -21,15 +22,18 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.items.AssertDocItem;
 import com.devbliss.doctest.items.DocItem;
+import com.devbliss.doctest.items.HighlightedTextDocItem;
 import com.devbliss.doctest.items.IndexFileDocItem;
 import com.devbliss.doctest.items.JsonDocItem;
 import com.devbliss.doctest.items.LinkDocItem;
 import com.devbliss.doctest.items.MenuDocItem;
+import com.devbliss.doctest.items.MultipleTextDocItem;
 import com.devbliss.doctest.items.ReportFileDocItem;
 import com.devbliss.doctest.items.RequestDocItem;
 import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.utils.FileHelper;
+import com.devbliss.doctest.utils.JSONHelper;
 
 /**
  * Unit tests for the {@link HtmlRenderer}
@@ -55,6 +59,8 @@ public class HtmlRendererUnitTest {
     private HtmlIndexFileRenderer indexFileGenerator;
     @Mock
     private FileHelper helper;
+    @Mock
+    private JSONHelper jsonHelper;
 
     @Mock
     private AssertDocItem assertDocItem;
@@ -94,7 +100,7 @@ public class HtmlRendererUnitTest {
         when(section3.getTitle()).thenReturn(SECTION_TITLE + "3");
         when(helper.getCompleteFileName(NAME, ".html")).thenReturn(COMPLETE_NAME);
 
-        renderer = new HtmlRenderer(indexFileGenerator, htmlItems, helper);
+        renderer = new HtmlRenderer(indexFileGenerator, htmlItems, helper, jsonHelper);
         listTemplates = new ArrayList<DocItem>();
     }
 
@@ -181,6 +187,22 @@ public class HtmlRendererUnitTest {
     }
 
     @Test
+    public void renderVariableSay() throws Exception {
+
+        when(jsonHelper.isJsonValid("{'abc':'a'}")).thenReturn(true);
+        when(jsonHelper.isJsonValid("text")).thenReturn(false);
+
+        MultipleTextDocItem multipleTextDocItem =
+                new MultipleTextDocItem("text", new String[] {"{'abc':'a'}", "text"});
+        listTemplates.add(multipleTextDocItem);
+        renderer.render(listTemplates, NAME);
+        verify(htmlItems).getTemplateForItem(isA(MultipleTextDocItem.class));
+        verify(htmlItems).getTemplateForItem(isA(HighlightedTextDocItem.class));
+        verify(htmlItems).getTemplateForItem(isA(JsonDocItem.class));
+        verifyFilesAreCreated();
+    }
+
+    @Test
     public void renderResponse() throws Exception {
         listTemplates.add(responseDocItem);
         renderer.render(listTemplates, NAME);
@@ -205,4 +227,5 @@ public class HtmlRendererUnitTest {
         assertEquals(href, item.getHref());
         assertEquals(name, item.getName());
     }
+
 }

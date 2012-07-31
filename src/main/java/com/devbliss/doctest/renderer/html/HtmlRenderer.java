@@ -7,12 +7,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.devbliss.doctest.items.DocItem;
+import com.devbliss.doctest.items.HighlightedTextDocItem;
+import com.devbliss.doctest.items.JsonDocItem;
 import com.devbliss.doctest.items.LinkDocItem;
 import com.devbliss.doctest.items.MenuDocItem;
+import com.devbliss.doctest.items.MultipleTextDocItem;
 import com.devbliss.doctest.items.ReportFileDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
 import com.devbliss.doctest.utils.FileHelper;
+import com.devbliss.doctest.utils.JSONHelper;
 import com.google.inject.Inject;
 
 /**
@@ -31,15 +35,18 @@ public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRe
     private int sectionNumber = 0;
     private final Map<String, String> sections;
     private final FileHelper helper;
+    private final JSONHelper jsonhelper;
 
     @Inject
     public HtmlRenderer(
             HtmlIndexFileRenderer indexFileGenerator,
             HtmlItems htmlItems,
-            FileHelper abstractReportRenderer) {
+            FileHelper abstractReportRenderer,
+            JSONHelper jsonhelper) {
         super(htmlItems);
         this.indexFileGenerator = indexFileGenerator;
         this.helper = abstractReportRenderer;
+        this.jsonhelper = jsonhelper;
         sections = new LinkedHashMap<String, String>();
     }
 
@@ -61,6 +68,8 @@ public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRe
         for (DocItem item : listTemplates) {
             if (item instanceof SectionDocItem) {
                 tempBuffer.append(getSectionDocItem((SectionDocItem) item));
+            } else if (item instanceof MultipleTextDocItem) {
+                tempBuffer.append(getMultipleTextDocItem((MultipleTextDocItem) item));
             } else {
                 tempBuffer.append(getTemplateForItem(item));
             }
@@ -69,6 +78,30 @@ public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRe
         appendSectionList(buffer);
         buffer.append(tempBuffer);
         return buffer.toString();
+    }
+
+    /**
+     * 
+     * Renders a MultipleTextDocItem consisting of multiple Json and Text Elements.
+     * 
+     * @param item
+     * @return
+     */
+    private String getMultipleTextDocItem(MultipleTextDocItem item) {
+        for (int i = 0; i < item.getAdditionalStrings().length; i++) {
+            if (jsonhelper.isJsonValid(item.getAdditionalStrings()[i])) {
+                item.getAdditionalStrings()[i] =
+                        getTemplateForItem(new JsonDocItem(item.getAdditionalStrings()[i]));
+            } else {
+                item.getAdditionalStrings()[i] =
+                        getTemplateForItem(new HighlightedTextDocItem(
+                                item.getAdditionalStrings()[i]));
+            }
+        }
+
+        item.setText(String.format(item.getText(), (Object[]) item.getAdditionalStrings()));
+
+        return getTemplateForItem(item);
     }
 
     private String getTemplateForItem(DocItem item) {

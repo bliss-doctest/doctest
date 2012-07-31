@@ -1,3 +1,5 @@
 <pre>
-	<code>${expected}</code>
+	<code>
+${expected}
+	</code>
 </pre>

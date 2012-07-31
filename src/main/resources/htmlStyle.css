@@ -17,7 +17,7 @@ a {
 
 h1 a, h1 a:hover {
 	color: #42485A;
-	text-decoration: none;	
+	text-decoration: none;
 }
 
 a:hover {
@@ -166,15 +166,26 @@ h2 {
 
 pre {
     color: #EBEFE7;
-    padding: 25px; 
-    margin: 15px 0px; 
+    padding: 25px;
+    margin: 15px 0px;
     background-color: #585858;
     border: 1px dashed #E6EBE0;
     border-radius: 2px 2px 2px 2px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     overflow: auto;
 }
-    
+
+
+span.highlight {
+    color: #EBEFE7;
+    padding: 2px;
+    margin: 2px 2px;
+    background-color: #585858;
+    border: 1px dashed #E6EBE0;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
 @media all and (max-width: 640px) {
     .container {
         padding: 0;

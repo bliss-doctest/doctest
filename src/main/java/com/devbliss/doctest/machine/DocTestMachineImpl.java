@@ -9,6 +9,7 @@ import org.json.JSONException;
 import com.devbliss.doctest.items.AssertDocItem;
 import com.devbliss.doctest.items.DocItem;
 import com.devbliss.doctest.items.JsonDocItem;
+import com.devbliss.doctest.items.MultipleTextDocItem;
 import com.devbliss.doctest.items.RequestDocItem;
 import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
@@ -107,6 +108,10 @@ public class DocTestMachineImpl implements DocTestMachine {
             payloadToShow = payload;
         }
         return payloadToShow;
+    }
+
+    public void say(String say, String[] strings) {
+        listItem.add(new MultipleTextDocItem(say, strings));
     }
 
 }
