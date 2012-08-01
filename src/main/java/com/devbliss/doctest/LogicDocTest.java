@@ -52,17 +52,22 @@ public class LogicDocTest {
         docTest.say(say);
     }
 
+    /**
+     * say will result in a text in the resulting document with the support of JSON representations
+     * for objects and highlighted text.
+     * 
+     * @param say the text to be said
+     * @param objects multiple Objects matching the amount of placeholdern in the text
+     */
     public void say(String say, Object... objects) {
-
         String[] stringRepresentations = new String[objects.length];
-        for (int i = 0; i<objects.length; i++) {
+        for (int i = 0; i < objects.length; i++) {
             if (objects[i] instanceof String) {
                 stringRepresentations[i] = (String) objects[i];
             } else {
                 stringRepresentations[i] = jsonHelper.toJson(objects[i], true);
             }
         }
-
         docTest.say(say, stringRepresentations);
     }
 
