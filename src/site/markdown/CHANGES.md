@@ -3,6 +3,9 @@ CHANGES
 
 develop
 -------
+
+Version 0.4.7: 01.08.2012
+-------------------------
 - refactored htmlrenderer and htmlitems to use the same method for getting the template for all docitems
 - added HtmlIndexFileRendererUnitTest
 - added pretty printing
