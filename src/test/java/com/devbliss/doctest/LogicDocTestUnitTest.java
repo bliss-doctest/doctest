@@ -9,6 +9,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,9 +34,9 @@ import de.devbliss.apitester.TestState;
 
 /**
  * Unit tests for the {@link DocTest}.
- *
+ * 
  * @author bmary
- *
+ * 
  */
 @RunWith(MockitoJUnitRunner.class)
 public class LogicDocTestUnitTest {
@@ -58,6 +59,8 @@ public class LogicDocTestUnitTest {
     private HtmlItems templates;
     @Mock
     private TestState testState;
+    @Mock
+    private File fileToUpload;
 
     private LogicDocTest docTest;
     private URI uri;
@@ -67,8 +70,9 @@ public class LogicDocTestUnitTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         uri = new URI("");
-        response = new ApiResponse(HTTP_STATUS, REASON_PHRASE, RESPONSE_PAYLOAD,
-                Collections.<String, String>emptyMap());
+        response =
+                new ApiResponse(HTTP_STATUS, REASON_PHRASE, RESPONSE_PAYLOAD, Collections
+                        .<String, String> emptyMap());
         when(jsonHelper.toJson(null)).thenReturn(NULL);
         when(jsonHelper.toJson(obj)).thenReturn(OBJECT);
         when(apiTest.getTestState()).thenReturn(testState);
@@ -125,6 +129,15 @@ public class LogicDocTestUnitTest {
         when(apiTest.post(uri, obj)).thenReturn(response);
         docTest.makePostRequest(uri, obj);
         verify(docTestMachine).sayRequest(uri, OBJECT, HTTP_REQUEST.POST);
+        verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
+    }
+
+    @Test
+    public void makePostUploadRequest() throws Exception {
+        when(apiTest.post(uri, null)).thenReturn(response);
+        docTest.makePostUploadRequest(uri, fileToUpload, "paramName");
+        verify(docTestMachine).say("upload");
+        verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.POST);
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
     }
 
@@ -253,8 +266,8 @@ public class LogicDocTestUnitTest {
     public void assertStringAreNotEqualsJsonObjectsExcluded() throws Exception {
         Object object1 = new Object();
         Object object2 = new Object();
-        when(jsonHelper.toJsonAndSkipCertainFields(eq(object1), anyList(), eq(true)))
-                .thenReturn(OBJECT);
+        when(jsonHelper.toJsonAndSkipCertainFields(eq(object1), anyList(), eq(true))).thenReturn(
+                OBJECT);
         when(jsonHelper.toJsonAndSkipCertainFields(eq(object2), anyList(), eq(true))).thenReturn(
                 OBJECT2);
 
@@ -337,7 +350,8 @@ public class LogicDocTestUnitTest {
     @Test
     public void addCookieShouldAddCookie() {
         docTest.addCookie("name", "value");
-        verify(testState).addCookie(new Cookie("name", "value", null, "/", "localhost", false, false));
+        verify(testState).addCookie(
+                new Cookie("name", "value", null, "/", "localhost", false, false));
     }
 
     @Test

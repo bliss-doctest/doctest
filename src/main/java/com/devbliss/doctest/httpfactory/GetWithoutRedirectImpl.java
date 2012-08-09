@@ -1,6 +1,6 @@
-package com.devbliss.doctest.httpwithoutredirect;
+package com.devbliss.doctest.httpfactory;
 
-import static com.devbliss.doctest.httpwithoutredirect.HttpConstants.HANDLE_REDIRECTS;
+import static com.devbliss.doctest.httpfactory.HttpConstants.HANDLE_REDIRECTS;
 
 import java.io.IOException;
 import java.net.URI;

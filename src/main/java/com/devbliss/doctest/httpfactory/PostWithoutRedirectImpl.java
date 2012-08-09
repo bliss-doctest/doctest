@@ -1,12 +1,11 @@
-package com.devbliss.doctest.httpwithoutredirect;
+package com.devbliss.doctest.httpfactory;
 
-import static com.devbliss.doctest.httpwithoutredirect.HttpConstants.ENCODING;
-import static com.devbliss.doctest.httpwithoutredirect.HttpConstants.HANDLE_REDIRECTS;
+import static com.devbliss.doctest.httpfactory.HttpConstants.ENCODING;
+import static com.devbliss.doctest.httpfactory.HttpConstants.HANDLE_REDIRECTS;
 
 import java.io.IOException;
 import java.net.URI;
 
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -31,14 +30,6 @@ public class PostWithoutRedirectImpl implements PostFactory {
     @Inject
     public PostWithoutRedirectImpl(Gson gson) {
         this.gson = gson;
-    }
-
-    public HttpGet createGetRequest(URI uri) throws IOException {
-        HttpGet httpGet = new HttpGet(uri);
-        HttpParams params = new BasicHttpParams();
-        params.setParameter(HANDLE_REDIRECTS, false);
-        httpGet.setParams(params);
-        return httpGet;
     }
 
     public HttpPost createPostRequest(URI uri, Object payload) throws IOException {

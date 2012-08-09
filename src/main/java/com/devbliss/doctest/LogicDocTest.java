@@ -6,12 +6,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.net.URI;
 import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 
+import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
 import com.devbliss.doctest.machine.DocTestMachine;
 import com.devbliss.doctest.renderer.html.HtmlItems;
 import com.devbliss.doctest.utils.JSONHelper;
@@ -84,9 +86,9 @@ public class LogicDocTest {
     }
 
     /**
-     *
+     * 
      * The given POJO will be converted to JSON and be pretty printed.
-     *
+     * 
      * @param obj
      * @throws Exception
      */
@@ -95,9 +97,9 @@ public class LogicDocTest {
     }
 
     /**
-     *
+     * 
      * The given String will be formatted as-is and be highlighted in a fancy box.
-     *
+     * 
      * @param code
      * @throws Exception
      */
@@ -127,6 +129,16 @@ public class LogicDocTest {
     protected Response makePostRequest(URI uri, Object obj) throws Exception {
         sayUri(uri, obj, HTTP_REQUEST.POST);
         Response response = makePostRequestSilent(uri, obj);
+        docTest.sayResponse(response.httpStatus, response.payload);
+        return response;
+    }
+
+    protected Response makePostUploadRequest(URI uri, File fileToUpload, String paramName)
+            throws Exception {
+        docTest.say("upload");
+        sayUri(uri, HTTP_REQUEST.POST);
+        apiTest.setPostFactory(new PostUploadWithoutRedirectImpl(paramName, fileToUpload));
+        Response response = new Response(apiTest.post(uri, null));
         docTest.sayResponse(response.httpStatus, response.payload);
         return response;
     }
@@ -176,10 +188,10 @@ public class LogicDocTest {
     }
 
     /**
-     *
+     * 
      * At first converts both objects to Json and then asserts that they are equal.
      * The resulting doc will sport the expected Json String.
-     *
+     * 
      * @param expected POJO
      * @param result POJO
      */
@@ -188,11 +200,11 @@ public class LogicDocTest {
     }
 
     /**
-     *
+     * 
      * At first converts both objects to Json and then asserts that they are equal, except on the
      * fields mentioned in exceptions.
      * The resulting doc will sport the expected Json String.
-     *
+     * 
      * @param expected POJO
      * @param result POJO
      */
@@ -202,11 +214,11 @@ public class LogicDocTest {
     }
 
     /**
-     *
+     * 
      * First converts both objects to Json and then asserts that they are equal, except on the
      * fields mentioned in exceptions.
      * The resulting doc will sport the expected Json String after the given message.
-     *
+     * 
      * @param expected POJO
      * @param result POJO
      * @param message Additional message to be concatenated to the expected Json
@@ -251,9 +263,9 @@ public class LogicDocTest {
 
     /**
      * Assert that the value of the cookie with the given name equals the given value.
-     *
+     * 
      * The resulting cookie name and value will be printed, separated by a colon.
-     *
+     * 
      * @param name The name of the cookie
      * @param expectedValue The expected value
      */
@@ -265,9 +277,9 @@ public class LogicDocTest {
 
     /**
      * Assert that the cookie with the given name is present.
-     *
+     * 
      * The resulting cookie name and value will be printed, separated by a colon.
-     *
+     * 
      * @param name The name of the cookie
      */
     protected void assertCookiePresentAndSay(String name) {
@@ -278,9 +290,9 @@ public class LogicDocTest {
 
     /**
      * Assert that the cookie with the given name is not.
-     *
+     * 
      * The resulting cookie name and null will be printed, separated by a colon.
-     *
+     * 
      * @param name The name of the cookie
      */
     protected void assertCookieNotPresentAndSay(String name) {
@@ -292,9 +304,9 @@ public class LogicDocTest {
     /**
      * Assert that a cookie is present that matches the attributes of the given
      * cookie
-     *
+     * 
      * The resulting cookie will be output with its parameters, in JSON format.
-     *
+     * 
      * @param expected The cookie to check
      */
     protected void assertCookieMatchesAndSay(Cookie expected) {
@@ -315,7 +327,7 @@ public class LogicDocTest {
 
     /**
      * Get the value of the cookie with the given name
-     *
+     * 
      * @param name The name of the cookie
      * @return The cookies value, or null if no cookie with that name was found
      */
@@ -325,12 +337,13 @@ public class LogicDocTest {
 
     /**
      * Add the cookie with the given name and value to the current state
-     *
+     * 
      * @param name The name of the cookie
      * @param value The value of the cookie
      */
     protected void addCookie(String name, String value) {
-        apiTest.getTestState().addCookie(new Cookie(name, value, null, "/", "localhost", false, false));
+        apiTest.getTestState().addCookie(
+                new Cookie(name, value, null, "/", "localhost", false, false));
     }
 
     /**

@@ -3,6 +3,7 @@ package integration;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.net.URI;
 import java.util.Collections;
 
@@ -44,8 +45,9 @@ public class RequestsIntegrationTest extends DocTest {
     @Before
     public void setUp() throws Exception {
         obj = new Object();
-        response = new ApiResponse(HTTP_STATUS, REASON_PHRASE, PAYLOAD,
-                Collections.<String, String>emptyMap());
+        response =
+                new ApiResponse(HTTP_STATUS, REASON_PHRASE, PAYLOAD, Collections
+                        .<String, String> emptyMap());
         uri = new URI("http://www.google.com");
     }
 
@@ -85,6 +87,16 @@ public class RequestsIntegrationTest extends DocTest {
         when(api.put(uri, obj)).thenReturn(response);
         Response response = makePutRequest(uri, obj);
 
+        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
+        assertEqualsAndSay(PAYLOAD, response.payload);
+    }
+
+    @Test
+    public void postUpload() throws Exception {
+        sayNextSection("Making an upload post request");
+        when(api.post(uri, null)).thenReturn(response);
+
+        Response response = makePostUploadRequest(uri, new File("."), "paramName");
         assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
         assertEqualsAndSay(PAYLOAD, response.payload);
     }

@@ -1,4 +1,4 @@
-package com.devbliss.doctest.httpwithoutredirect;
+package com.devbliss.doctest.httpfactory;
 
 /**
  * Defines some constants which are used in several classes of the project.
