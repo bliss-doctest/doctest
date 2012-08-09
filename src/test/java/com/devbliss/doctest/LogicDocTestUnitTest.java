@@ -24,6 +24,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.machine.DocTestMachine;
 import com.devbliss.doctest.renderer.html.HtmlItems;
+import com.devbliss.doctest.utils.FileHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 
 import de.devbliss.apitester.ApiResponse;
@@ -60,11 +61,12 @@ public class LogicDocTestUnitTest {
     @Mock
     private TestState testState;
     @Mock
-    private File fileToUpload;
+    private FileHelper fileHelper;
 
     private LogicDocTest docTest;
     private URI uri;
     private ApiResponse response;
+    private File fileToUpload;
 
     @Before
     public void setUp() throws Exception {
@@ -77,6 +79,7 @@ public class LogicDocTestUnitTest {
         when(jsonHelper.toJson(obj)).thenReturn(OBJECT);
         when(apiTest.getTestState()).thenReturn(testState);
         docTest = instantiateAbstractDocTest();
+        fileToUpload = new File("src/test/resources/file.txt");
     }
 
     @Test
@@ -135,9 +138,9 @@ public class LogicDocTestUnitTest {
     @Test
     public void makePostUploadRequest() throws Exception {
         when(apiTest.post(uri, null)).thenReturn(response);
+        when(fileHelper.readFile(fileToUpload)).thenReturn("fileBody");
         docTest.makePostUploadRequest(uri, fileToUpload, "paramName");
-        verify(docTestMachine).say("upload");
-        verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.POST);
+        verify(docTestMachine).sayUploadRequest(uri, HTTP_REQUEST.POST, "file.txt", "fileBody");
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
     }
 
@@ -230,7 +233,7 @@ public class LogicDocTestUnitTest {
     }
 
     private LogicDocTest instantiateAbstractDocTest() {
-        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, templates);
+        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, templates, fileHelper);
     }
 
     @Test

@@ -1,9 +1,13 @@
 package com.devbliss.doctest.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 
 import com.devbliss.doctest.renderer.ReportRenderer;
 
@@ -73,4 +77,17 @@ public class FileHelper {
     public String getCompleteFileName(String name, String extension) {
         return OUTPUT_DIRECTORY + name + extension;
     }
+
+    public String readFile(File fileToUpload) throws IOException {
+        FileInputStream stream = new FileInputStream(fileToUpload);
+        try {
+            FileChannel fc = stream.getChannel();
+            MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+            /* Instead of using default, pass in a decoder. */
+            return Charset.defaultCharset().decode(bb).toString();
+        } finally {
+            stream.close();
+        }
+    }
+
 }

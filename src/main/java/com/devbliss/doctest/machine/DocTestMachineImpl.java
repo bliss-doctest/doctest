@@ -11,6 +11,7 @@ import com.devbliss.doctest.items.DocItem;
 import com.devbliss.doctest.items.JsonDocItem;
 import com.devbliss.doctest.items.MultipleTextDocItem;
 import com.devbliss.doctest.items.RequestDocItem;
+import com.devbliss.doctest.items.RequestUploadDocItem;
 import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
@@ -28,9 +29,9 @@ import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
  * At the end of the workflow, the method {@link #endDocTest()} is called and uses a
  * {@link ReportRenderer} to render the {@link #listItem} .
  * </p>
- *
+ * 
  * @author bmary
- *
+ * 
  */
 public class DocTestMachineImpl implements DocTestMachine {
 
@@ -83,6 +84,13 @@ public class DocTestMachineImpl implements DocTestMachine {
     public void sayRequest(URI uri, String payload, HTTP_REQUEST httpRequest) throws JSONException {
         if (uri != null) {
             listItem.add(new RequestDocItem(httpRequest, uri.toString(), getPayload(payload)));
+        }
+    }
+
+    public void sayUploadRequest(URI uri, HTTP_REQUEST httpRequest, String fileName, String fileBody)
+            throws JSONException {
+        if (uri != null) {
+            listItem.add(new RequestUploadDocItem(httpRequest, uri.toString(), fileName, fileBody));
         }
     }
 

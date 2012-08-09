@@ -1,6 +1,5 @@
 package com.devbliss.doctest.httpfactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
@@ -24,9 +23,9 @@ public class PostUploadWithoutRedirectImpl implements PostFactory {
     private final String paramName;
     private final FileBody fileBodyToUpload;
 
-    public PostUploadWithoutRedirectImpl(String paramName, File fileToUpload) {
+    public PostUploadWithoutRedirectImpl(String paramName, FileBody fileToUpload) {
         this.paramName = paramName;
-        this.fileBodyToUpload = new FileBody(fileToUpload);
+        this.fileBodyToUpload = fileToUpload;
     }
 
     public HttpPost createPostRequest(URI uri, Object payload) throws IOException {

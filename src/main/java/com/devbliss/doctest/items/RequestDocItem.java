@@ -4,9 +4,14 @@ import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 public class RequestDocItem implements DocItem {
 
-    private final HTTP_REQUEST http;
-    private final String uri;
-    private final JsonDocItem payload;
+    protected final HTTP_REQUEST http;
+    protected final String uri;
+    protected final JsonDocItem payload;
+    protected Boolean isAnUploadRequest = false;
+
+    public RequestDocItem(HTTP_REQUEST http, String uri) {
+        this(http, uri, new JsonDocItem(null));
+    }
 
     public RequestDocItem(HTTP_REQUEST http, String uri, String payload) {
         this(http, uri, new JsonDocItem(payload));
@@ -28,6 +33,10 @@ public class RequestDocItem implements DocItem {
 
     public JsonDocItem getPayload() {
         return payload;
+    }
+
+    public Boolean getIsAnUploadRequest() {
+        return isAnUploadRequest;
     }
 
     public String getItemName() {

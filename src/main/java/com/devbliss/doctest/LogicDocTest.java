@@ -10,12 +10,14 @@ import java.io.File;
 import java.net.URI;
 import java.util.List;
 
+import org.apache.http.entity.mime.content.FileBody;
 import org.junit.AfterClass;
 import org.junit.Before;
 
 import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
 import com.devbliss.doctest.machine.DocTestMachine;
 import com.devbliss.doctest.renderer.html.HtmlItems;
+import com.devbliss.doctest.utils.FileHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 
 import de.devbliss.apitester.ApiTest;
@@ -28,6 +30,7 @@ public class LogicDocTest {
 
     private final ApiTest apiTest;
     private final JSONHelper jsonHelper;
+    private final FileHelper fileHelper;
 
     @Before
     public void ensureDocTestClassSet() {
@@ -44,10 +47,12 @@ public class LogicDocTest {
             DocTestMachine docTest,
             ApiTest apiTest,
             JSONHelper jsonHelper,
-            HtmlItems templates) {
+            HtmlItems templates,
+            FileHelper fileHelper) {
         LogicDocTest.docTest = docTest;
         this.apiTest = apiTest;
         this.jsonHelper = jsonHelper;
+        this.fileHelper = fileHelper;
     }
 
     public void say(String say) {
@@ -135,9 +140,10 @@ public class LogicDocTest {
 
     protected Response makePostUploadRequest(URI uri, File fileToUpload, String paramName)
             throws Exception {
-        docTest.say("upload");
-        sayUri(uri, HTTP_REQUEST.POST);
-        apiTest.setPostFactory(new PostUploadWithoutRedirectImpl(paramName, fileToUpload));
+        FileBody fileBodyToUpload = new FileBody(fileToUpload);
+        docTest.sayUploadRequest(uri, HTTP_REQUEST.POST, fileBodyToUpload.getFilename(), fileHelper
+                .readFile(fileToUpload));
+        apiTest.setPostFactory(new PostUploadWithoutRedirectImpl(paramName, fileBodyToUpload));
         Response response = new Response(apiTest.post(uri, null));
         docTest.sayResponse(response.httpStatus, response.payload);
         return response;

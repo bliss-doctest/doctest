@@ -96,7 +96,8 @@ public class RequestsIntegrationTest extends DocTest {
         sayNextSection("Making an upload post request");
         when(api.post(uri, null)).thenReturn(response);
 
-        Response response = makePostUploadRequest(uri, new File("."), "paramName");
+        Response response =
+                makePostUploadRequest(uri, new File("src/test/resources/file.txt"), "paramName");
         assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
         assertEqualsAndSay(PAYLOAD, response.payload);
     }
