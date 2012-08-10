@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<style>${css}</style>
+        <script type="text/javascript">${jsCode}</script>
         <title>DocTest for class ${name}</title>
     </head>
 	<body>

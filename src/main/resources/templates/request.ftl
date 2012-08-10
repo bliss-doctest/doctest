@@ -15,7 +15,9 @@
 		<#if isAnUploadRequest>
 		<li>FileName: ${fileName}</li>
 		<li>FileSize: ${fileSize} bytes</li>
-		<li>FileBody: <pre>${fileBody}</pre></li>
+		<li>FileBody: 
+			<button type="button" onclick="toggle(${id})">See/hide file content</button> 
+			<pre id=${id} style="display:none">${fileBody}</pre></li>
 		</#if>
     </ul>
 </div>
