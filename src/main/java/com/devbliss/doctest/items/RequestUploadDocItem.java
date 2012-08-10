@@ -4,6 +4,9 @@ import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 public class RequestUploadDocItem extends RequestDocItem {
 
+    private static int NB_ITEMS = 0;
+
+    private String id;
     private String fileName;
     private String fileBody;
     private long fileSize;
@@ -19,6 +22,7 @@ public class RequestUploadDocItem extends RequestDocItem {
         this.fileBody = fileBody;
         this.isAnUploadRequest = true;
         this.fileSize = fileSize;
+        this.id = "request" + NB_ITEMS++;
     }
 
     public String getFileName() {
@@ -35,5 +39,9 @@ public class RequestUploadDocItem extends RequestDocItem {
 
     public long getFileSize() {
         return fileSize;
+    }
+
+    public String getId() {
+        return id;
     }
 }

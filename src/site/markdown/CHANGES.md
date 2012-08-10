@@ -3,6 +3,7 @@ CHANGES
 
 develop
 -------
+- added bound jquery and toggle the content of the file in the upload request template
 - added upload request and update the request template to show the infos corresponding to the uploaded file
 
 Version 0.4.7: 01.08.2012
