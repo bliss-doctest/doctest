@@ -6,12 +6,19 @@ public class RequestUploadDocItem extends RequestDocItem {
 
     private String fileName;
     private String fileBody;
+    private long fileSize;
 
-    public RequestUploadDocItem(HTTP_REQUEST http, String uri, String fileName, String fileBody) {
+    public RequestUploadDocItem(
+            HTTP_REQUEST http,
+            String uri,
+            String fileName,
+            String fileBody,
+            long fileSize) {
         super(http, uri);
         this.fileName = fileName;
         this.fileBody = fileBody;
         this.isAnUploadRequest = true;
+        this.fileSize = fileSize;
     }
 
     public String getFileName() {
@@ -24,5 +31,9 @@ public class RequestUploadDocItem extends RequestDocItem {
 
     public String getItemName() {
         return "request";
+    }
+
+    public long getFileSize() {
+        return fileSize;
     }
 }

@@ -141,8 +141,9 @@ public class LogicDocTest {
     protected Response makePostUploadRequest(URI uri, File fileToUpload, String paramName)
             throws Exception {
         FileBody fileBodyToUpload = new FileBody(fileToUpload);
+
         docTest.sayUploadRequest(uri, HTTP_REQUEST.POST, fileBodyToUpload.getFilename(), fileHelper
-                .readFile(fileToUpload));
+                .readFile(fileToUpload), fileToUpload.length());
         apiTest.setPostFactory(new PostUploadWithoutRedirectImpl(paramName, fileBodyToUpload));
         Response response = new Response(apiTest.post(uri, null));
         docTest.sayResponse(response.httpStatus, response.payload);

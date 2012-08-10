@@ -148,7 +148,7 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addUploadRequestItem() throws Exception {
-        machine.sayUploadRequest(uri, httpRequest, "file", "fileBody");
+        machine.sayUploadRequest(uri, httpRequest, "file", "fileBody", 10l);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
@@ -164,7 +164,7 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addUploadRequestItemUriIsNull() throws Exception {
-        machine.sayUploadRequest(null, httpRequest, "file", "fileBody");
+        machine.sayUploadRequest(null, httpRequest, "file", "fileBody", 10l);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));

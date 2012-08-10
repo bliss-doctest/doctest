@@ -87,10 +87,11 @@ public class DocTestMachineImpl implements DocTestMachine {
         }
     }
 
-    public void sayUploadRequest(URI uri, HTTP_REQUEST httpRequest, String fileName, String fileBody)
-            throws JSONException {
+    public void sayUploadRequest(URI uri, HTTP_REQUEST httpRequest, String fileName,
+            String fileBody, long size) throws JSONException {
         if (uri != null) {
-            listItem.add(new RequestUploadDocItem(httpRequest, uri.toString(), fileName, fileBody));
+            listItem.add(new RequestUploadDocItem(httpRequest, uri.toString(), fileName, fileBody,
+                    size));
         }
     }
 

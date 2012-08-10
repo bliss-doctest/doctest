@@ -14,7 +14,8 @@
 		</#if>
 		<#if isAnUploadRequest>
 		<li>FileName: ${fileName}</li>
-		<li>FileBody: ${fileBody}</li>
+		<li>FileSize: ${fileSize} bytes</li>
+		<li>FileBody: <pre>${fileBody}</pre></li>
 		</#if>
     </ul>
 </div>
