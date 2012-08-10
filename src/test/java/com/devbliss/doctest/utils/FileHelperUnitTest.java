@@ -6,6 +6,9 @@ import static testutils.Utils.cleanUpTheTargetDirectory;
 import static testutils.Utils.getFilesInOutputDirectory;
 import static testutils.Utils.verifyTheFileHasBeenCreated;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,5 +72,16 @@ public class FileHelperUnitTest {
     public void writeFileNameIsInvalid() throws Exception {
         renderer.writeFile("blabla", DOC);
         assertEquals(0, getFilesInOutputDirectory().size());
+    }
+
+    @Test
+    public void readFileToString() throws Exception {
+        String result = renderer.readFile(new File("src/test/resources/file.txt"));
+        assertEquals("content<br/>of <br/>the text<br/>file", result);
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void readFileToStringException() throws Exception {
+        renderer.readFile(new File("."));
     }
 }

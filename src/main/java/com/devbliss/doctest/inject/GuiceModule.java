@@ -1,9 +1,9 @@
 package com.devbliss.doctest.inject;
 
-import com.devbliss.doctest.httpwithoutredirect.DeleteWithoutRedirectImpl;
-import com.devbliss.doctest.httpwithoutredirect.GetWithoutRedirectImpl;
-import com.devbliss.doctest.httpwithoutredirect.PostWithoutRedirectImpl;
-import com.devbliss.doctest.httpwithoutredirect.PutWithoutRedirectImpl;
+import com.devbliss.doctest.httpfactory.DeleteWithoutRedirectImpl;
+import com.devbliss.doctest.httpfactory.GetWithoutRedirectImpl;
+import com.devbliss.doctest.httpfactory.PostWithoutRedirectImpl;
+import com.devbliss.doctest.httpfactory.PutWithoutRedirectImpl;
 import com.devbliss.doctest.machine.DocTestMachine;
 import com.devbliss.doctest.machine.DocTestMachineImpl;
 import com.devbliss.doctest.renderer.ReportRenderer;

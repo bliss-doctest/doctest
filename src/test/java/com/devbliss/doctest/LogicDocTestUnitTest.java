@@ -5,10 +5,13 @@ import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,6 +26,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.machine.DocTestMachine;
 import com.devbliss.doctest.renderer.html.HtmlItems;
+import com.devbliss.doctest.utils.FileHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 
 import de.devbliss.apitester.ApiResponse;
@@ -33,9 +37,9 @@ import de.devbliss.apitester.TestState;
 
 /**
  * Unit tests for the {@link DocTest}.
- *
+ * 
  * @author bmary
- *
+ * 
  */
 @RunWith(MockitoJUnitRunner.class)
 public class LogicDocTestUnitTest {
@@ -58,21 +62,26 @@ public class LogicDocTestUnitTest {
     private HtmlItems templates;
     @Mock
     private TestState testState;
+    @Mock
+    private FileHelper fileHelper;
 
     private LogicDocTest docTest;
     private URI uri;
     private ApiResponse response;
+    private File fileToUpload;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         uri = new URI("");
-        response = new ApiResponse(HTTP_STATUS, REASON_PHRASE, RESPONSE_PAYLOAD,
-                Collections.<String, String>emptyMap());
+        response =
+                new ApiResponse(HTTP_STATUS, REASON_PHRASE, RESPONSE_PAYLOAD, Collections
+                        .<String, String> emptyMap());
         when(jsonHelper.toJson(null)).thenReturn(NULL);
         when(jsonHelper.toJson(obj)).thenReturn(OBJECT);
         when(apiTest.getTestState()).thenReturn(testState);
         docTest = instantiateAbstractDocTest();
+        fileToUpload = new File("src/test/resources/file.txt");
     }
 
     @Test
@@ -126,6 +135,23 @@ public class LogicDocTestUnitTest {
         docTest.makePostRequest(uri, obj);
         verify(docTestMachine).sayRequest(uri, OBJECT, HTTP_REQUEST.POST);
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
+    }
+
+    @Test
+    public void makePostUploadRequest() throws Exception {
+        when(apiTest.post(uri, null)).thenReturn(response);
+        when(fileHelper.readFile(fileToUpload)).thenReturn("fileBody");
+        docTest.makePostUploadRequest(uri, fileToUpload, "paramName");
+        verify(docTestMachine).sayUploadRequest(uri, HTTP_REQUEST.POST, "file.txt", "fileBody",
+                fileToUpload.length());
+        verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void makePostUploadRequestFileNotFound() throws Exception {
+        when(apiTest.post(uri, null)).thenReturn(response);
+        doThrow(new FileNotFoundException()).when(fileHelper).readFile(fileToUpload);
+        docTest.makePostUploadRequest(uri, fileToUpload, "paramName");
     }
 
     @Test
@@ -217,7 +243,7 @@ public class LogicDocTestUnitTest {
     }
 
     private LogicDocTest instantiateAbstractDocTest() {
-        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, templates);
+        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, templates, fileHelper);
     }
 
     @Test
@@ -253,8 +279,8 @@ public class LogicDocTestUnitTest {
     public void assertStringAreNotEqualsJsonObjectsExcluded() throws Exception {
         Object object1 = new Object();
         Object object2 = new Object();
-        when(jsonHelper.toJsonAndSkipCertainFields(eq(object1), anyList(), eq(true)))
-                .thenReturn(OBJECT);
+        when(jsonHelper.toJsonAndSkipCertainFields(eq(object1), anyList(), eq(true))).thenReturn(
+                OBJECT);
         when(jsonHelper.toJsonAndSkipCertainFields(eq(object2), anyList(), eq(true))).thenReturn(
                 OBJECT2);
 
@@ -337,7 +363,8 @@ public class LogicDocTestUnitTest {
     @Test
     public void addCookieShouldAddCookie() {
         docTest.addCookie("name", "value");
-        verify(testState).addCookie(new Cookie("name", "value", null, "/", "localhost", false, false));
+        verify(testState).addCookie(
+                new Cookie("name", "value", null, "/", "localhost", false, false));
     }
 
     @Test

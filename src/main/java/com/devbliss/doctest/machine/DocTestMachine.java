@@ -104,4 +104,7 @@ public interface DocTestMachine {
      * @param preformattedText
      */
     void sayPreformatted(String preformattedText);
+
+    void sayUploadRequest(URI uri, HTTP_REQUEST httpRequest, String fileName, String fileBody,
+            long l) throws JSONException;
 }

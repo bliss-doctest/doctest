@@ -23,6 +23,7 @@ import com.devbliss.doctest.items.AssertDocItem;
 import com.devbliss.doctest.items.DocItem;
 import com.devbliss.doctest.items.JsonDocItem;
 import com.devbliss.doctest.items.RequestDocItem;
+import com.devbliss.doctest.items.RequestUploadDocItem;
 import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
@@ -146,6 +147,33 @@ public class DocTestMachineImplUnitTest {
     }
 
     @Test
+    public void addUploadRequestItem() throws Exception {
+        machine.sayUploadRequest(uri, httpRequest, "file", "fileBody", 10l);
+        machine.endDocTest();
+
+        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+
+        List<DocItem> listItems = listItemCaptor.getValue();
+        assertEquals(1, listItems.size());
+        assertTrue(listItems.get(0) instanceof RequestUploadDocItem);
+        assertEquals(httpRequest, ((RequestUploadDocItem) listItems.get(0)).getHttp());
+        assertEquals(uri.toString(), ((RequestUploadDocItem) listItems.get(0)).getUri());
+        assertEquals("file", ((RequestUploadDocItem) listItems.get(0)).getFileName());
+        assertEquals("fileBody", ((RequestUploadDocItem) listItems.get(0)).getFileBody());
+    }
+
+    @Test
+    public void addUploadRequestItemUriIsNull() throws Exception {
+        machine.sayUploadRequest(null, httpRequest, "file", "fileBody", 10l);
+        machine.endDocTest();
+
+        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+
+        List<DocItem> listItems = listItemCaptor.getValue();
+        assertTrue(listItems.isEmpty());
+    }
+
+    @Test
     public void addRequestItemWihtoutUri() throws Exception {
         machine.sayRequest(null, JSON_VALID, httpRequest);
         machine.endDocTest();
@@ -166,8 +194,7 @@ public class DocTestMachineImplUnitTest {
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
         assertTrue(listItems.get(0) instanceof RequestDocItem);
-        assertEquals(JSON_INVALID, ((RequestDocItem) listItems
-                .get(0)).getPayload().getExpected());
+        assertEquals(JSON_INVALID, ((RequestDocItem) listItems.get(0)).getPayload().getExpected());
         assertEquals(httpRequest, ((RequestDocItem) listItems.get(0)).getHttp());
         assertEquals(uri.toString(), ((RequestDocItem) listItems.get(0)).getUri());
     }
