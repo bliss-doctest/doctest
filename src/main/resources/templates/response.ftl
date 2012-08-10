@@ -1,5 +1,5 @@
 <div class="box">
-	<span>Response</span>
+	<span class="headline">Response</span>
 	<ul>
 		<li>ResponseCode: ${responseCode}</li>
 		<#if payload?? && payload.expected?has_content && payload.expected != "" && payload.expected != "null" && payload.expected != "{}" >

@@ -1,3 +1,3 @@
 function toggle(id) {
-	$(id).toggle("slow");
+	$(id).slideToggle("fast");
 }

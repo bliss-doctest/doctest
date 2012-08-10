@@ -1,5 +1,5 @@
 <div class="box">
-	<span>		
+	<span class="headline">		
 		<#if isAnUploadRequest>
 			Upload-Request
 		<#else>
@@ -16,7 +16,7 @@
 		<li>FileName: ${fileName}</li>
 		<li>FileSize: ${fileSize} bytes</li>
 		<li>FileBody: 
-			<button type="button" onclick="toggle(${id})">See/hide file content</button> 
+			<button type="button" onclick="toggle(${id})" class="moreOrLess">See/hide file content</button> 
 			<pre id=${id} style="display:none">${fileBody}</pre></li>
 		</#if>
     </ul>

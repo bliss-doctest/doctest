@@ -30,23 +30,46 @@ img {
 }
 
 h1, h2, h3, h4, h5, h6, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-    font-weight: 700;
-    line-height: 1em;
+    font-weight: bold;
+    line-height: 120%;
     word-wrap: break-word;
     margin: 1.07em 0 0.535em;
 }
 
 h1 {
-    font-size: 2em;
-    padding-top: 1em;
+    font-size: 1.5em;
     border-top: 1px solid gray;
+    margin-top: 50px;
+    padding-top: 50px;
 }
 
 h2 {
     color: #777777;
-    font-size: 1.6em;
+    font-size: 1.3em;
 }
 
+
+button {
+    background: #ededed;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));;
+    background: -webkit-linear-gradient(@{origin}, #fff 0%, #ededed 60%);
+    background: -moz-linear-gradient(@{origin}, #fff , #ededed);
+    background: -ms-linear-gradient(@{origin},#fff 0%,#ededed 60%);;
+    background: -o-linear-gradient(@{origin},#fff 0%,#ededed 60%);
+    background: linear-gradient(@{origin}, #fff 0%, #ededed 60%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#fff, endColorstr='#ededed',GradientType=0 );;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+    color: #70a629;
+    font-weight: bold;
+    text-decoration: none;
+    border: 1px solid white;
+    display: inline-block;
+    margin-bottom: 3px;
+    padding: 0 5px;
+    cursor: pointer;
+}
 /* =Header
 -------------------------------------------------------------- */
 #header #logo {
@@ -121,28 +144,26 @@ h2 {
     border: 1px solid #D6D6D6;
     border-radius: 6px 6px 6px 6px;
     clear: both;
-    margin: 20px auto;
-    padding: 25px;
+    margin: 10px auto;
+    padding: 10px;
     position: relative;
 }
 
 .box {
     color: #DFDFDF;
     background-color: #262626;
-    padding: 20px 40px 20px 20px;
     border-radius: 7px;
-    margin: 25px 50px;
+    padding: 5px 20px;
+    margin: 2px 20px;
 }
 
 .box.correct {
     color: white;
-    font-size: 2em;
     background: #70a629;
 }
 
 .box.incorrect {
     color: white;
-    font-size: 2em;
     background: #76210f;
 }
 
@@ -150,29 +171,30 @@ h2 {
     word-wrap: break-word;
 }
 
-.box > span:first-child {
+.box .headline {
     color: white;
     font-family: monospace;
-    font-size: 3em;
+    font-size: 180%;
     font-weight: bold;
-    line-height: 150%;
+    line-height: 100%;
     text-transform: uppercase;
 }
 
 .box ul {
     list-style-type: upper-roman;
-    margin-left: 10%;
+    margin: 5px 0 0 0;
 }
 
 pre {
     color: #EBEFE7;
-    padding: 25px;
-    margin: 15px 0px;
+    padding: 8px;
+    margin: 10px 0px;
     background-color: #585858;
     border: 1px dashed #E6EBE0;
     border-radius: 2px 2px 2px 2px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     overflow: auto;
+    max-height: 160px;
 }
 
 
