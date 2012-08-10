@@ -5,11 +5,13 @@ import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
@@ -142,6 +144,13 @@ public class LogicDocTestUnitTest {
         docTest.makePostUploadRequest(uri, fileToUpload, "paramName");
         verify(docTestMachine).sayUploadRequest(uri, HTTP_REQUEST.POST, "file.txt", "fileBody");
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void makePostUploadRequestFileNotFound() throws Exception {
+        when(apiTest.post(uri, null)).thenReturn(response);
+        doThrow(new FileNotFoundException()).when(fileHelper).readFile(fileToUpload);
+        docTest.makePostUploadRequest(uri, fileToUpload, "paramName");
     }
 
     @Test
