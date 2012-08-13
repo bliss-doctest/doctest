@@ -3,6 +3,13 @@ CHANGES
 
 develop
 -------
+
+Version 0.5.1: 11.08.2012
+-------------------------
+- reset the factory of the apiTest after having used it
+
+Version 0.5: 11.08.2012
+-------------------------
 - added bound jquery and toggle the content of the file in the upload request template
 - added upload request and update the request template to show the infos corresponding to the uploaded file
 
