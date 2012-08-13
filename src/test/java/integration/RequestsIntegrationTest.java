@@ -10,6 +10,7 @@ import java.util.Collections;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.MockitoAnnotations;
 
 import com.devbliss.doctest.DocTest;
 import com.devbliss.doctest.Response;
@@ -30,12 +31,12 @@ public class RequestsIntegrationTest extends DocTest {
     private static final String PAYLOAD = "{'abc':'123'}";
     private static final int HTTP_STATUS = 230;
     private static final String REASON_PHRASE = "This is not a normal response code";
-    private static ApiTest api;
+    private static ApiTest API;
 
     @BeforeClass
     public static void beforeClass() {
-        api = mock(ApiTest.class);
-        DocTest.setApi(api);
+        API = mock(ApiTest.class);
+        DocTest.setApi(API);
     }
 
     private Object obj;
@@ -44,17 +45,22 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Before
     public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
         obj = new Object();
         response =
                 new ApiResponse(HTTP_STATUS, REASON_PHRASE, PAYLOAD, Collections
                         .<String, String> emptyMap());
         uri = new URI("http://www.google.com");
+        when(API.put(uri, obj)).thenReturn(response);
+        when(API.get(uri)).thenReturn(response);
+        when(API.delete(uri, null)).thenReturn(response);
+        when(API.post(uri, obj)).thenReturn(response);
+        when(API.post(uri, null)).thenReturn(response);
     }
 
     @Test
     public void get() throws Exception {
         sayNextSection("Making a get request");
-        when(api.get(uri)).thenReturn(response);
         Response resp = makeGetRequest(uri);
 
         assertEqualsAndSay(HTTP_STATUS, resp.httpStatus);
@@ -64,7 +70,6 @@ public class RequestsIntegrationTest extends DocTest {
     @Test
     public void delete() throws Exception {
         sayNextSection("Making a delete request");
-        when(api.delete(uri, null)).thenReturn(response);
         Response response = makeDeleteRequest(uri);
 
         assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
@@ -74,7 +79,6 @@ public class RequestsIntegrationTest extends DocTest {
     @Test
     public void post() throws Exception {
         sayNextSection("Making a post request");
-        when(api.post(uri, obj)).thenReturn(response);
         Response response = makePostRequest(uri, obj);
 
         assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
@@ -84,7 +88,6 @@ public class RequestsIntegrationTest extends DocTest {
     @Test
     public void put() throws Exception {
         sayNextSection("Making a put request");
-        when(api.put(uri, obj)).thenReturn(response);
         Response response = makePutRequest(uri, obj);
 
         assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
@@ -94,10 +97,34 @@ public class RequestsIntegrationTest extends DocTest {
     @Test
     public void postUpload() throws Exception {
         sayNextSection("Making an upload post request");
-        when(api.post(uri, null)).thenReturn(response);
 
         Response response =
                 makePostUploadRequest(uri, new File("src/test/resources/file.txt"), "paramName");
+        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
+        assertEqualsAndSay(PAYLOAD, response.payload);
+    }
+
+    @Test
+    public void suiteRequests() throws Exception {
+        sayNextSection("Making several requests");
+
+        Response response =
+                makePostUploadRequest(uri, new File("src/test/resources/file.txt"), "paramName");
+        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
+        assertEqualsAndSay(PAYLOAD, response.payload);
+
+        response = makeGetRequest(uri);
+        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
+        assertEqualsAndSay(PAYLOAD, response.payload);
+
+        response = makeDeleteRequest(uri);
+        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
+
+        response = makePostRequest(uri, obj);
+        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
+        assertEqualsAndSay(PAYLOAD, response.payload);
+
+        response = makePutRequest(uri, obj);
         assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
         assertEqualsAndSay(PAYLOAD, response.payload);
     }
