@@ -87,7 +87,7 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void put() throws Exception {
-        sayNextSection("Making a put request");
+        sayNextSection("Making a put request with encöding chäracters");
         Response response = makePutRequest(uri, obj);
 
         assertEqualsAndSay(HTTP_STATUS, response.httpStatus);

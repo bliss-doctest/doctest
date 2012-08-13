@@ -3,6 +3,7 @@ CHANGES
 
 develop
 -------
+- fixed utf8-encoding problem
 
 Version 0.5.1: 11.08.2012
 -------------------------

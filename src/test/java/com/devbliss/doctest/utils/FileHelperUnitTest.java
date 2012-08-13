@@ -77,7 +77,7 @@ public class FileHelperUnitTest {
     @Test
     public void readFileToString() throws Exception {
         String result = renderer.readFile(new File("src/test/resources/file.txt"));
-        assertEquals("content<br/>of <br/>the text<br/>file", result);
+        assertEquals("content<br/>öf <br/>the text<br/>file", result);
     }
 
     @Test(expected = FileNotFoundException.class)
