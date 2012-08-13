@@ -38,7 +38,6 @@ public class GuiceModule extends AbstractModule {
         bind(FileHelper.class).in(Singleton.class);
         bind(ReportRenderer.class).to(HtmlRenderer.class).in(Singleton.class);
         bind(Configuration.class).to(ConfigurationWrapper.class).in(Singleton.class);
-        // bind(ObjectWrapper.class).to(BeansWrapper.class);
         bind(ObjectWrapper.class).to(DefaultObjectWrapper.class);
 
         bind(DeleteFactory.class).annotatedWith(Names.named(ApiTest.DELETE_FACTORY)).to(

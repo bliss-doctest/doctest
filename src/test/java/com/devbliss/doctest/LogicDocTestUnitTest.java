@@ -34,6 +34,7 @@ import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 import de.devbliss.apitester.Cookie;
 import de.devbliss.apitester.TestState;
+import de.devbliss.apitester.factory.PostFactory;
 
 /**
  * Unit tests for the {@link DocTest}.
@@ -64,6 +65,8 @@ public class LogicDocTestUnitTest {
     private TestState testState;
     @Mock
     private FileHelper fileHelper;
+    @Mock
+    private PostFactory postFactory;
 
     private LogicDocTest docTest;
     private URI uri;
@@ -243,7 +246,8 @@ public class LogicDocTestUnitTest {
     }
 
     private LogicDocTest instantiateAbstractDocTest() {
-        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, templates, fileHelper);
+        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, templates, fileHelper,
+                postFactory);
     }
 
     @Test

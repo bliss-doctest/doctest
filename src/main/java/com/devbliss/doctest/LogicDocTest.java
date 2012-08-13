@@ -11,6 +11,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.apache.http.entity.mime.content.FileBody;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 
@@ -23,6 +24,7 @@ import com.devbliss.doctest.utils.JSONHelper;
 import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 import de.devbliss.apitester.Cookie;
+import de.devbliss.apitester.factory.PostFactory;
 
 public class LogicDocTest {
 
@@ -31,10 +33,18 @@ public class LogicDocTest {
     private final ApiTest apiTest;
     private final JSONHelper jsonHelper;
     private final FileHelper fileHelper;
+    private final PostFactory postFactory;
 
     @Before
     public void ensureDocTestClassSet() {
         docTest.beginDoctest(this.getClass().getCanonicalName());
+    }
+
+    @After
+    public void resetSettings() {
+        // important reset the apiTest default settings so that the next requests use the correct
+        // settings (apiTest is used in a static way)
+        apiTest.setPostFactory(postFactory);
     }
 
     @AfterClass
@@ -48,11 +58,13 @@ public class LogicDocTest {
             ApiTest apiTest,
             JSONHelper jsonHelper,
             HtmlItems templates,
-            FileHelper fileHelper) {
+            FileHelper fileHelper,
+            PostFactory postFactory) {
         LogicDocTest.docTest = docTest;
         this.apiTest = apiTest;
         this.jsonHelper = jsonHelper;
         this.fileHelper = fileHelper;
+        this.postFactory = postFactory;
     }
 
     public void say(String say) {
@@ -147,6 +159,7 @@ public class LogicDocTest {
         apiTest.setPostFactory(new PostUploadWithoutRedirectImpl(paramName, fileBodyToUpload));
         Response response = new Response(apiTest.post(uri, null));
         docTest.sayResponse(response.httpStatus, response.payload);
+
         return response;
     }
 
