@@ -4,6 +4,7 @@ CHANGES
 develop
 -------
 - fixed utf8-encoding problem
+- refactored PostFactory problem to be more failsafe
 
 Version 0.5.1: 11.08.2012
 -------------------------

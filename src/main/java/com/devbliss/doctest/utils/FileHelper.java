@@ -84,7 +84,7 @@ public class FileHelper {
             FileChannel fc = stream.getChannel();
             MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
             /* Instead of using default, pass in a decoder. */
-            String body = Charset.defaultCharset().decode(bb).toString();
+            String body = Charset.forName("UTF-8").decode(bb).toString();
             return body.replaceAll("\n", "<br/>");
         } finally {
             stream.close();

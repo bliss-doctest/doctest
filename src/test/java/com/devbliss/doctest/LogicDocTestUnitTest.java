@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -24,6 +25,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
 import com.devbliss.doctest.machine.DocTestMachine;
 import com.devbliss.doctest.renderer.html.HtmlItems;
 import com.devbliss.doctest.utils.FileHelper;
@@ -34,14 +36,7 @@ import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 import de.devbliss.apitester.Cookie;
 import de.devbliss.apitester.TestState;
-import de.devbliss.apitester.factory.PostFactory;
 
-/**
- * Unit tests for the {@link DocTest}.
- * 
- * @author bmary
- * 
- */
 @RunWith(MockitoJUnitRunner.class)
 public class LogicDocTestUnitTest {
 
@@ -65,8 +60,6 @@ public class LogicDocTestUnitTest {
     private TestState testState;
     @Mock
     private FileHelper fileHelper;
-    @Mock
-    private PostFactory postFactory;
 
     private LogicDocTest docTest;
     private URI uri;
@@ -142,7 +135,8 @@ public class LogicDocTestUnitTest {
 
     @Test
     public void makePostUploadRequest() throws Exception {
-        when(apiTest.post(uri, null)).thenReturn(response);
+        when(apiTest.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
+                response);
         when(fileHelper.readFile(fileToUpload)).thenReturn("fileBody");
         docTest.makePostUploadRequest(uri, fileToUpload, "paramName");
         verify(docTestMachine).sayUploadRequest(uri, HTTP_REQUEST.POST, "file.txt", "fileBody",
@@ -246,8 +240,7 @@ public class LogicDocTestUnitTest {
     }
 
     private LogicDocTest instantiateAbstractDocTest() {
-        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, templates, fileHelper,
-                postFactory);
+        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, templates, fileHelper);
     }
 
     @Test
