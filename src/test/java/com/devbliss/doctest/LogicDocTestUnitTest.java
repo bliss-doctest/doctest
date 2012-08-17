@@ -36,7 +36,6 @@ import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 import de.devbliss.apitester.Cookie;
 import de.devbliss.apitester.TestState;
-import de.devbliss.apitester.factory.PostFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LogicDocTestUnitTest {
@@ -61,8 +60,6 @@ public class LogicDocTestUnitTest {
     private TestState testState;
     @Mock
     private FileHelper fileHelper;
-    @Mock
-    private PostFactory postFactory;
 
     private LogicDocTest docTest;
     private URI uri;
@@ -106,7 +103,7 @@ public class LogicDocTestUnitTest {
 
     @Test
     public void makeDeleteRequest() throws Exception {
-        when(apiTest.delete(uri, (Object) null)).thenReturn(response);
+        when(apiTest.delete(uri, null)).thenReturn(response);
         docTest.makeDeleteRequest(uri);
         verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.DELETE);
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
@@ -243,8 +240,7 @@ public class LogicDocTestUnitTest {
     }
 
     private LogicDocTest instantiateAbstractDocTest() {
-        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, templates, fileHelper,
-                postFactory);
+        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, templates, fileHelper);
     }
 
     @Test

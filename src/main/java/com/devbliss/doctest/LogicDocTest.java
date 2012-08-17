@@ -23,7 +23,6 @@ import com.devbliss.doctest.utils.JSONHelper;
 import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 import de.devbliss.apitester.Cookie;
-import de.devbliss.apitester.factory.PostFactory;
 
 public class LogicDocTest {
 
@@ -32,7 +31,6 @@ public class LogicDocTest {
     private final ApiTest apiTest;
     private final JSONHelper jsonHelper;
     private final FileHelper fileHelper;
-    private final PostFactory postFactory;
 
     @Before
     public void ensureDocTestClassSet() {
@@ -50,13 +48,11 @@ public class LogicDocTest {
             ApiTest apiTest,
             JSONHelper jsonHelper,
             HtmlItems templates,
-            FileHelper fileHelper,
-            PostFactory postFactory) {
+            FileHelper fileHelper) {
         LogicDocTest.docTest = docTest;
         this.apiTest = apiTest;
         this.jsonHelper = jsonHelper;
         this.fileHelper = fileHelper;
-        this.postFactory = postFactory;
     }
 
     public void say(String say) {
@@ -148,7 +144,6 @@ public class LogicDocTest {
 
         docTest.sayUploadRequest(uri, HTTP_REQUEST.POST, fileBodyToUpload.getFilename(), fileHelper
                 .readFile(fileToUpload), fileToUpload.length());
-        // apiTest.setPostFactory(new PostUploadWithoutRedirectImpl(paramName, fileBodyToUpload));
         Response response =
                 new Response(apiTest.post(uri, null, new PostUploadWithoutRedirectImpl(paramName,
                         fileBodyToUpload)));
@@ -181,7 +176,7 @@ public class LogicDocTest {
     }
 
     protected Response makeDeleteRequest(URI uri) throws Exception {
-        return makeDeleteRequest(uri, (Object) null);
+        return makeDeleteRequest(uri, null);
     }
 
     protected Response makeDeleteRequest(URI uri, Object obj) throws Exception {
