@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -24,6 +25,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
 import com.devbliss.doctest.machine.DocTestMachine;
 import com.devbliss.doctest.renderer.html.HtmlItems;
 import com.devbliss.doctest.utils.FileHelper;
@@ -36,12 +38,6 @@ import de.devbliss.apitester.Cookie;
 import de.devbliss.apitester.TestState;
 import de.devbliss.apitester.factory.PostFactory;
 
-/**
- * Unit tests for the {@link DocTest}.
- * 
- * @author bmary
- * 
- */
 @RunWith(MockitoJUnitRunner.class)
 public class LogicDocTestUnitTest {
 
@@ -110,7 +106,7 @@ public class LogicDocTestUnitTest {
 
     @Test
     public void makeDeleteRequest() throws Exception {
-        when(apiTest.delete(uri, null)).thenReturn(response);
+        when(apiTest.delete(uri, (Object) null)).thenReturn(response);
         docTest.makeDeleteRequest(uri);
         verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.DELETE);
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
@@ -142,7 +138,8 @@ public class LogicDocTestUnitTest {
 
     @Test
     public void makePostUploadRequest() throws Exception {
-        when(apiTest.post(uri, null)).thenReturn(response);
+        when(apiTest.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
+                response);
         when(fileHelper.readFile(fileToUpload)).thenReturn("fileBody");
         docTest.makePostUploadRequest(uri, fileToUpload, "paramName");
         verify(docTestMachine).sayUploadRequest(uri, HTTP_REQUEST.POST, "file.txt", "fileBody",

@@ -11,7 +11,6 @@ import java.net.URI;
 import java.util.List;
 
 import org.apache.http.entity.mime.content.FileBody;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 
@@ -38,13 +37,6 @@ public class LogicDocTest {
     @Before
     public void ensureDocTestClassSet() {
         docTest.beginDoctest(this.getClass().getCanonicalName());
-    }
-
-    @After
-    public void resetSettings() {
-        // important reset the apiTest default settings so that the next requests use the correct
-        // settings (apiTest is used in a static way)
-        apiTest.setPostFactory(postFactory);
     }
 
     @AfterClass
@@ -156,8 +148,10 @@ public class LogicDocTest {
 
         docTest.sayUploadRequest(uri, HTTP_REQUEST.POST, fileBodyToUpload.getFilename(), fileHelper
                 .readFile(fileToUpload), fileToUpload.length());
-        apiTest.setPostFactory(new PostUploadWithoutRedirectImpl(paramName, fileBodyToUpload));
-        Response response = new Response(apiTest.post(uri, null));
+        // apiTest.setPostFactory(new PostUploadWithoutRedirectImpl(paramName, fileBodyToUpload));
+        Response response =
+                new Response(apiTest.post(uri, null, new PostUploadWithoutRedirectImpl(paramName,
+                        fileBodyToUpload)));
         docTest.sayResponse(response.httpStatus, response.payload);
 
         return response;
@@ -187,7 +181,7 @@ public class LogicDocTest {
     }
 
     protected Response makeDeleteRequest(URI uri) throws Exception {
-        return makeDeleteRequest(uri, null);
+        return makeDeleteRequest(uri, (Object) null);
     }
 
     protected Response makeDeleteRequest(URI uri, Object obj) throws Exception {

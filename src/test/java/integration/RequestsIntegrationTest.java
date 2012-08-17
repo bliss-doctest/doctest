@@ -1,5 +1,7 @@
 package integration;
 
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -14,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.devbliss.doctest.DocTest;
 import com.devbliss.doctest.Response;
+import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
 
 import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
@@ -56,6 +59,8 @@ public class RequestsIntegrationTest extends DocTest {
         when(API.delete(uri, null)).thenReturn(response);
         when(API.post(uri, obj)).thenReturn(response);
         when(API.post(uri, null)).thenReturn(response);
+        when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
+                response);
     }
 
     @Test
