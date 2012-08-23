@@ -1,6 +1,7 @@
 TODO doctest
 ============
 - give the possibility to use own css classes
+- remote the host in the url of the request and response
 - give the possibility to show details for a whole tests (all responses, requests object should be hidden)
 - refactor the assert methods
 - mockito like method calls: report(object).function();
