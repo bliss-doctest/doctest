@@ -1,6 +1,9 @@
 CHANGES
 =======
 
+develop
+-------
+
 Version 0.5.2 23.08.2012
 ------------------------
 - fixed utf8-encoding problem
