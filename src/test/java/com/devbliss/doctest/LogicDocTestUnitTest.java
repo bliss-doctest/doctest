@@ -55,8 +55,6 @@ public class LogicDocTestUnitTest {
     @Mock
     private Object obj;
     @Mock
-    private HtmlItems templates;
-    @Mock
     private TestState testState;
     @Mock
     private FileHelper fileHelper;
@@ -240,7 +238,7 @@ public class LogicDocTestUnitTest {
     }
 
     private LogicDocTest instantiateAbstractDocTest() {
-        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, templates, fileHelper);
+        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, fileHelper);
     }
 
     @Test

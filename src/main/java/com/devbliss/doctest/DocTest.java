@@ -13,7 +13,6 @@ import de.devbliss.apitester.ApiTest;
 public abstract class DocTest extends LogicDocTest {
 
     private static Injector injector;
-    private static HtmlItems TEMPLATES;
     private static JSONHelper JSON_HELPER;
     private static ApiTest API_TEST;
     private static DocTestMachine DOC_TEST_MACHINE;
@@ -24,7 +23,6 @@ public abstract class DocTest extends LogicDocTest {
         DOC_TEST_MACHINE = injector.getInstance(DocTestMachine.class);
         API_TEST = injector.getInstance(ApiTest.class);
         JSON_HELPER = injector.getInstance(JSONHelper.class);
-        TEMPLATES = injector.getInstance(HtmlItems.class);
         FILE_HELPER = injector.getInstance(FileHelper.class);
     }
 
@@ -33,6 +31,6 @@ public abstract class DocTest extends LogicDocTest {
     }
 
     public DocTest() {
-        super(DOC_TEST_MACHINE, API_TEST, JSON_HELPER, TEMPLATES, FILE_HELPER);
+        super(DOC_TEST_MACHINE, API_TEST, JSON_HELPER, FILE_HELPER);
     }
 }
