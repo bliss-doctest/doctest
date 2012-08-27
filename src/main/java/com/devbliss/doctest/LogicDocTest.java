@@ -47,7 +47,6 @@ public class LogicDocTest {
             DocTestMachine docTest,
             ApiTest apiTest,
             JSONHelper jsonHelper,
-            HtmlItems templates,
             FileHelper fileHelper) {
         LogicDocTest.docTest = docTest;
         this.apiTest = apiTest;
