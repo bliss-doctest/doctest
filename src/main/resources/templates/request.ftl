@@ -16,8 +16,11 @@
 		<li>FileName: ${fileName}</li>
 		<li>FileSize: ${fileSize} bytes</li>
 		<li>FileBody: 
-			<button type="button" onclick="toggle(${id})" class="moreOrLess">See/hide file content</button> 
-			<pre id=${id} style="display:none">${fileBody}</pre></li>
+			<button type="button" onclick="toggle(${id})" class="moreOrLess">See/hide file content</button>
+            <pre id=${id} style="display:none">
+                ${htmlEscapedFileBody}
+            </pre>
+        </li>
 		</#if>
     </ul>
 </div>
