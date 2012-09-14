@@ -3,6 +3,7 @@ CHANGES
 
 develop
 -------
+- fixed escaping problem by rendering the fileBody of an uploaded image
 
 Version 0.5.2 23.08.2012
 ------------------------

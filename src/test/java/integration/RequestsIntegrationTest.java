@@ -113,7 +113,8 @@ public class RequestsIntegrationTest extends DocTest {
     public void postUploadImage() throws Exception {
         sayNextSection("Making an upload post request with an image file");
 
-        Response response = makePostUploadRequest(uri, new File("src/test/resources/avatar_too_big.png"), "paramName");
+        Response response =
+                makePostUploadRequest(uri, new File("src/test/resources/picture.png"), "paramName");
 
         assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
         assertEqualsAndSay(PAYLOAD, response.payload);
