@@ -27,7 +27,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
 import com.devbliss.doctest.machine.DocTestMachine;
-import com.devbliss.doctest.renderer.html.HtmlItems;
 import com.devbliss.doctest.utils.FileHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 
@@ -366,5 +365,27 @@ public class LogicDocTestUnitTest {
     public void clearCookiesShouldClearCookies() {
         docTest.clearCookies();
         testState.clearCookies();
+    }
+
+    @Test
+    public void useDefaultintroduction() {
+        docTest.ensureDocTestClassSet();
+        // verify default value is empty string
+        verify(docTestMachine).beginDoctest("com.devbliss.doctest.LogicDocTest", "");
+    }
+
+    @Test
+    public void setIntroduction() {
+        // create an instance of the logicDocTest which overrides the introduction function
+        docTest = new LogicDocTest(docTestMachine, apiTest, jsonHelper, fileHelper) {
+            @Override
+            public String getIntroduction() {
+                return "intro written by the user";
+            }
+        };
+
+        docTest.ensureDocTestClassSet();
+        // verify the new intro is used
+        verify(docTestMachine).beginDoctest(null, "intro written by the user");
     }
 }

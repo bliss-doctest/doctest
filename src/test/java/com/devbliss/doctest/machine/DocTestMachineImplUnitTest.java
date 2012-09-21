@@ -42,11 +42,12 @@ import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 @RunWith(MockitoJUnitRunner.class)
 public class DocTestMachineImplUnitTest {
 
-    private static final String CLASS_NAME = "className";
+    private static final String FILE_NAME = "className";
     private static final String TEXT = "text";
     private static final int RESPONSE_CODE = 130;
     private static final String JSON_VALID = "{'abc':'a'}";
     private static final String JSON_INVALID = "invalid";
+    private static final String INTRODUCTION = "";
 
     @Mock
     private ReportRenderer renderer;
@@ -73,12 +74,12 @@ public class DocTestMachineImplUnitTest {
         when(jsonHelper.prettyPrintJson(JSON_VALID)).thenReturn(JSON_VALID);
         when(uriHelper.uriToString(uri)).thenReturn(uriString);
         machine = spy(new DocTestMachineImpl(renderer, jsonHelper, uriHelper));
-        machine.beginDoctest(CLASS_NAME);
     }
 
     @Test
     public void render() throws Exception {
         when(machine.getListItem()).thenReturn(listItem);
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.endDocTest();
         machine.prepareDocTest();
         verify(listItem).clear();
@@ -86,10 +87,11 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addTextItem() throws Exception {
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.say(TEXT);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -99,10 +101,11 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addSectionItem() throws Exception {
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.sayNextSectionTitle(TEXT);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -112,10 +115,11 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addAssertItem() throws Exception {
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.sayVerify(TEXT);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -125,10 +129,11 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addResponseItem() throws Exception {
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.sayResponse(RESPONSE_CODE, JSON_VALID);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -139,10 +144,11 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addRequestItem() throws Exception {
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.sayRequest(uri, JSON_VALID, httpRequest);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -154,10 +160,11 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addUploadRequestItem() throws Exception {
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.sayUploadRequest(uri, httpRequest, "file", "fileBody", 10l);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -170,10 +177,11 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addUploadRequestItemUriIsNull() throws Exception {
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.sayUploadRequest(null, httpRequest, "file", "fileBody", 10l);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertTrue(listItems.isEmpty());
@@ -181,10 +189,11 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addRequestItemWihtoutUri() throws Exception {
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.sayRequest(null, JSON_VALID, httpRequest);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertTrue(listItems.isEmpty());
@@ -192,10 +201,11 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addRequestItemWihtInvalidJson() throws Exception {
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.sayRequest(uri, JSON_INVALID, httpRequest);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -207,10 +217,11 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addJsonDocItem() throws Exception {
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.sayPreformatted(JSON_VALID);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -220,6 +231,7 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void testAddSeveralItems() throws Exception {
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.say(TEXT + "_first");
         machine.sayPreformatted(JSON_VALID);
         machine.say(TEXT + "_second");
@@ -229,7 +241,7 @@ public class DocTestMachineImplUnitTest {
         machine.sayNextSectionTitle(TEXT);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
         List<DocItem> items = listItemCaptor.getValue();
         assertEquals(7, items.size());
         assertTrue(items.get(0) instanceof TextDocItem);
@@ -245,11 +257,29 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void testNameOfTheReport() throws Exception {
-        machine.beginDoctest(CLASS_NAME);
-        machine.beginDoctest("blabla");
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
+        machine.beginDoctest("blabla", INTRODUCTION);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(CLASS_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
     }
 
+    @Test
+    public void setIntroduction() throws Exception {
+        machine.beginDoctest(FILE_NAME, "introduction");
+        machine.say("say-1");
+        machine.say("say-2");
+        machine.endDocTest();
+
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
+
+        List<DocItem> listItems = listItemCaptor.getValue();
+        assertEquals(3, listItems.size());
+        assertTrue(listItems.get(0) instanceof TextDocItem);
+        assertEquals("introduction", ((TextDocItem) listItems.get(0)).getText());
+        assertTrue(listItems.get(1) instanceof TextDocItem);
+        assertEquals("say-1", ((TextDocItem) listItems.get(1)).getText());
+        assertTrue(listItems.get(2) instanceof TextDocItem);
+        assertEquals("say-2", ((TextDocItem) listItems.get(2)).getText());
+    }
 }

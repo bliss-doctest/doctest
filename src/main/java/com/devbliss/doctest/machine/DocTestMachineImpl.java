@@ -36,11 +36,11 @@ import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
  */
 public class DocTestMachineImpl implements DocTestMachine {
 
-    // The class under test.
+    // The name of the report.
     // Usually I don't like that, but we don't have another option to generate
     // the name under test because of the static way JUnit runs files and uses
     // AfterClass and BeforeClass.
-    private String className;
+    private String fileName;
 
     public StringBuffer outputOfTestsBuffer = new StringBuffer();
     private final List<DocItem> listItem;
@@ -60,15 +60,18 @@ public class DocTestMachineImpl implements DocTestMachine {
         this.jsonHelper = jsonHelper;
     }
 
-    public void beginDoctest(String className) {
-        if (this.className == null) {
-            this.className = className;
+    public void beginDoctest(String fileName, String introduction) {
+        if (this.fileName == null) {
+            this.fileName = fileName;
+            if (introduction != null && !introduction.isEmpty()) {
+                listItem.add(new TextDocItem(introduction));
+            }
         }
     }
 
     public void endDocTest() throws Exception {
-        reportRenderer.render(listItem, className);
-        className = null;
+        reportRenderer.render(listItem, fileName);
+        fileName = null;
     }
 
     public void prepareDocTest() {

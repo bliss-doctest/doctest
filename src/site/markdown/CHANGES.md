@@ -3,6 +3,7 @@ CHANGES
 
 develop
 -------
+- added getIntroduction() function which can be overridden in the test to write an introduction for the report
 - only show the path and the query of the uri, the hostname and port are not important
 - fixed escaping problem by rendering the fileBody of an uploaded image
 

@@ -16,7 +16,6 @@ import org.junit.Before;
 
 import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
 import com.devbliss.doctest.machine.DocTestMachine;
-import com.devbliss.doctest.renderer.html.HtmlItems;
 import com.devbliss.doctest.utils.FileHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 
@@ -34,7 +33,7 @@ public class LogicDocTest {
 
     @Before
     public void ensureDocTestClassSet() {
-        docTest.beginDoctest(this.getClass().getCanonicalName());
+        docTest.beginDoctest(this.getClass().getCanonicalName(), getIntroduction());
     }
 
     @AfterClass
@@ -52,6 +51,16 @@ public class LogicDocTest {
         this.apiTest = apiTest;
         this.jsonHelper = jsonHelper;
         this.fileHelper = fileHelper;
+    }
+
+    /**
+     * This method must be overridden if you want to set an introduction
+     * The default value of the introduction is: empty.
+     * 
+     * @return
+     */
+    protected String getIntroduction() {
+        return new String();
     }
 
     public void say(String say) {
