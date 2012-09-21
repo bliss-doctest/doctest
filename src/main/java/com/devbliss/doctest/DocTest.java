@@ -2,7 +2,6 @@ package com.devbliss.doctest;
 
 import com.devbliss.doctest.inject.GuiceModule;
 import com.devbliss.doctest.machine.DocTestMachine;
-import com.devbliss.doctest.renderer.html.HtmlItems;
 import com.devbliss.doctest.utils.FileHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.google.inject.Guice;

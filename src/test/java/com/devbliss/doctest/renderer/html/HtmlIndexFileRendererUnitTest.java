@@ -20,7 +20,6 @@ import com.devbliss.doctest.items.IndexFileDocItem;
 import com.devbliss.doctest.items.LinkDocItem;
 import com.devbliss.doctest.items.MenuDocItem;
 import com.devbliss.doctest.utils.FileHelper;
-import com.devbliss.doctest.utils.FileListHelper;
 
 /**
  * Unit tests for the {@link HtmlIndexFileRenderer}
@@ -37,26 +36,23 @@ public class HtmlIndexFileRendererUnitTest {
     @Mock
     private HtmlItems htmlItems;
     @Mock
-    private FileHelper helper;
-    @Mock
-    private FileListHelper fileListHelper;
+    private FileHelper fileHelper;
 
     HtmlIndexFileRenderer renderer;
 
     @Before
     public void setUp() {
-        when(helper.getCompleteFileName(NAME, ".html")).thenReturn(COMPLETE_NAME);
-        renderer = new HtmlIndexFileRenderer(htmlItems, helper, fileListHelper);
+        when(fileHelper.getCompleteFileName(NAME, ".html")).thenReturn(COMPLETE_NAME);
+        renderer = new HtmlIndexFileRenderer(htmlItems, fileHelper);
     }
 
     @Test
     public void testRender() throws Exception {
         List<DocItem> listTemplates = new ArrayList<DocItem>();
-        when(fileListHelper.getListOfFileAsString(anyString(), anyString(), anyString()))
-                .thenReturn(new ArrayList<LinkDocItem>());
+        when(fileHelper.getListOfFile(anyString())).thenReturn(new ArrayList<LinkDocItem>());
         renderer.render(listTemplates, "");
         verify(htmlItems).getListFilesTemplate(any(MenuDocItem.class));
         verify(htmlItems).getIndexTemplate(any(IndexFileDocItem.class));
-        verify(helper).writeFile(eq(COMPLETE_NAME), anyString());
+        verify(fileHelper).writeFile(eq(COMPLETE_NAME), anyString());
     }
 }

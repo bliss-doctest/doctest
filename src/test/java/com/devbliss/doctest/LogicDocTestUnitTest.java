@@ -45,6 +45,8 @@ public class LogicDocTestUnitTest {
     private static final String RESPONSE_PAYLOAD = "payload";
     private static final int HTTP_STATUS = 204;
     private static final String REASON_PHRASE = "No Content";
+    protected static final String FILE_NAME = "file-name";
+
     @Mock
     private ApiTest apiTest;
     @Mock
@@ -236,10 +238,6 @@ public class LogicDocTestUnitTest {
         }
     }
 
-    private LogicDocTest instantiateAbstractDocTest() {
-        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, fileHelper);
-    }
-
     @Test
     public void assertEqualsJsonObjects() throws Exception {
         Object object1 = new Object();
@@ -364,14 +362,36 @@ public class LogicDocTestUnitTest {
     @Test
     public void clearCookiesShouldClearCookies() {
         docTest.clearCookies();
-        testState.clearCookies();
+        verify(testState).clearCookies();
+    }
+
+    @Test
+    public void setTheNameOfTheFile() {
+        docTest.ensureDocTestClassSet();
+        verify(docTestMachine).beginDoctest(FILE_NAME, "");
+    }
+
+    @Test(expected = AssertionError.class)
+    public void theFileNameIsAlreadyTaken() {
+        doThrow(AssertionError.class).when(fileHelper).validateFileName(FILE_NAME);
+        docTest.ensureDocTestClassSet();
+    }
+
+    private LogicDocTest instantiateAbstractDocTest() {
+        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, fileHelper) {
+
+            @Override
+            protected String getFileName() {
+                return FILE_NAME;
+            }
+        };
     }
 
     @Test
     public void useDefaultintroduction() {
         docTest.ensureDocTestClassSet();
         // verify default value is empty string
-        verify(docTestMachine).beginDoctest("com.devbliss.doctest.LogicDocTest", "");
+        verify(docTestMachine).beginDoctest(FILE_NAME, "");
     }
 
     @Test
@@ -382,10 +402,15 @@ public class LogicDocTestUnitTest {
             public String getIntroduction() {
                 return "intro written by the user";
             }
+
+            @Override
+            protected String getFileName() {
+                return FILE_NAME;
+            }
         };
 
         docTest.ensureDocTestClassSet();
         // verify the new intro is used
-        verify(docTestMachine).beginDoctest(null, "intro written by the user");
+        verify(docTestMachine).beginDoctest(FILE_NAME, "intro written by the user");
     }
 }

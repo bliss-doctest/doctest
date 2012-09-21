@@ -11,7 +11,6 @@ import com.devbliss.doctest.renderer.html.HtmlItems;
 import com.devbliss.doctest.renderer.html.HtmlRenderer;
 import com.devbliss.doctest.templating.ConfigurationWrapper;
 import com.devbliss.doctest.utils.FileHelper;
-import com.devbliss.doctest.utils.FileListHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
@@ -33,7 +32,6 @@ public class GuiceModule extends AbstractModule {
         bind(DocTestMachine.class).to(DocTestMachineImpl.class).in(Singleton.class);
         bind(ApiTest.class).in(Singleton.class);
         bind(JSONHelper.class).in(Singleton.class);
-        bind(FileListHelper.class).in(Singleton.class);
         bind(HtmlItems.class).in(Singleton.class);
         bind(FileHelper.class).in(Singleton.class);
         bind(ReportRenderer.class).to(HtmlRenderer.class).in(Singleton.class);

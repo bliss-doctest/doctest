@@ -3,7 +3,11 @@ CHANGES
 
 develop
 -------
+<<<<<<< HEAD
 - added getIntroduction() function which can be overridden in the test to write an introduction for the report
+=======
+- added abstract getFileName function to let the user choose the name of the html file
+>>>>>>> 925325d0b67d8bf0344e41a4a55baf1e5dae51f4
 - only show the path and the query of the uri, the hostname and port are not important
 - fixed escaping problem by rendering the fileBody of an uploaded image
 
