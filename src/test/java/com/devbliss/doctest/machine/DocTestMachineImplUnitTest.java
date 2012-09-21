@@ -29,6 +29,7 @@ import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
 import com.devbliss.doctest.utils.JSONHelper;
+import com.devbliss.doctest.utils.UriHelper;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
@@ -51,22 +52,27 @@ public class DocTestMachineImplUnitTest {
     private ReportRenderer renderer;
     @Mock
     private JSONHelper jsonHelper;
+    @Mock
+    private List<DocItem> listItem;
+    @Mock
+    private UriHelper uriHelper;
+
     @Captor
     private ArgumentCaptor<List<DocItem>> listItemCaptor;
 
-    @Mock
-    private List<DocItem> listItem;
-
     private DocTestMachineImpl machine;
     private final HTTP_REQUEST httpRequest = HTTP_REQUEST.GET;
+    private String uriString;
     private URI uri;
 
     @Before
     public void setUp() throws URISyntaxException {
+        uri = new URI("");
+
         when(jsonHelper.isJsonValid(JSON_VALID)).thenReturn(true);
         when(jsonHelper.prettyPrintJson(JSON_VALID)).thenReturn(JSON_VALID);
-        uri = new URI("");
-        machine = spy(new DocTestMachineImpl(renderer, jsonHelper));
+        when(uriHelper.uriToString(uri)).thenReturn(uriString);
+        machine = spy(new DocTestMachineImpl(renderer, jsonHelper, uriHelper));
         machine.beginDoctest(CLASS_NAME);
     }
 
@@ -143,7 +149,7 @@ public class DocTestMachineImplUnitTest {
         assertTrue(listItems.get(0) instanceof RequestDocItem);
         assertEquals(JSON_VALID, ((RequestDocItem) listItems.get(0)).getPayload().getExpected());
         assertEquals(httpRequest, ((RequestDocItem) listItems.get(0)).getHttp());
-        assertEquals(uri.toString(), ((RequestDocItem) listItems.get(0)).getUri());
+        assertEquals(uriString, ((RequestDocItem) listItems.get(0)).getUri());
     }
 
     @Test
@@ -157,7 +163,7 @@ public class DocTestMachineImplUnitTest {
         assertEquals(1, listItems.size());
         assertTrue(listItems.get(0) instanceof RequestUploadDocItem);
         assertEquals(httpRequest, ((RequestUploadDocItem) listItems.get(0)).getHttp());
-        assertEquals(uri.toString(), ((RequestUploadDocItem) listItems.get(0)).getUri());
+        assertEquals(uriString, ((RequestUploadDocItem) listItems.get(0)).getUri());
         assertEquals("file", ((RequestUploadDocItem) listItems.get(0)).getFileName());
         assertEquals("fileBody", ((RequestUploadDocItem) listItems.get(0)).getFileBody());
     }
@@ -196,7 +202,7 @@ public class DocTestMachineImplUnitTest {
         assertTrue(listItems.get(0) instanceof RequestDocItem);
         assertEquals(JSON_INVALID, ((RequestDocItem) listItems.get(0)).getPayload().getExpected());
         assertEquals(httpRequest, ((RequestDocItem) listItems.get(0)).getHttp());
-        assertEquals(uri.toString(), ((RequestDocItem) listItems.get(0)).getUri());
+        assertEquals(uriString, ((RequestDocItem) listItems.get(0)).getUri());
     }
 
     @Test

@@ -4,6 +4,7 @@ CHANGES
 develop
 -------
 - added abstract getFileName function to let the user choose the name of the html file
+- only show the path and the query of the uri, the hostname and port are not important
 - fixed escaping problem by rendering the fileBody of an uploaded image
 
 Version 0.5.2 23.08.2012
