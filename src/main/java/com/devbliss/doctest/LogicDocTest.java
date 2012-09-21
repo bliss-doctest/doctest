@@ -16,7 +16,6 @@ import org.junit.Before;
 
 import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
 import com.devbliss.doctest.machine.DocTestMachine;
-import com.devbliss.doctest.renderer.html.HtmlItems;
 import com.devbliss.doctest.utils.FileHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 
@@ -24,7 +23,7 @@ import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 import de.devbliss.apitester.Cookie;
 
-public class LogicDocTest {
+public abstract class LogicDocTest {
 
     protected static DocTestMachine docTest;
 
@@ -34,8 +33,10 @@ public class LogicDocTest {
 
     @Before
     public void ensureDocTestClassSet() {
-        docTest.beginDoctest(this.getClass().getCanonicalName());
+        docTest.beginDoctest(getFileName());
     }
+
+    protected abstract String getFileName();
 
     @AfterClass
     public static void finishDocTest() throws Exception {

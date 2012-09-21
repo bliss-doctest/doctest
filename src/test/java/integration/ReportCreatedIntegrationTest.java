@@ -39,8 +39,8 @@ public class ReportCreatedIntegrationTest {
         List<File> listFiles = getFilesInOutputDirectory();
         assertEquals(3, listFiles.size());
         verifyTheFileHasBeenCreated("index.html");
-        verifyTheFileHasBeenCreated("integration.RequestsIntegrationTest.html");
-        verifyTheFileHasBeenCreated("integration.CompareObjectsIntegrationTest.html");
+        verifyTheFileHasBeenCreated("file1.html");
+        verifyTheFileHasBeenCreated("file2.html");
     }
 
     /**

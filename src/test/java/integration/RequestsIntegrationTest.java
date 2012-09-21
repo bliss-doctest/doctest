@@ -42,6 +42,11 @@ public class RequestsIntegrationTest extends DocTest {
         DocTest.setApi(API);
     }
 
+    @Override
+    protected String getFileName() {
+        return "file2";
+    }
+
     private Object obj;
     private ApiResponse response;
     private URI uri;
