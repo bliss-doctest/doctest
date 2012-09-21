@@ -371,6 +371,12 @@ public class LogicDocTestUnitTest {
         verify(docTestMachine).beginDoctest(FILE_NAME);
     }
 
+    @Test(expected = AssertionError.class)
+    public void theFileNameIsAlreadyTaken() {
+        doThrow(AssertionError.class).when(fileHelper).validateFileName(FILE_NAME);
+        docTest.ensureDocTestClassSet();
+    }
+
     private LogicDocTest instantiateAbstractDocTest() {
         return new LogicDocTest(docTestMachine, apiTest, jsonHelper, fileHelper) {
 

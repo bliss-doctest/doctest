@@ -46,7 +46,7 @@ public class CompareObjectsIntegrationTest extends DocTest {
 
     @Override
     protected String getFileName() {
-        return "file1";
+        return "CompareObjects";
     }
 
     @Test(expected = AssertionError.class)

@@ -33,6 +33,7 @@ public abstract class LogicDocTest {
 
     @Before
     public void ensureDocTestClassSet() {
+        fileHelper.validateFileName(getFileName());
         docTest.beginDoctest(getFileName());
     }
 

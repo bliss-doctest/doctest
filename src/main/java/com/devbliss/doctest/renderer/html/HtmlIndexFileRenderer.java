@@ -7,7 +7,6 @@ import com.devbliss.doctest.items.IndexFileDocItem;
 import com.devbliss.doctest.items.LinkDocItem;
 import com.devbliss.doctest.items.MenuDocItem;
 import com.devbliss.doctest.utils.FileHelper;
-import com.devbliss.doctest.utils.FileListHelper;
 import com.google.inject.Inject;
 
 /**
@@ -25,26 +24,20 @@ import com.google.inject.Inject;
  */
 public class HtmlIndexFileRenderer extends AbstractHtmlReportRenderer {
 
-    private final FileHelper helper;
-    private final FileListHelper fileListHelper;
+    private final FileHelper fileHelper;
 
     @Inject
-    public HtmlIndexFileRenderer(
-            HtmlItems htmlItems,
-            FileHelper abstractReportRenderer,
-            FileListHelper fileListHelper) {
+    public HtmlIndexFileRenderer(HtmlItems htmlItems, FileHelper fileHelper) {
         super(htmlItems);
-        this.helper = abstractReportRenderer;
-        this.fileListHelper = fileListHelper;
+        this.fileHelper = fileHelper;
     }
 
     public void render(List<DocItem> listItems, String name) throws Exception {
-        String nameWithExtension = helper.getCompleteFileName(INDEX, HTML_EXTENSION);
-        List<LinkDocItem> files =
-                fileListHelper.getListOfFileAsString(nameWithExtension, INDEX, HTML_EXTENSION);
+        String nameWithExtension = fileHelper.getCompleteFileName(INDEX, HTML_EXTENSION);
+        List<LinkDocItem> files = fileHelper.getListOfFile(nameWithExtension);
         MenuDocItem menu = new MenuDocItem("List of doctest files", files);
         String body = htmlItems.getListFilesTemplate(menu);
         IndexFileDocItem index = new IndexFileDocItem(name, body);
-        helper.writeFile(nameWithExtension, htmlItems.getIndexTemplate(index));
+        fileHelper.writeFile(nameWithExtension, htmlItems.getIndexTemplate(index));
     }
 }

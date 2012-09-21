@@ -45,7 +45,7 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Override
     protected String getFileName() {
-        return "file2";
+        return "HttpRequests";
     }
 
     private Object obj;
