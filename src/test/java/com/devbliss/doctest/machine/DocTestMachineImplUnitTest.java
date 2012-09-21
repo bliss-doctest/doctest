@@ -62,7 +62,6 @@ public class DocTestMachineImplUnitTest {
 
     private DocTestMachineImpl machine;
     private final HTTP_REQUEST httpRequest = HTTP_REQUEST.GET;
-    private String uriWithoutHost;
     private String uriString;
     private URI uri;
 
@@ -150,7 +149,7 @@ public class DocTestMachineImplUnitTest {
         assertTrue(listItems.get(0) instanceof RequestDocItem);
         assertEquals(JSON_VALID, ((RequestDocItem) listItems.get(0)).getPayload().getExpected());
         assertEquals(httpRequest, ((RequestDocItem) listItems.get(0)).getHttp());
-        assertEquals(uriWithoutHost, ((RequestDocItem) listItems.get(0)).getUri());
+        assertEquals(uriString, ((RequestDocItem) listItems.get(0)).getUri());
     }
 
     @Test
@@ -164,7 +163,7 @@ public class DocTestMachineImplUnitTest {
         assertEquals(1, listItems.size());
         assertTrue(listItems.get(0) instanceof RequestUploadDocItem);
         assertEquals(httpRequest, ((RequestUploadDocItem) listItems.get(0)).getHttp());
-        assertEquals(uriWithoutHost, ((RequestUploadDocItem) listItems.get(0)).getUri());
+        assertEquals(uriString, ((RequestUploadDocItem) listItems.get(0)).getUri());
         assertEquals("file", ((RequestUploadDocItem) listItems.get(0)).getFileName());
         assertEquals("fileBody", ((RequestUploadDocItem) listItems.get(0)).getFileBody());
     }
@@ -203,7 +202,7 @@ public class DocTestMachineImplUnitTest {
         assertTrue(listItems.get(0) instanceof RequestDocItem);
         assertEquals(JSON_INVALID, ((RequestDocItem) listItems.get(0)).getPayload().getExpected());
         assertEquals(httpRequest, ((RequestDocItem) listItems.get(0)).getHttp());
-        assertEquals(uriWithoutHost, ((RequestDocItem) listItems.get(0)).getUri());
+        assertEquals(uriString, ((RequestDocItem) listItems.get(0)).getUri());
     }
 
     @Test
