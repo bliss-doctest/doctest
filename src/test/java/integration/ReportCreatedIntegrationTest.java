@@ -8,7 +8,6 @@ import static testutils.Utils.verifyTheFileHasBeenCreated;
 import java.io.File;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
@@ -26,11 +25,6 @@ public class ReportCreatedIntegrationTest {
         cleanUpTheTargetDirectory();
     }
 
-    @After
-    public void tearDown() {
-        cleanUpTheTargetDirectory();
-    }
-
     @Test
     public void verifyThatTheReportsAreCreated() {
         makeSomeTests();
@@ -39,8 +33,8 @@ public class ReportCreatedIntegrationTest {
         List<File> listFiles = getFilesInOutputDirectory();
         assertEquals(3, listFiles.size());
         verifyTheFileHasBeenCreated("index.html");
-        verifyTheFileHasBeenCreated("integration.RequestsIntegrationTest.html");
-        verifyTheFileHasBeenCreated("integration.CompareObjectsIntegrationTest.html");
+        verifyTheFileHasBeenCreated("CompareObjects.html");
+        verifyTheFileHasBeenCreated("HttpRequests.html");
     }
 
     /**

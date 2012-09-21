@@ -1,7 +1,6 @@
 TODO doctest
 ============
 - give the possibility to use own css classes
-- give the possibility the name the file and do not use the name of the class any more, because this does not make sense at all for the personn which is going to read the documentation
 - fix the problem with the rendering of the file content. three ideas:
 	- do not show content file is type is image
 	- show content in iframe
