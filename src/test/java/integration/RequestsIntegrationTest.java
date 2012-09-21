@@ -9,6 +9,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.Collections;
 
+import org.apache.http.client.utils.URIBuilder;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -53,7 +54,9 @@ public class RequestsIntegrationTest extends DocTest {
         response =
                 new ApiResponse(HTTP_STATUS, REASON_PHRASE, PAYLOAD, Collections
                         .<String, String> emptyMap());
-        uri = new URI("http://www.google.com");
+        uri =
+                new URIBuilder().setScheme("http").setHost("www.hostname.com").setPort(8080)
+                        .setPath("/resource/id:12345").build();
         when(API.put(uri, obj)).thenReturn(response);
         when(API.get(uri)).thenReturn(response);
         when(API.delete(uri, null)).thenReturn(response);
