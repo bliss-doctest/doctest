@@ -36,8 +36,6 @@ public abstract class LogicDocTest {
         docTest.beginDoctest(getFileName());
     }
 
-    protected abstract String getFileName();
-
     @AfterClass
     public static void finishDocTest() throws Exception {
         LogicDocTest.docTest.endDocTest();
@@ -54,6 +52,13 @@ public abstract class LogicDocTest {
         this.jsonHelper = jsonHelper;
         this.fileHelper = fileHelper;
     }
+
+    /**
+     * Returns the name of the report file
+     * 
+     * @return name of the file without extension
+     */
+    protected abstract String getFileName();
 
     public void say(String say) {
         docTest.say(say);
