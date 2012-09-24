@@ -3,6 +3,7 @@ CHANGES
 
 develop
 -------
+- removed the asserts methods without explanation texts.
 - added getIntroduction() function which can be overridden in the test to write an introduction for the report
 - added abstract getFileName function to let the user choose the name of the html file
 - only show the path and the query of the uri, the hostname and port are not important

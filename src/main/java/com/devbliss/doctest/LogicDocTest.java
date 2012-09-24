@@ -203,18 +203,6 @@ public abstract class LogicDocTest {
     }
 
     /**
-     * TODO: Remove me since im not helpfull for documentation
-     * instead use {@link #assertEqualsAndSay(Object, Object, String)}
-     * 
-     * @param expected
-     * @param given
-     */
-    @Deprecated
-    protected void assertEqualsAndSay(Object expected, Object given) {
-        assertEqualsAndSay(expected, given, expected.toString());
-    }
-
-    /**
      * 
      * @param expected
      * @param given
@@ -279,31 +267,9 @@ public abstract class LogicDocTest {
         docTest.sayVerify(message + expectedJson);
     }
 
-    /**
-     * TODO: Remove me since im not helpfull for documentation
-     * instead use {@link #assertTrueAndSay(Boolean, String)}
-     * 
-     * @param condition
-     */
-    @Deprecated
-    protected void assertTrueAndSay(Boolean condition) {
-        assertTrueAndSay(condition, condition.toString());
-    }
-
     protected void assertTrueAndSay(Boolean condition, String message) {
         assertTrue(condition);
         docTest.sayVerify(message);
-    }
-
-    /**
-     * TODO: Remove me since im not helpfull for documentation
-     * instead use {@link #assertFalseAndSay(Boolean, String)}
-     * 
-     * @param condition
-     */
-    @Deprecated
-    protected void assertFalseAndSay(Boolean condition) {
-        assertFalseAndSay(condition, condition.toString());
     }
 
     protected void assertFalseAndSay(Boolean condition, String message) {

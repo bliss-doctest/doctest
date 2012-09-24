@@ -1,5 +1,6 @@
 package integration;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
@@ -32,6 +33,8 @@ import de.devbliss.apitester.ApiTest;
  */
 public class RequestsIntegrationTest extends DocTest {
 
+    private static final String JSON_TEXT = "The response contains a JSON payload";
+    private static final String HTTP_TEXT = "The response contains the HTTP_STATUS of the request";
     private static final String PAYLOAD = "{'abc':'123'}";
     private static final int HTTP_STATUS = 230;
     private static final String REASON_PHRASE = "This is not a normal response code";
@@ -81,8 +84,8 @@ public class RequestsIntegrationTest extends DocTest {
         sayNextSection("Making a get request");
         Response resp = makeGetRequest(uri);
 
-        assertEqualsAndSay(HTTP_STATUS, resp.httpStatus);
-        assertEqualsAndSay(PAYLOAD, resp.payload);
+        assertEqualsAndSay(HTTP_STATUS, resp.httpStatus, HTTP_TEXT);
+        assertEqualsAndSay(PAYLOAD, resp.payload, JSON_TEXT);
     }
 
     @Test
@@ -90,8 +93,8 @@ public class RequestsIntegrationTest extends DocTest {
         sayNextSection("Making a delete request");
         Response response = makeDeleteRequest(uri);
 
-        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
-        assertEqualsAndSay(PAYLOAD, response.payload);
+        assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
+        assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
     }
 
     @Test
@@ -99,8 +102,8 @@ public class RequestsIntegrationTest extends DocTest {
         sayNextSection("Making a post request");
         Response response = makePostRequest(uri, obj);
 
-        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
-        assertEqualsAndSay(PAYLOAD, response.payload);
+        assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
+        assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
     }
 
     @Test
@@ -108,8 +111,8 @@ public class RequestsIntegrationTest extends DocTest {
         sayNextSection("Making a put request with encöding chäracters");
         Response response = makePutRequest(uri, obj);
 
-        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
-        assertEqualsAndSay(PAYLOAD, response.payload);
+        assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
+        assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
     }
 
     @Test
@@ -118,8 +121,8 @@ public class RequestsIntegrationTest extends DocTest {
 
         Response response =
                 makePostUploadRequest(uri, new File("src/test/resources/file.txt"), "paramName");
-        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
-        assertEqualsAndSay(PAYLOAD, response.payload);
+        assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
+        assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
     }
 
     @Test
@@ -129,32 +132,31 @@ public class RequestsIntegrationTest extends DocTest {
         Response response =
                 makePostUploadRequest(uri, new File("src/test/resources/picture.png"), "paramName");
 
-        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
-        assertEqualsAndSay(PAYLOAD, response.payload);
+        assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
+        assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
     }
 
     @Test
     public void suiteRequests() throws Exception {
-        sayNextSection("Making several requests");
 
         Response response =
                 makePostUploadRequest(uri, new File("src/test/resources/file.txt"), "paramName");
-        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
-        assertEqualsAndSay(PAYLOAD, response.payload);
+        assertEquals(HTTP_STATUS, response.httpStatus);
+        assertEquals(PAYLOAD, response.payload);
 
         response = makeGetRequest(uri);
-        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
-        assertEqualsAndSay(PAYLOAD, response.payload);
+        assertEquals(HTTP_STATUS, response.httpStatus);
+        assertEquals(PAYLOAD, response.payload);
 
         response = makeDeleteRequest(uri);
-        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
+        assertEquals(HTTP_STATUS, response.httpStatus);
 
         response = makePostRequest(uri, obj);
-        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
-        assertEqualsAndSay(PAYLOAD, response.payload);
+        assertEquals(HTTP_STATUS, response.httpStatus);
+        assertEquals(PAYLOAD, response.payload);
 
         response = makePutRequest(uri, obj);
-        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
-        assertEqualsAndSay(PAYLOAD, response.payload);
+        assertEquals(HTTP_STATUS, response.httpStatus);
+        assertEquals(PAYLOAD, response.payload);
     }
 }
