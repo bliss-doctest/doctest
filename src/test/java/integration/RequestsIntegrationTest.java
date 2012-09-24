@@ -9,6 +9,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.Collections;
 
+import org.apache.http.client.utils.URIBuilder;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -42,6 +43,11 @@ public class RequestsIntegrationTest extends DocTest {
         DocTest.setApi(API);
     }
 
+    @Override
+    protected String getFileName() {
+        return "HttpRequests";
+    }
+
     private Object obj;
     private ApiResponse response;
     private URI uri;
@@ -53,7 +59,9 @@ public class RequestsIntegrationTest extends DocTest {
         response =
                 new ApiResponse(HTTP_STATUS, REASON_PHRASE, PAYLOAD, Collections
                         .<String, String> emptyMap());
-        uri = new URI("http://www.google.com");
+        uri =
+                new URIBuilder().setScheme("http").setHost("www.hostname.com").setPort(8080)
+                        .setPath("/resource/id:12345").build();
         when(API.put(uri, obj)).thenReturn(response);
         when(API.get(uri)).thenReturn(response);
         when(API.delete(uri, null)).thenReturn(response);
@@ -105,6 +113,17 @@ public class RequestsIntegrationTest extends DocTest {
 
         Response response =
                 makePostUploadRequest(uri, new File("src/test/resources/file.txt"), "paramName");
+        assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
+        assertEqualsAndSay(PAYLOAD, response.payload);
+    }
+
+    @Test
+    public void postUploadImage() throws Exception {
+        sayNextSection("Making an upload post request with an image file");
+
+        Response response =
+                makePostUploadRequest(uri, new File("src/test/resources/picture.png"), "paramName");
+
         assertEqualsAndSay(HTTP_STATUS, response.httpStatus);
         assertEqualsAndSay(PAYLOAD, response.payload);
     }

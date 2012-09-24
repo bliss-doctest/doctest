@@ -44,6 +44,11 @@ public class CompareObjectsIntegrationTest extends DocTest {
 
     }
 
+    @Override
+    protected String getFileName() {
+        return "CompareObjects";
+    }
+
     @Test(expected = AssertionError.class)
     public void compareTwoDifferentObjectsWithoutExcluding() throws Exception {
         try {

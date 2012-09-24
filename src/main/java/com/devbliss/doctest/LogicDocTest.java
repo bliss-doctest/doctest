@@ -23,7 +23,7 @@ import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 import de.devbliss.apitester.Cookie;
 
-public class LogicDocTest {
+public abstract class LogicDocTest {
 
     protected static DocTestMachine docTest;
 
@@ -33,7 +33,8 @@ public class LogicDocTest {
 
     @Before
     public void ensureDocTestClassSet() {
-        docTest.beginDoctest(this.getClass().getCanonicalName());
+        fileHelper.validateFileName(getFileName());
+        docTest.beginDoctest(getFileName());
     }
 
     @AfterClass
@@ -52,6 +53,13 @@ public class LogicDocTest {
         this.jsonHelper = jsonHelper;
         this.fileHelper = fileHelper;
     }
+
+    /**
+     * Returns the name of the report file
+     * 
+     * @return name of the file without extension
+     */
+    protected abstract String getFileName();
 
     public void say(String say) {
         docTest.say(say);

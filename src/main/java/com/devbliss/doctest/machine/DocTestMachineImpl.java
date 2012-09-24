@@ -17,6 +17,7 @@ import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
 import com.devbliss.doctest.utils.JSONHelper;
+import com.devbliss.doctest.utils.UriHelper;
 import com.google.inject.Inject;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
@@ -46,9 +47,14 @@ public class DocTestMachineImpl implements DocTestMachine {
 
     private final ReportRenderer reportRenderer;
     private final JSONHelper jsonHelper;
+    private final UriHelper uriHelper;
 
     @Inject
-    public DocTestMachineImpl(ReportRenderer reportRenderer, JSONHelper jsonHelper) {
+    public DocTestMachineImpl(
+            ReportRenderer reportRenderer,
+            JSONHelper jsonHelper,
+            UriHelper uriHelper) {
+        this.uriHelper = uriHelper;
         listItem = new ArrayList<DocItem>();
         this.reportRenderer = reportRenderer;
         this.jsonHelper = jsonHelper;
@@ -83,15 +89,21 @@ public class DocTestMachineImpl implements DocTestMachine {
 
     public void sayRequest(URI uri, String payload, HTTP_REQUEST httpRequest) throws JSONException {
         if (uri != null) {
-            listItem.add(new RequestDocItem(httpRequest, uri.toString(), getPayload(payload)));
+            listItem.add(new RequestDocItem(httpRequest, uriHelper.uriToString(uri),
+                    getPayload(payload)));
         }
     }
 
     public void sayUploadRequest(URI uri, HTTP_REQUEST httpRequest, String fileName,
             String fileBody, long size) throws JSONException {
+        sayUploadRequest(uri, httpRequest, fileName, fileBody, size, null);
+    }
+
+    public void sayUploadRequest(URI uri, HTTP_REQUEST httpRequest, String fileName,
+            String fileBody, long size, String mimeType) {
         if (uri != null) {
-            listItem.add(new RequestUploadDocItem(httpRequest, uri.toString(), fileName, fileBody,
-                    size));
+            listItem.add(new RequestUploadDocItem(httpRequest, uriHelper.uriToString(uri),
+                    fileName, fileBody, size, mimeType));
         }
     }
 
