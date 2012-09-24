@@ -16,7 +16,6 @@ import org.junit.Before;
 
 import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
 import com.devbliss.doctest.machine.DocTestMachine;
-import com.devbliss.doctest.renderer.html.HtmlItems;
 import com.devbliss.doctest.utils.FileHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 
@@ -185,14 +184,27 @@ public class LogicDocTest {
         return response;
     }
 
-    protected void assertEqualsAndSay(Object expected, Object result) {
-        assertEquals(expected, result);
-        docTest.sayVerify(expected.toString());
+    /**
+     *  TODO: Remove me since im not helpfull for documentation
+     *  instead use {@link #assertEqualsAndSay(Object, Object, String)}
+     *
+     * @param expected
+     * @param given
+     */
+    @Deprecated
+    protected void assertEqualsAndSay(Object expected, Object given) {
+        assertEqualsAndSay(expected, given, expected.toString());
     }
 
-    protected void assertEqualsAndSay(Object expected, Object result, String message) {
-        assertEquals(expected, result);
-        docTest.sayVerify(message + expected.toString());
+    /**
+     *
+     * @param expected
+     * @param given
+     * @param message
+     */
+    protected void assertEqualsAndSay(Object expected, Object given, String message) {
+        assertEquals(expected, given);
+        docTest.sayVerify(message);
     }
 
     /**
@@ -248,25 +260,46 @@ public class LogicDocTest {
         assertEquals(expectedJson, resultingJson);
         docTest.sayVerify(message + expectedJson);
     }
-
+    /**
+     * TODO: Remove me since im not helpfull for documentation
+     * instead use {@link #assertTrueAndSay(Boolean, String)}
+     *
+     * @param condition
+     */
+    @Deprecated
     protected void assertTrueAndSay(Boolean condition) {
-        assertTrue(condition);
-        docTest.sayVerify(condition.toString());
+        assertTrueAndSay(condition, condition.toString());
     }
 
     protected void assertTrueAndSay(Boolean condition, String message) {
         assertTrue(condition);
-        docTest.sayVerify(message + condition.toString());
+        docTest.sayVerify(message);
     }
 
+    /**
+     * TODO: Remove me since im not helpfull for documentation
+     * instead use {@link #assertFalseAndSay(Boolean, String)}
+     *
+     * @param condition
+     */
+    @Deprecated
     protected void assertFalseAndSay(Boolean condition) {
-        assertFalse(condition);
-        docTest.sayVerify(condition.toString());
+        assertFalseAndSay(condition, condition.toString());
     }
 
     protected void assertFalseAndSay(Boolean condition, String message) {
         assertFalse(condition);
-        docTest.sayVerify(message + condition.toString());
+        docTest.sayVerify(message);
+    }
+
+    protected void assertNullAndSay(Object object, String message) {
+        assertNull(object);
+        docTest.sayVerify(message);
+    }
+
+    protected void assertNotNullAndSay(Object object, String message) {
+        assertNotNull(object);
+        docTest.sayVerify(message);
     }
 
     /**

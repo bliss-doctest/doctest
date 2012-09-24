@@ -40,6 +40,17 @@ import de.devbliss.apitester.TestState;
 @RunWith(MockitoJUnitRunner.class)
 public class LogicDocTestUnitTest {
 
+    public static final String MESSAGE = "i am the message and the message is me";
+
+    private class ShouldFailException extends Exception {
+        ShouldFailException() {
+            super("The assertion should have failed");
+        }
+        ShouldFailException(String message) {
+            super(message);
+        }
+    }
+
     private static final String NULL = "NULL";
     private static final String OBJECT = "OBJECT";
     private static final String OBJECT2 = "OBJECT2";
@@ -166,72 +177,100 @@ public class LogicDocTestUnitTest {
     }
 
     @Test
-    public void assertTrue() throws Exception {
-        docTest.assertTrueAndSay(true);
-        verify(docTestMachine).sayVerify("true");
+    public void assertTrueAndSay() throws Exception {
+        docTest.assertTrueAndSay(true, MESSAGE);
+        verify(docTestMachine).sayVerify(MESSAGE);
     }
 
     @Test
-    public void assertTrueIsFalse() throws Exception {
+    public void assertTrueAndSayShouldFail() throws Exception {
         try {
-            docTest.assertTrueAndSay(false);
-            fail();
+            docTest.assertTrueAndSay(false, MESSAGE);
+            throw new ShouldFailException();
         } catch (AssertionError e) {
-            verify(docTestMachine, never()).sayVerify("true");
+            verify(docTestMachine, never()).sayVerify(MESSAGE);
+        } catch (ShouldFailException  e) {
+            fail(e.getMessage());
         } catch (Exception e) {
             fail();
         }
     }
 
     @Test
-    public void assertFalse() throws Exception {
-        docTest.assertFalseAndSay(false);
-        verify(docTestMachine).sayVerify("false");
+    public void assertNullAndSay() throws Exception {
+        docTest.assertNullAndSay(null, MESSAGE);
+        verify(docTestMachine).sayVerify(MESSAGE);
     }
 
     @Test
-    public void assertFalseIsFalse() throws Exception {
+    public void assertNullAndSayShouldFail() throws Exception {
         try {
-            docTest.assertFalseAndSay(true);
+            docTest.assertNullAndSay(new String(), MESSAGE);
+            throw new ShouldFailException();
+        } catch (AssertionError assertionError) {
+            verify(docTestMachine, never()).sayVerify(MESSAGE);
+        } catch (ShouldFailException e) {
+            fail(e.getMessage());
+        } catch(Exception e) {
             fail();
+        }
+    }
+
+    @Test
+    public void assertNotNullAndSay() throws Exception {
+        docTest.assertNotNullAndSay(new String(), MESSAGE);
+        verify(docTestMachine).sayVerify(MESSAGE);
+    }
+
+    @Test
+    public void assertNotNullAndSayShouldFail() throws Exception {
+        try {
+            docTest.assertNotNullAndSay(null, MESSAGE);
+            throw new ShouldFailException();
+        } catch(AssertionError assertionError) {
+            verify(docTestMachine, never()).sayVerify(MESSAGE);
+        } catch(ShouldFailException e) {
+            fail(e.getMessage());
+        } catch(Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void assertFalseAndSay() throws Exception {
+        docTest.assertFalseAndSay(false, MESSAGE);
+        verify(docTestMachine).sayVerify(MESSAGE);
+    }
+
+    @Test
+    public void assertFalseShouldFail() throws Exception {
+        try {
+            docTest.assertFalseAndSay(true, MESSAGE);
+            throw new ShouldFailException();
         } catch (AssertionError e) {
-            verify(docTestMachine, never()).sayVerify("false");
+            verify(docTestMachine, never()).sayVerify(anyString());
+        } catch (ShouldFailException e) {
+            fail(e.getMessage());
         } catch (Exception e) {
             fail();
         }
     }
 
     @Test
-    public void assertEqualsString() throws Exception {
-        docTest.assertEqualsAndSay("expected", "expected");
-        verify(docTestMachine).sayVerify("expected");
+    public void assertEqualsAndSay() throws Exception {
+        docTest.assertEqualsAndSay("expected", "expected", MESSAGE);
+        verify(docTestMachine).sayVerify(MESSAGE);
     }
 
     @Test
-    public void assertStringAreNotEquals() throws Exception {
+    public void assertEqualsAndSayShouldFail() throws Exception {
         try {
-            docTest.assertEqualsAndSay("expected", "result");
-            fail();
+            docTest.assertEqualsAndSay("expected", "unexpected", MESSAGE);
+            throw new ShouldFailException();
         } catch (AssertionError e) {
-            verify(docTestMachine, never()).sayVerify("expected");
-        } catch (Exception e) {
-            fail();
-        }
-    }
-
-    @Test
-    public void assertEqualsInt() throws Exception {
-        docTest.assertEqualsAndSay(100, 100);
-        verify(docTestMachine).sayVerify("100");
-    }
-
-    @Test
-    public void assertIntAreNotEquals() throws Exception {
-        try {
-            docTest.assertEqualsAndSay(100, 105);
-            fail();
-        } catch (AssertionError e) {
-            verify(docTestMachine, never()).sayVerify("100");
+            verify(docTestMachine, never()).sayVerify(anyString());
+        } catch (ShouldFailException e) {
+            fail(e.getMessage());
         } catch (Exception e) {
             fail();
         }
@@ -367,4 +406,5 @@ public class LogicDocTestUnitTest {
         docTest.clearCookies();
         testState.clearCookies();
     }
+
 }
