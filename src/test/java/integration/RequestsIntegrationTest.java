@@ -74,7 +74,7 @@ public class RequestsIntegrationTest extends DocTest {
     @Override
     public String getIntroduction() {
         return "Welcome to the requests integration doctest page. In this"
-                + " documentation, you will learn how to make some HttpRequest with the doctest library!";
+                + " section, you will learn how to make some HttpRequest with the doctest library!";
     }
 
     @Test

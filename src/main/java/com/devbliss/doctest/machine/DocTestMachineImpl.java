@@ -48,6 +48,7 @@ public class DocTestMachineImpl implements DocTestMachine {
     private final ReportRenderer reportRenderer;
     private final JSONHelper jsonHelper;
     private final UriHelper uriHelper;
+    private String introduction;
 
     @Inject
     public DocTestMachineImpl(
@@ -63,15 +64,16 @@ public class DocTestMachineImpl implements DocTestMachine {
     public void beginDoctest(String fileName, String introduction) {
         if (this.fileName == null) {
             this.fileName = fileName;
-            if (introduction != null && !introduction.isEmpty()) {
-                listItem.add(new TextDocItem(introduction));
+            if (this.introduction == null) {
+                this.introduction = introduction;
             }
         }
     }
 
     public void endDocTest() throws Exception {
-        reportRenderer.render(listItem, fileName);
+        reportRenderer.render(listItem, fileName, introduction);
         fileName = null;
+        introduction = null;
     }
 
     public void prepareDocTest() {

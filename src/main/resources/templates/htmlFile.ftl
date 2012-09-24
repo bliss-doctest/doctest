@@ -11,7 +11,12 @@
 			<div class="wrapper">			
             	<br/>
             	<a href="./index.html">back to index page</a><br/>
-            	Doctest originally perfomed at: ${date} 
+            	<div class="small">Doctest originally perfomed at: ${date}</div>
+            	
+            	<#if introduction?? && introduction != "">
+            		<h3>Introduction:</h3>
+            		<div>${introduction}</div>
+            	</#if>
             	${items}
             </div>
         </div>

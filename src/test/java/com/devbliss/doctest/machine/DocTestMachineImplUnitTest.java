@@ -91,7 +91,7 @@ public class DocTestMachineImplUnitTest {
         machine.say(TEXT);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -105,7 +105,7 @@ public class DocTestMachineImplUnitTest {
         machine.sayNextSectionTitle(TEXT);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -119,7 +119,7 @@ public class DocTestMachineImplUnitTest {
         machine.sayVerify(TEXT);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -133,7 +133,7 @@ public class DocTestMachineImplUnitTest {
         machine.sayResponse(RESPONSE_CODE, JSON_VALID);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -148,7 +148,7 @@ public class DocTestMachineImplUnitTest {
         machine.sayRequest(uri, JSON_VALID, httpRequest);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -164,7 +164,7 @@ public class DocTestMachineImplUnitTest {
         machine.sayUploadRequest(uri, httpRequest, "file", "fileBody", 10l);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -181,7 +181,7 @@ public class DocTestMachineImplUnitTest {
         machine.sayUploadRequest(null, httpRequest, "file", "fileBody", 10l);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertTrue(listItems.isEmpty());
@@ -193,7 +193,7 @@ public class DocTestMachineImplUnitTest {
         machine.sayRequest(null, JSON_VALID, httpRequest);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertTrue(listItems.isEmpty());
@@ -205,7 +205,7 @@ public class DocTestMachineImplUnitTest {
         machine.sayRequest(uri, JSON_INVALID, httpRequest);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -221,7 +221,7 @@ public class DocTestMachineImplUnitTest {
         machine.sayPreformatted(JSON_VALID);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
 
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
@@ -241,7 +241,7 @@ public class DocTestMachineImplUnitTest {
         machine.sayNextSectionTitle(TEXT);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
         List<DocItem> items = listItemCaptor.getValue();
         assertEquals(7, items.size());
         assertTrue(items.get(0) instanceof TextDocItem);
@@ -261,7 +261,7 @@ public class DocTestMachineImplUnitTest {
         machine.beginDoctest("blabla", INTRODUCTION);
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
     }
 
     @Test
@@ -271,15 +271,13 @@ public class DocTestMachineImplUnitTest {
         machine.say("say-2");
         machine.endDocTest();
 
-        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME));
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq("introduction"));
 
         List<DocItem> listItems = listItemCaptor.getValue();
-        assertEquals(3, listItems.size());
+        assertEquals(2, listItems.size());
         assertTrue(listItems.get(0) instanceof TextDocItem);
-        assertEquals("introduction", ((TextDocItem) listItems.get(0)).getText());
+        assertEquals("say-1", ((TextDocItem) listItems.get(0)).getText());
         assertTrue(listItems.get(1) instanceof TextDocItem);
-        assertEquals("say-1", ((TextDocItem) listItems.get(1)).getText());
-        assertTrue(listItems.get(2) instanceof TextDocItem);
-        assertEquals("say-2", ((TextDocItem) listItems.get(2)).getText());
+        assertEquals("say-2", ((TextDocItem) listItems.get(1)).getText());
     }
 }

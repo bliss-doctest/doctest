@@ -13,17 +13,19 @@ public class ReportFileDocItem implements DocItem {
     private String css;
     private String jsCode;
     private String name;
+    private final String introduction;
     private String items;
     private final String date;
 
-    public ReportFileDocItem(String name, String items) {
-        this("", name, items);
+    public ReportFileDocItem(String name, String introduction, String items) {
+        this("", name, introduction, items);
     }
 
-    public ReportFileDocItem(String css, String name, String items) {
+    public ReportFileDocItem(String css, String name, String introduction, String items) {
         this.css = css;
         this.name = name;
         this.items = items;
+        this.introduction = introduction;
         this.date = new Date().toString();
         try {
             StringBuffer stringBuffer = new StringBuffer();
@@ -47,6 +49,10 @@ public class ReportFileDocItem implements DocItem {
 
     public String getName() {
         return name;
+    }
+
+    public String getIntroduction() {
+        return introduction;
     }
 
     public void setCss(String css) {

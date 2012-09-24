@@ -50,7 +50,7 @@ public class HtmlIndexFileRendererUnitTest {
     public void testRender() throws Exception {
         List<DocItem> listTemplates = new ArrayList<DocItem>();
         when(fileHelper.getListOfFile(anyString())).thenReturn(new ArrayList<LinkDocItem>());
-        renderer.render(listTemplates, "");
+        renderer.render(listTemplates, "", "");
         verify(htmlItems).getListFilesTemplate(any(MenuDocItem.class));
         verify(htmlItems).getIndexTemplate(any(IndexFileDocItem.class));
         verify(fileHelper).writeFile(eq(COMPLETE_NAME), anyString());
