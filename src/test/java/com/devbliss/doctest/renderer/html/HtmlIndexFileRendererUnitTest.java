@@ -38,7 +38,7 @@ public class HtmlIndexFileRendererUnitTest {
     @Mock
     private FileHelper fileHelper;
 
-    HtmlIndexFileRenderer renderer;
+    private HtmlIndexFileRenderer renderer;
 
     @Before
     public void setUp() {

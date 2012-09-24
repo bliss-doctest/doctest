@@ -25,7 +25,7 @@ import de.devbliss.apitester.Cookie;
 
 public abstract class LogicDocTest {
 
-    protected static DocTestMachine docTest;
+    protected static DocTestMachine docTestMachine;
 
     private final ApiTest apiTest;
     private final JSONHelper jsonHelper;
@@ -34,13 +34,13 @@ public abstract class LogicDocTest {
     @Before
     public void ensureDocTestClassSet() {
         fileHelper.validateFileName(getFileName());
-        docTest.beginDoctest(getFileName(), getIntroduction());
+        docTestMachine.beginDoctest(getFileName(), getIntroduction());
     }
 
     @AfterClass
     public static void finishDocTest() throws Exception {
-        LogicDocTest.docTest.endDocTest();
-        LogicDocTest.docTest.prepareDocTest();
+        LogicDocTest.docTestMachine.endDocTest();
+        LogicDocTest.docTestMachine.prepareDocTest();
     }
 
     public LogicDocTest(
@@ -48,7 +48,7 @@ public abstract class LogicDocTest {
             ApiTest apiTest,
             JSONHelper jsonHelper,
             FileHelper fileHelper) {
-        LogicDocTest.docTest = docTest;
+        LogicDocTest.docTestMachine = docTest;
         this.apiTest = apiTest;
         this.jsonHelper = jsonHelper;
         this.fileHelper = fileHelper;
@@ -71,8 +71,8 @@ public abstract class LogicDocTest {
      */
     protected abstract String getFileName();
 
-    public void say(String say) {
-        docTest.say(say);
+    protected void say(String say) {
+        docTestMachine.say(say);
     }
 
     /**
@@ -82,7 +82,7 @@ public abstract class LogicDocTest {
      * @param say the text to be said
      * @param objects multiple Objects matching the amount of placeholdern in the text
      */
-    public void say(String say, Object... objects) {
+    protected void say(String say, Object... objects) {
         String[] stringRepresentations = new String[objects.length];
         for (int i = 0; i < objects.length; i++) {
             if (objects[i] instanceof String) {
@@ -91,11 +91,11 @@ public abstract class LogicDocTest {
                 stringRepresentations[i] = jsonHelper.toJson(objects[i], true);
             }
         }
-        docTest.say(say, stringRepresentations);
+        docTestMachine.say(say, stringRepresentations);
     }
 
-    public void sayNextSection(String sectionName) {
-        docTest.sayNextSectionTitle(sectionName);
+    protected void sayNextSection(String sectionName) {
+        docTestMachine.sayNextSectionTitle(sectionName);
     }
 
     protected void sayUri(URI uri, HTTP_REQUEST httpRequest) throws Exception {
@@ -103,7 +103,7 @@ public abstract class LogicDocTest {
     }
 
     protected void sayUri(URI uri, Object obj, HTTP_REQUEST httpRequest) throws Exception {
-        docTest.sayRequest(uri, jsonHelper.toJson(obj), httpRequest);
+        docTestMachine.sayRequest(uri, jsonHelper.toJson(obj), httpRequest);
     }
 
     /**
@@ -114,7 +114,7 @@ public abstract class LogicDocTest {
      * @throws Exception
      */
     protected void sayObject(Object obj) throws Exception {
-        docTest.sayPreformatted(obj == null ? "" : new JSONHelper().toJson(obj, true));
+        docTestMachine.sayPreformatted(obj == null ? "" : new JSONHelper().toJson(obj, true));
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class LogicDocTest {
      * @throws Exception
      */
     protected void sayPreformattedCode(String code) throws Exception {
-        docTest.sayPreformatted(code == null ? "" : code);
+        docTestMachine.sayPreformatted(code == null ? "" : code);
     }
 
     protected Response makeGetRequestSilent(URI uri) throws Exception {
@@ -135,7 +135,7 @@ public abstract class LogicDocTest {
     protected Response makeGetRequest(URI uri) throws Exception {
         sayUri(uri, HTTP_REQUEST.GET);
         Response response = makeGetRequestSilent(uri);
-        docTest.sayResponse(response.httpStatus, response.payload);
+        docTestMachine.sayResponse(response.httpStatus, response.payload);
         return response;
     }
 
@@ -150,7 +150,7 @@ public abstract class LogicDocTest {
     protected Response makePostRequest(URI uri, Object obj) throws Exception {
         sayUri(uri, obj, HTTP_REQUEST.POST);
         Response response = makePostRequestSilent(uri, obj);
-        docTest.sayResponse(response.httpStatus, response.payload);
+        docTestMachine.sayResponse(response.httpStatus, response.payload);
         return response;
     }
 
@@ -158,12 +158,12 @@ public abstract class LogicDocTest {
             throws Exception {
         FileBody fileBodyToUpload = new FileBody(fileToUpload);
 
-        docTest.sayUploadRequest(uri, HTTP_REQUEST.POST, fileBodyToUpload.getFilename(), fileHelper
-                .readFile(fileToUpload), fileToUpload.length());
+        docTestMachine.sayUploadRequest(uri, HTTP_REQUEST.POST, fileBodyToUpload.getFilename(),
+                fileHelper.readFile(fileToUpload), fileToUpload.length());
         Response response =
                 new Response(apiTest.post(uri, null, new PostUploadWithoutRedirectImpl(paramName,
                         fileBodyToUpload)));
-        docTest.sayResponse(response.httpStatus, response.payload);
+        docTestMachine.sayResponse(response.httpStatus, response.payload);
 
         return response;
     }
@@ -179,7 +179,7 @@ public abstract class LogicDocTest {
     protected Response makePutRequest(URI uri, Object obj) throws Exception {
         sayUri(uri, obj, HTTP_REQUEST.PUT);
         Response response = makePutRequestSilent(uri, obj);
-        docTest.sayResponse(response.httpStatus, response.payload);
+        docTestMachine.sayResponse(response.httpStatus, response.payload);
         return response;
     }
 
@@ -198,7 +198,7 @@ public abstract class LogicDocTest {
     protected Response makeDeleteRequest(URI uri, Object obj) throws Exception {
         sayUri(uri, obj, HTTP_REQUEST.DELETE);
         Response response = makeDeleteRequestSilent(uri, obj);
-        docTest.sayResponse(response.httpStatus, response.payload);
+        docTestMachine.sayResponse(response.httpStatus, response.payload);
         return response;
     }
 
@@ -210,7 +210,7 @@ public abstract class LogicDocTest {
      */
     protected void assertEqualsAndSay(Object expected, Object given, String message) {
         assertEquals(expected, given);
-        docTest.sayVerify(message);
+        docTestMachine.sayVerify(message);
     }
 
     /**
@@ -264,27 +264,27 @@ public abstract class LogicDocTest {
         }
 
         assertEquals(expectedJson, resultingJson);
-        docTest.sayVerify(message + expectedJson);
+        docTestMachine.sayVerify(message + expectedJson);
     }
 
     protected void assertTrueAndSay(Boolean condition, String message) {
         assertTrue(condition);
-        docTest.sayVerify(message);
+        docTestMachine.sayVerify(message);
     }
 
     protected void assertFalseAndSay(Boolean condition, String message) {
         assertFalse(condition);
-        docTest.sayVerify(message);
+        docTestMachine.sayVerify(message);
     }
 
     protected void assertNullAndSay(Object object, String message) {
         assertNull(object);
-        docTest.sayVerify(message);
+        docTestMachine.sayVerify(message);
     }
 
     protected void assertNotNullAndSay(Object object, String message) {
         assertNotNull(object);
-        docTest.sayVerify(message);
+        docTestMachine.sayVerify(message);
     }
 
     /**
@@ -298,7 +298,7 @@ public abstract class LogicDocTest {
     protected void assertCookieEqualsAndSay(String name, String expectedValue) {
         String value = apiTest.getTestState().getCookieValue(name);
         assertEquals(expectedValue, value);
-        docTest.sayVerify(name + ": " + value);
+        docTestMachine.sayVerify(name + ": " + value);
     }
 
     /**
@@ -311,7 +311,7 @@ public abstract class LogicDocTest {
     protected void assertCookiePresentAndSay(String name) {
         String value = apiTest.getTestState().getCookieValue(name);
         assertNotNull(value);
-        docTest.sayVerify(name + ": " + value);
+        docTestMachine.sayVerify(name + ": " + value);
     }
 
     /**
@@ -324,7 +324,7 @@ public abstract class LogicDocTest {
     protected void assertCookieNotPresentAndSay(String name) {
         String value = apiTest.getTestState().getCookieValue(name);
         assertNull(value);
-        docTest.sayVerify(name + ": " + value);
+        docTestMachine.sayVerify(name + ": " + value);
     }
 
     /**
@@ -348,7 +348,7 @@ public abstract class LogicDocTest {
         assertEquals(expected.domain, cookie.domain);
         assertEquals(expected.secure, cookie.secure);
         assertEquals(expected.httpOnly, cookie.httpOnly);
-        docTest.sayVerify(jsonHelper.toJson(cookie));
+        docTestMachine.sayVerify(jsonHelper.toJson(cookie));
     }
 
     /**

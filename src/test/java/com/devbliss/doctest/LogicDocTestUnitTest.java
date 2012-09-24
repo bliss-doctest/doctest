@@ -22,7 +22,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
@@ -77,7 +76,6 @@ public class LogicDocTestUnitTest {
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
         uri = new URI("");
         response =
                 new ApiResponse(HTTP_STATUS, REASON_PHRASE, RESPONSE_PAYLOAD, Collections
