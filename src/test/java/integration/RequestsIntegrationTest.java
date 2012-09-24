@@ -48,6 +48,11 @@ public class RequestsIntegrationTest extends DocTest {
         return "HttpRequests";
     }
 
+    @Override
+    public String getIntroduction() {
+        return "This documentation describes the input/output of the four http methods.";
+    }
+
     private Object obj;
     private ApiResponse response;
     private URI uri;
@@ -69,12 +74,6 @@ public class RequestsIntegrationTest extends DocTest {
         when(API.post(uri, null)).thenReturn(response);
         when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
                 response);
-    }
-
-    @Override
-    public String getIntroduction() {
-        return "Welcome to the requests integration doctest page. In this"
-                + " section, you will learn how to make some HttpRequest with the doctest library!";
     }
 
     @Test
