@@ -34,8 +34,9 @@ public interface DocTestMachine {
      * Begins a report if there is no on-going generation.
      * 
      * @param className The name of the tested class, which is going to be the name of the file.
+     * @param introduction
      */
-    void beginDoctest(String className);
+    void beginDoctest(String fileName, String introduction);
 
     /**
      * Ends up the generation of the report.

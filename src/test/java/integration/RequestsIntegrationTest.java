@@ -48,6 +48,11 @@ public class RequestsIntegrationTest extends DocTest {
         return "HttpRequests";
     }
 
+    @Override
+    public String getIntroduction() {
+        return "This documentation describes the input/output of the four http methods.";
+    }
+
     private Object obj;
     private ApiResponse response;
     private URI uri;

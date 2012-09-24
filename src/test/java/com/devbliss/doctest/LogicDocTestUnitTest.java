@@ -42,11 +42,10 @@ public class LogicDocTestUnitTest {
     public static final String MESSAGE = "i am the message and the message is me";
 
     private class ShouldFailException extends Exception {
+        private static final long serialVersionUID = 1160418817945072075L;
+
         ShouldFailException() {
             super("The assertion should have failed");
-        }
-        ShouldFailException(String message) {
-            super(message);
         }
     }
 
@@ -190,7 +189,7 @@ public class LogicDocTestUnitTest {
             throw new ShouldFailException();
         } catch (AssertionError e) {
             verify(docTestMachine, never()).sayVerify(MESSAGE);
-        } catch (ShouldFailException  e) {
+        } catch (ShouldFailException e) {
             fail(e.getMessage());
         } catch (Exception e) {
             fail();
@@ -212,7 +211,7 @@ public class LogicDocTestUnitTest {
             verify(docTestMachine, never()).sayVerify(MESSAGE);
         } catch (ShouldFailException e) {
             fail(e.getMessage());
-        } catch(Exception e) {
+        } catch (Exception e) {
             fail();
         }
     }
@@ -228,11 +227,11 @@ public class LogicDocTestUnitTest {
         try {
             docTest.assertNotNullAndSay(null, MESSAGE);
             throw new ShouldFailException();
-        } catch(AssertionError assertionError) {
+        } catch (AssertionError assertionError) {
             verify(docTestMachine, never()).sayVerify(MESSAGE);
-        } catch(ShouldFailException e) {
+        } catch (ShouldFailException e) {
             fail(e.getMessage());
-        } catch(Exception e) {
+        } catch (Exception e) {
             fail();
         }
     }
@@ -407,7 +406,7 @@ public class LogicDocTestUnitTest {
     @Test
     public void setTheNameOfTheFile() {
         docTest.ensureDocTestClassSet();
-        verify(docTestMachine).beginDoctest(FILE_NAME);
+        verify(docTestMachine).beginDoctest(FILE_NAME, "");
     }
 
     @Test(expected = AssertionError.class)
@@ -426,4 +425,30 @@ public class LogicDocTestUnitTest {
         };
     }
 
+    @Test
+    public void useDefaultintroduction() {
+        docTest.ensureDocTestClassSet();
+        // verify default value is empty string
+        verify(docTestMachine).beginDoctest(FILE_NAME, "");
+    }
+
+    @Test
+    public void setIntroduction() {
+        // create an instance of the logicDocTest which overrides the introduction function
+        docTest = new LogicDocTest(docTestMachine, apiTest, jsonHelper, fileHelper) {
+            @Override
+            public String getIntroduction() {
+                return "intro written by the user";
+            }
+
+            @Override
+            protected String getFileName() {
+                return FILE_NAME;
+            }
+        };
+
+        docTest.ensureDocTestClassSet();
+        // verify the new intro is used
+        verify(docTestMachine).beginDoctest(FILE_NAME, "intro written by the user");
+    }
 }

@@ -223,3 +223,7 @@ span.highlight {
         margin: auto;
     }
 }
+
+.small {
+	font-size: xx-small
+}

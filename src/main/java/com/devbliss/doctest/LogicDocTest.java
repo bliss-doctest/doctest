@@ -34,7 +34,7 @@ public abstract class LogicDocTest {
     @Before
     public void ensureDocTestClassSet() {
         fileHelper.validateFileName(getFileName());
-        docTest.beginDoctest(getFileName());
+        docTest.beginDoctest(getFileName(), getIntroduction());
     }
 
     @AfterClass
@@ -52,6 +52,16 @@ public abstract class LogicDocTest {
         this.apiTest = apiTest;
         this.jsonHelper = jsonHelper;
         this.fileHelper = fileHelper;
+    }
+
+    /**
+     * This method must be overridden if you want to set an introduction
+     * The default value of the introduction is: empty.
+     * 
+     * @return
+     */
+    protected String getIntroduction() {
+        return new String();
     }
 
     /**
@@ -193,9 +203,9 @@ public abstract class LogicDocTest {
     }
 
     /**
-     *  TODO: Remove me since im not helpfull for documentation
-     *  instead use {@link #assertEqualsAndSay(Object, Object, String)}
-     *
+     * TODO: Remove me since im not helpfull for documentation
+     * instead use {@link #assertEqualsAndSay(Object, Object, String)}
+     * 
      * @param expected
      * @param given
      */
@@ -205,7 +215,7 @@ public abstract class LogicDocTest {
     }
 
     /**
-     *
+     * 
      * @param expected
      * @param given
      * @param message
@@ -268,10 +278,11 @@ public abstract class LogicDocTest {
         assertEquals(expectedJson, resultingJson);
         docTest.sayVerify(message + expectedJson);
     }
+
     /**
      * TODO: Remove me since im not helpfull for documentation
      * instead use {@link #assertTrueAndSay(Boolean, String)}
-     *
+     * 
      * @param condition
      */
     @Deprecated
@@ -287,7 +298,7 @@ public abstract class LogicDocTest {
     /**
      * TODO: Remove me since im not helpfull for documentation
      * instead use {@link #assertFalseAndSay(Boolean, String)}
-     *
+     * 
      * @param condition
      */
     @Deprecated

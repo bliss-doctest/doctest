@@ -1,19 +1,15 @@
 package integration;
 
-import com.devbliss.doctest.DocTest;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.fail;
-
+import com.devbliss.doctest.DocTest;
 
 /**
  * Example implementation of assertion provided by {@link DocTest}.
- *
- *
+ * 
+ * 
  * @author: christoph.ulrich@devbliss.com
- * Date: 19.09.12
+ *          Date: 19.09.12
  */
 public class AssertsIntegrationTest extends DocTest {
 
@@ -28,7 +24,8 @@ public class AssertsIntegrationTest extends DocTest {
 
     @Test
     public void assertNullAndSay() {
-        sayNextSection("Making an assertNullAndSay(null, \"The Object " + IS_NOT + " instantiated\")");
+        sayNextSection("Making an assertNullAndSay(null, \"The Object " + IS_NOT
+                + " instantiated\")");
         say("We want to verify the assertion is null and " + DOCU_GENERATED);
 
         assertNullAndSay(null, "The object " + IS_NOT + " instantiated");
@@ -36,7 +33,8 @@ public class AssertsIntegrationTest extends DocTest {
 
     @Test
     public void assertNotNullAndSay() {
-        sayNextSection("Making an assertNotNull(new Object(), \"The object " + IS + " instantiated\");");
+        sayNextSection("Making an assertNotNull(new Object(), \"The object " + IS
+                + " instantiated\");");
         say("We want to verify the assertion is not null and " + DOCU_GENERATED);
 
         assertNotNullAndSay(new Object(), "The object " + IS + " instantiated");
@@ -59,9 +57,10 @@ public class AssertsIntegrationTest extends DocTest {
     }
 
     @Test
-    public void assertEqualsAndSay () {
+    public void assertEqualsAndSay() {
         sayNextSection("Making an assertEqualsAndSay(new String(\"Same\"), new String(\"Same\"), \"The expected Strings and the given String equal each other\")");
         say("We want to verify the assertion is evaluated and the expected object and the given object equal each other");
-        assertEqualsAndSay(new String("Same"), new String("Same"), "The expected Strings and the given String equal each other");
+        assertEqualsAndSay(new String("Same"), new String("Same"),
+                "The expected Strings and the given String equal each other");
     }
 }

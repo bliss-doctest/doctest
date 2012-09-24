@@ -32,7 +32,7 @@ public class HtmlIndexFileRenderer extends AbstractHtmlReportRenderer {
         this.fileHelper = fileHelper;
     }
 
-    public void render(List<DocItem> listItems, String name) throws Exception {
+    public void render(List<DocItem> listItems, String name, String introduction) throws Exception {
         String nameWithExtension = fileHelper.getCompleteFileName(INDEX, HTML_EXTENSION);
         List<LinkDocItem> files = fileHelper.getListOfFile(nameWithExtension);
         MenuDocItem menu = new MenuDocItem("List of doctest files", files);

@@ -50,14 +50,15 @@ public class HtmlRenderer extends AbstractHtmlReportRenderer implements ReportRe
         sections = new LinkedHashMap<String, String>();
     }
 
-    public void render(List<DocItem> listTemplates, String name) throws Exception {
+    public void render(List<DocItem> listTemplates, String name, String introduction)
+            throws Exception {
         if (listTemplates != null && !listTemplates.isEmpty()) {
             String items = appendItemsToBuffer(listTemplates);
-            ReportFileDocItem report = new ReportFileDocItem(name, items);
+            ReportFileDocItem report = new ReportFileDocItem(name, introduction, items);
             String nameWithExtension = helper.getCompleteFileName(name, HTML_EXTENSION);
             helper.writeFile(nameWithExtension, htmlItems.getReportFileTemplate(report));
 
-            indexFileGenerator.render(null, INDEX);
+            indexFileGenerator.render(null, INDEX, introduction);
         }
     }
 

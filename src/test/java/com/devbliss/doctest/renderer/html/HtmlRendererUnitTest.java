@@ -37,9 +37,9 @@ import com.devbliss.doctest.utils.JSONHelper;
 
 /**
  * Unit tests for the {@link HtmlRenderer}
- *
+ * 
  * @author bmary
- *
+ * 
  */
 @RunWith(MockitoJUnitRunner.class)
 public class HtmlRendererUnitTest {
@@ -52,6 +52,7 @@ public class HtmlRendererUnitTest {
     private static final String REQUEST = "request";
     private static final String RESPONSE = "response";
     private static final String ASSERT = "assert";
+    private static final String INTRODUCTION = null;
 
     @Mock
     private HtmlItems htmlItems;
@@ -107,15 +108,15 @@ public class HtmlRendererUnitTest {
     @Test
     @SuppressWarnings("unchecked")
     public void doNotCreateIndexIfListIsEmpty() throws Exception {
-        renderer.render(listTemplates, NAME);
-        verify(indexFileGenerator, never()).render(anyList(), anyString());
+        renderer.render(listTemplates, NAME, INTRODUCTION);
+        verify(indexFileGenerator, never()).render(anyList(), anyString(), anyString());
     }
 
     @Test
     @SuppressWarnings("unchecked")
     public void doNotCreateIndexIfListIsNull() throws Exception {
-        renderer.render(null, NAME);
-        verify(indexFileGenerator, never()).render(anyList(), anyString());
+        renderer.render(null, NAME, INTRODUCTION);
+        verify(indexFileGenerator, never()).render(anyList(), anyString(), anyString());
     }
 
     @Test
@@ -125,7 +126,7 @@ public class HtmlRendererUnitTest {
         listTemplates.add(requestDocItem);
         listTemplates.add(responseDocItem);
         listTemplates.add(assertDocItem);
-        renderer.render(listTemplates, NAME);
+        renderer.render(listTemplates, NAME, INTRODUCTION);
         verify(htmlItems).getReportFileTemplate(fileCaptor.capture());
         ReportFileDocItem docItem = fileCaptor.getValue();
         assertEquals(REQUEST + RESPONSE + ASSERT, docItem.getItems());
@@ -138,7 +139,7 @@ public class HtmlRendererUnitTest {
         listTemplates.add(section2);
         listTemplates.add(section3);
 
-        renderer.render(listTemplates, NAME);
+        renderer.render(listTemplates, NAME, INTRODUCTION);
         verify(htmlItems).getTemplateForItem(section1);
         verify(htmlItems).getTemplateForItem(section2);
         verify(htmlItems).getTemplateForItem(section3);
@@ -161,7 +162,7 @@ public class HtmlRendererUnitTest {
         listTemplates.add(section3);
         listTemplates.add(section1);
 
-        renderer.render(listTemplates, NAME);
+        renderer.render(listTemplates, NAME, INTRODUCTION);
         verify(htmlItems).getTemplateForItem(section1);
         verify(htmlItems).getTemplateForItem(section2);
         verify(htmlItems).getTemplateForItem(section3);
@@ -181,7 +182,7 @@ public class HtmlRendererUnitTest {
     @Test
     public void renderRequest() throws Exception {
         listTemplates.add(requestDocItem);
-        renderer.render(listTemplates, NAME);
+        renderer.render(listTemplates, NAME, INTRODUCTION);
         verify(htmlItems).getTemplateForItem(requestDocItem);
         verifyFilesAreCreated();
     }
@@ -195,7 +196,7 @@ public class HtmlRendererUnitTest {
         MultipleTextDocItem multipleTextDocItem =
                 new MultipleTextDocItem("text", new String[] {"{'abc':'a'}", "text"});
         listTemplates.add(multipleTextDocItem);
-        renderer.render(listTemplates, NAME);
+        renderer.render(listTemplates, NAME, INTRODUCTION);
         verify(htmlItems).getTemplateForItem(isA(MultipleTextDocItem.class));
         verify(htmlItems).getTemplateForItem(isA(HighlightedTextDocItem.class));
         verify(htmlItems).getTemplateForItem(isA(JsonDocItem.class));
@@ -205,7 +206,7 @@ public class HtmlRendererUnitTest {
     @Test
     public void renderResponse() throws Exception {
         listTemplates.add(responseDocItem);
-        renderer.render(listTemplates, NAME);
+        renderer.render(listTemplates, NAME, INTRODUCTION);
         verify(htmlItems).getTemplateForItem(responseDocItem);
         verifyFilesAreCreated();
     }
@@ -213,14 +214,14 @@ public class HtmlRendererUnitTest {
     @Test
     public void renderAssert() throws Exception {
         listTemplates.add(assertDocItem);
-        renderer.render(listTemplates, NAME);
+        renderer.render(listTemplates, NAME, INTRODUCTION);
         verify(htmlItems).getTemplateForItem(assertDocItem);
         verifyFilesAreCreated();
     }
 
     private void verifyFilesAreCreated() throws Exception {
         verify(helper).writeFile(COMPLETE_NAME, HTML);
-        verify(indexFileGenerator).render(null, "index");
+        verify(indexFileGenerator).render(null, "index", INTRODUCTION);
     }
 
     private void verifyLinkDocItem(String href, String name, LinkDocItem item) {
