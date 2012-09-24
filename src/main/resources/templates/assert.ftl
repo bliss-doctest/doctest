@@ -1,3 +1,3 @@
 <div class="box correct">
-	'${expected}' is correct!
+	'${expected}'
 </div>
