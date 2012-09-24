@@ -21,6 +21,11 @@ public class AssertsIntegrationTest extends DocTest {
     private static final String IS_NOT = IS + " NOT";
     private static final String DOCU_GENERATED = "a documenting output is generated";
 
+    @Override
+    protected String getFileName() {
+        return "Asserts";
+    }
+
     @Test
     public void assertNullAndSay() {
         sayNextSection("Making an assertNullAndSay(null, \"The Object " + IS_NOT + " instantiated\")");
@@ -59,5 +64,4 @@ public class AssertsIntegrationTest extends DocTest {
         say("We want to verify the assertion is evaluated and the expected object and the given object equal each other");
         assertEqualsAndSay(new String("Same"), new String("Same"), "The expected Strings and the given String equal each other");
     }
-
 }

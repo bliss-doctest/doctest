@@ -31,7 +31,7 @@ public class ReportCreatedIntegrationTest {
 
         // verify that new files have been created
         List<File> listFiles = getFilesInOutputDirectory();
-        assertEquals(3, listFiles.size());
+        assertEquals(4, listFiles.size());
         verifyTheFileHasBeenCreated("index.html");
         verifyTheFileHasBeenCreated("Asserts.html");
         verifyTheFileHasBeenCreated("CompareObjects.html");
@@ -43,6 +43,9 @@ public class ReportCreatedIntegrationTest {
      * to run a test class with the {@link JUnitCore}.
      */
     private void makeSomeTests() {
-        JUnitCore.runClasses(RequestsIntegrationTest.class, CompareObjectsIntegrationTest.class);
+        JUnitCore.runClasses(RequestsIntegrationTest.class, CompareObjectsIntegrationTest.class, AssertsIntegrationTest.class);
     }
 }
+
+
+
