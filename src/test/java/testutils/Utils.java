@@ -58,7 +58,7 @@ public class Utils {
      * Returns all the files from the output directory without taking care of the directories (/css,
      * /images)
      * 
-     * @return
+     * @return list of files in this directory
      */
     public static List<File> getFilesInOutputDirectory() {
         List<File> files = new ArrayList<File>();

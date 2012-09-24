@@ -26,7 +26,7 @@ import de.devbliss.apitester.ApiTest;
 /**
  * Example implementation of a unit test class extending the {@link DocTest}.
  * 
- * @Warning This class is used in the {@link ReportCreatedIntegrationTest} class.
+ * This class is used in the {@link ReportCreatedIntegrationTest} class.
  * 
  * @author bmary
  * 

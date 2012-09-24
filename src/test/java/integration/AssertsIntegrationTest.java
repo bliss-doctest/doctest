@@ -8,8 +8,8 @@ import com.devbliss.doctest.DocTest;
  * Example implementation of assertion provided by {@link DocTest}.
  * 
  * 
- * @author: christoph.ulrich@devbliss.com
- *          Date: 19.09.12
+ * @author christoph.ulrich@devbliss.com
+ *         Date: 19.09.12
  */
 public class AssertsIntegrationTest extends DocTest {
 
