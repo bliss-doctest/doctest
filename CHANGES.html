@@ -34,7 +34,7 @@
                 
         
                   <li id="publishDate">Last Published: 2012-09-25</li>
-                  <li class="divider">|</li> <li id="projectVersion">Version: 0.5.3-SNAPSHOT</li>
+                  <li class="divider">|</li> <li id="projectVersion">Version: 0.5.4-SNAPSHOT</li>
                                       
         
               </ul>
@@ -59,7 +59,7 @@
                        <h5>Example</h5>
                   <ul>
                   <li class="none">
-                          <a href="./doctests/index.html" title="Example of a doctest report">Example of a doctest report</a>
+                          <a href="Doctests.html" title="Example of a doctest report">Example of a doctest report</a>
             </li>
           </ul>
                       
@@ -79,7 +79,7 @@
                               
           <h1>CHANGES</h1><h2>develop</h2>
 <ul>
-  <li>removed the asserts methods without explanation texts.</li><li>added getIntroduction() function which can be overridden in the test to write an introduction for the report</li><li>added abstract getFileName function to let the user choose the name of the html file</li><li>only show the path and the query of the uri, the hostname and port are not important</li><li>fixed escaping problem by rendering the fileBody of an uploaded image</li>
+  <li>do not show the body of an application/octet-stream file</li><li>bound the doctest report in the html documentation generated with the site mojo</li><li>removed the asserts methods without explanation texts.</li><li>added getIntroduction() function which can be overridden in the test to write an introduction for the report</li><li>added abstract getFileName function to let the user choose the name of the html file</li><li>only show the path and the query of the uri, the hostname and port are not important</li><li>fixed escaping problem by rendering the fileBody of an uploaded image</li>
 </ul><h2>Version 0.5.2 23.08.2012</h2>
 <ul>
   <li>fixed utf8-encoding problem</li><li>refactored PostFactory problem to be more failsafe</li>
