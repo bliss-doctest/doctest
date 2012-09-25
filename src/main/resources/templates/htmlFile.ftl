@@ -1,7 +1,7 @@
-<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">
+<!DOCTYPE html>
 <html>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
 	<head>
+		<meta charset="utf-8"> 
 		<style>${css}</style>
         <script type="text/javascript">${jsCode}</script>
         <title>DocTest for class ${name}</title>

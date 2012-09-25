@@ -8,12 +8,12 @@
     </bannerLeft>
     <body>
         <menu name="Overview">
-            <item name="README" href="readme.html"/>
-            <item name="CHANGES" href="changes.html"/>
-            <item name="TODOS" href="todo.html"/>
+            <item name="README" href="README.html"/>
+            <item name="CHANGES" href="CHANGES.html"/>
+            <item name="TODOS" href="TODO.html"/>
         </menu>
         <menu name="Example">
-            <item name="Example of a doctest report" href="./doctests/index.html"/>
+            <item name="Example of a doctest report" href="Doctests.html"/>
         </menu>
     </body>
     <skin>
