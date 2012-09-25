@@ -3,6 +3,9 @@ CHANGES
 
 develop
 -------
+
+Version 0.5.3 25.09.2012
+------------------------
 - do not show the body of an application/octet-stream file
 - bound the doctest report in the html documentation generated with the site mojo 
 - removed the asserts methods without explanation texts.
