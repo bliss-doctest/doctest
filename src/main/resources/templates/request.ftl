@@ -15,12 +15,15 @@
 		<#if isAnUploadRequest>
 		<li>FileName: ${fileName}</li>
 		<li>FileSize: ${fileSize} bytes</li>
+		<li>Mimetype: ${mimeType}</li>
+		<#if showFileBody>
 		<li>FileBody: 
 			<button type="button" onclick="toggle(${id})" class="moreOrLess">See/hide file content</button>
             <pre id=${id} style="display:none">
                 ${htmlEscapedFileBody}
             </pre>
         </li>
+        </#if>
 		</#if>
     </ul>
 </div>

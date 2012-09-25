@@ -3,6 +3,7 @@ CHANGES
 
 develop
 -------
+- do not show the body of an application/octet-stream file
 - bound the doctest report in the html documentation generated with the site mojo 
 - removed the asserts methods without explanation texts.
 - added getIntroduction() function which can be overridden in the test to write an introduction for the report

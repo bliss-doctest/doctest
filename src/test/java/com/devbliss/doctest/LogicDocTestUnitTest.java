@@ -147,7 +147,7 @@ public class LogicDocTestUnitTest {
         when(fileHelper.readFile(fileToUpload)).thenReturn("fileBody");
         docTest.makePostUploadRequest(uri, fileToUpload, "paramName");
         verify(docTestMachine).sayUploadRequest(uri, HTTP_REQUEST.POST, "file.txt", "fileBody",
-                fileToUpload.length());
+                fileToUpload.length(), "text/plain");
         verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
     }
 

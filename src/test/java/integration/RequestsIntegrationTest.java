@@ -116,7 +116,7 @@ public class RequestsIntegrationTest extends DocTest {
     }
 
     @Test
-    public void postUpload() throws Exception {
+    public void postUploadText() throws Exception {
         sayNextSection("Making an upload post request");
 
         Response response =

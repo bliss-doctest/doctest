@@ -1,17 +1,18 @@
 package com.devbliss.doctest.items;
 
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 import org.apache.commons.lang.StringEscapeUtils;
+
+import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 public class RequestUploadDocItem extends RequestDocItem {
 
     private static int NB_ITEMS = 0;
 
-    private String id;
-    private String fileName;
-    private String fileBody;
-    private long fileSize;
-    private String mimeType;
+    private final String id;
+    private final String fileName;
+    private final String fileBody;
+    private final long fileSize;
+    private final String mimeType;
 
     public RequestUploadDocItem(
             HTTP_REQUEST http,
@@ -41,7 +42,7 @@ public class RequestUploadDocItem extends RequestDocItem {
         return StringEscapeUtils.escapeHtml(fileBody);
     }
 
-
+    @Override
     public String getItemName() {
         return "request";
     }
@@ -56,5 +57,9 @@ public class RequestUploadDocItem extends RequestDocItem {
 
     public String getId() {
         return id;
+    }
+
+    public boolean getShowFileBody() {
+        return "text/plain".equals(mimeType);
     }
 }

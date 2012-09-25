@@ -10,6 +10,8 @@ import java.io.File;
 import java.net.URI;
 import java.util.List;
 
+import javax.activation.MimetypesFileTypeMap;
+
 import org.apache.http.entity.mime.content.FileBody;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -157,9 +159,10 @@ public abstract class LogicDocTest {
     protected Response makePostUploadRequest(URI uri, File fileToUpload, String paramName)
             throws Exception {
         FileBody fileBodyToUpload = new FileBody(fileToUpload);
+        String mimeType = new MimetypesFileTypeMap().getContentType(fileToUpload);
 
         docTestMachine.sayUploadRequest(uri, HTTP_REQUEST.POST, fileBodyToUpload.getFilename(),
-                fileHelper.readFile(fileToUpload), fileToUpload.length());
+                fileHelper.readFile(fileToUpload), fileToUpload.length(), mimeType);
         Response response =
                 new Response(apiTest.post(uri, null, new PostUploadWithoutRedirectImpl(paramName,
                         fileBodyToUpload)));
