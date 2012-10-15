@@ -11,9 +11,14 @@
             <item name="README" href="README.html"/>
             <item name="CHANGES" href="CHANGES.html"/>
             <item name="TODOS" href="TODO.html"/>
+            <item name="INFO" href="project-info.html"/>
         </menu>
         <menu name="Example">
             <item name="Example of a doctest report" href="Doctests.html"/>
+        </menu>
+        <menu name="Api">
+            <item name="JavaDoc src" href="Apidocs.html"/>
+            <item name="JavaDoc test" href="Testapidocs.html"/>
         </menu>
     </body>
     <skin>
