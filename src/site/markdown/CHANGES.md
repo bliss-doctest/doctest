@@ -3,6 +3,7 @@ CHANGES
 
 develop
 -------
+- add links to "maven site" generated content
 
 Version 0.5.3 25.09.2012
 ------------------------
