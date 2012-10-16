@@ -1,7 +1,9 @@
 package com.devbliss.doctest.machine;
 
 import java.net.URI;
+import java.util.List;
 
+import org.apache.http.HttpRequest;
 import org.json.JSONException;
 
 import com.devbliss.doctest.items.AssertDocItem;
@@ -106,6 +108,6 @@ public interface DocTestMachine {
      */
     void sayPreformatted(String preformattedText);
 
-    void sayUploadRequest(URI uri, HTTP_REQUEST httpRequest, String fileName, String fileBody,
-            long l, String mimetype) throws JSONException;
+    void sayUploadRequest(HttpRequest httpRequest, String fileName, String fileBody, long l,
+            String mimetype, List<String> headersToShow) throws JSONException;
 }

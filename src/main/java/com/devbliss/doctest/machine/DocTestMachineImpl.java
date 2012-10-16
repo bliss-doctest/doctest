@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.HttpRequest;
 import org.json.JSONException;
 
 import com.devbliss.doctest.items.AssertDocItem;
@@ -99,12 +100,18 @@ public class DocTestMachineImpl implements DocTestMachine {
         }
     }
 
-    public void sayUploadRequest(URI uri, HTTP_REQUEST httpRequest, String fileName,
-            String fileBody, long size, String mimeType) {
-        if (uri != null) {
-            listItem.add(new RequestUploadDocItem(httpRequest, uriHelper.uriToString(uri),
-                    fileName, fileBody, size, mimeType));
-        }
+    // public void sayUploadRequest(URI uri, HTTP_REQUEST httpRequest, String fileName,
+    // String fileBody, long size, String mimeType) {
+    // if (uri != null) {
+    // listItem.add(new RequestUploadDocItem(httpRequest, uriHelper.uriToString(uri),
+    // fileName, fileBody, size, mimeType));
+    // }
+    // }
+
+    public void sayUploadRequest(HttpRequest httpRequest, String fileName, String fileBody,
+            long size, String mimeType, List<String> headersToShow) {
+        listItem.add(new RequestUploadDocItem(HTTP_REQUEST.POST, httpRequest, fileName, fileBody,
+                size, mimeType, headersToShow));
     }
 
     public void sayResponse(int responseCode, String payload) throws Exception {

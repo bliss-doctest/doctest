@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.activation.MimetypesFileTypeMap;
@@ -23,6 +24,7 @@ import com.devbliss.doctest.utils.JSONHelper;
 
 import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
+import de.devbliss.apitester.Context;
 import de.devbliss.apitester.Cookie;
 
 public abstract class LogicDocTest {
@@ -142,7 +144,7 @@ public abstract class LogicDocTest {
     }
 
     protected Response makePostRequestSilent(URI uri, Object obj) throws Exception {
-        return new Response(apiTest.post(uri, obj));
+        return new Response(apiTest.post(uri, obj).apiResponse);
     }
 
     protected Response makePostRequest(URI uri) throws Exception {
@@ -161,11 +163,12 @@ public abstract class LogicDocTest {
         FileBody fileBodyToUpload = new FileBody(fileToUpload);
         String mimeType = new MimetypesFileTypeMap().getContentType(fileToUpload);
 
-        docTestMachine.sayUploadRequest(uri, HTTP_REQUEST.POST, fileBodyToUpload.getFilename(),
-                fileHelper.readFile(fileToUpload), fileToUpload.length(), mimeType);
-        Response response =
-                new Response(apiTest.post(uri, null, new PostUploadWithoutRedirectImpl(paramName,
-                        fileBodyToUpload)));
+        Context context =
+                apiTest.post(uri, null, new PostUploadWithoutRedirectImpl(paramName,
+                        fileBodyToUpload));
+        Response response = new Response(context.apiResponse);
+        docTestMachine.sayUploadRequest(context.httpRequest, fileBodyToUpload.getFilename(),
+                fileHelper.readFile(fileToUpload), fileToUpload.length(), mimeType, showHeaders());
         docTestMachine.sayResponse(response.httpStatus, response.payload);
 
         return response;
@@ -380,5 +383,9 @@ public abstract class LogicDocTest {
      */
     protected void clearCookies() {
         apiTest.getTestState().clearCookies();
+    }
+
+    public List<String> showHeaders() {
+        return new ArrayList<String>();
     }
 }
