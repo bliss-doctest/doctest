@@ -2,6 +2,7 @@ package com.devbliss.doctest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -171,7 +172,8 @@ public class LogicDocTestUnitTest {
 
     @Test(expected = FileNotFoundException.class)
     public void makePostUploadRequestFileNotFound() throws Exception {
-        when(apiTest.post(uri, null)).thenReturn(context);
+        when(apiTest.post(eq(uri), eq(null), any(PostUploadWithoutRedirectImpl.class))).thenReturn(
+                context);
         doThrow(new FileNotFoundException()).when(fileHelper).readFile(fileToUpload);
         docTest.makePostUploadRequest(uri, fileToUpload, "paramName");
     }
@@ -437,6 +439,11 @@ public class LogicDocTestUnitTest {
             @Override
             protected String getFileName() {
                 return FILE_NAME;
+            }
+
+            @Override
+            public List<String> showHeaders() {
+                return headers;
             }
         };
     }

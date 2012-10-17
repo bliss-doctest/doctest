@@ -77,7 +77,7 @@ public class RequestsIntegrationTest extends DocTest {
     }
 
     private Object obj;
-    private ApiResponse response;
+    private ApiResponse apiResponse;
     private URI uri;
     private Context context;
     private ApiRequest apiRequest;
@@ -87,22 +87,21 @@ public class RequestsIntegrationTest extends DocTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         obj = new Object();
-        apiRequest = mock(ApiRequest.class);
+        uri =
+                new URIBuilder().setScheme("http").setHost("www.hostname.com").setPort(8080)
+                        .setPath("/resource/id:12345").build();
 
         headers.put(HEADER_NAME1, HEADER_VALUE1);
         headers.put(HEADER_NAME2, HEADER_VALUE2);
 
-        when(apiRequest.getHeaders()).thenReturn(headers);
+        apiRequest = new ApiRequest(uri.toString(), headers);
 
-        response =
+        apiResponse =
                 new ApiResponse(HTTP_STATUS, REASON_PHRASE, PAYLOAD, Collections
                         .<String, String> emptyMap());
 
 
-        context = new Context(response, apiRequest);
-        uri =
-                new URIBuilder().setScheme("http").setHost("www.hostname.com").setPort(8080)
-                        .setPath("/resource/id:12345").build();
+        context = new Context(apiResponse, apiRequest);
 
         when(API.put(uri, obj)).thenReturn(context);
         when(API.get(uri)).thenReturn(context);

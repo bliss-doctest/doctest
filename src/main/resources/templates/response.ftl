@@ -10,7 +10,6 @@
 		</#if>
 		
 		<li>Headers</li>
-		${headers}
 		<#list headers?keys as header>
 			    <li>${header} = ${headers[header]}</li>
 		</#list>

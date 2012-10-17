@@ -139,9 +139,9 @@ public abstract class LogicDocTest {
 
     protected ApiResponse makeGetRequest(URI uri) throws Exception {
         sayUri(uri, HTTP_REQUEST.GET);
-        ApiResponse ApiResponse = makeGetRequestSilent(uri);
-        docTestMachine.sayResponse(ApiResponse, showHeaders());
-        return ApiResponse;
+        ApiResponse apiResponse = makeGetRequestSilent(uri);
+        docTestMachine.sayResponse(apiResponse, showHeaders());
+        return apiResponse;
     }
 
     protected ApiResponse makePostRequestSilent(URI uri, Object obj) throws Exception {

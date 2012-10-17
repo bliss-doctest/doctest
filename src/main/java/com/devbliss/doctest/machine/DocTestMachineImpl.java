@@ -115,8 +115,12 @@ public class DocTestMachineImpl implements DocTestMachine {
 
     public void sayUploadRequest(ApiRequest apiRequest, String fileName, String fileBody,
             long size, String mimeType, List<String> headersToShow) {
-        listItem.add(new RequestUploadDocItem(HTTP_REQUEST.POST, apiRequest, fileName, fileBody,
-                size, mimeType, headersHelper.filter(apiRequest.headers, headersToShow)));
+
+        if (apiRequest.uri != null) {
+            listItem.add(new RequestUploadDocItem(HTTP_REQUEST.POST, apiRequest, fileName,
+                    fileBody, size, mimeType, headersHelper.filter(apiRequest.headers,
+                            headersToShow)));
+        }
     }
 
     public void sayResponse(ApiResponse response, List<String> headersToShow)

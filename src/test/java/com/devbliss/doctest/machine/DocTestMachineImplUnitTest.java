@@ -10,7 +10,9 @@ import static org.mockito.Mockito.when;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -52,6 +54,7 @@ public class DocTestMachineImplUnitTest {
     private static final String JSON_VALID = "{'abc':'a'}";
     private static final String JSON_INVALID = "invalid";
     private static final String INTRODUCTION = "";
+    private static final String PAYLOAD = "PAYLOAD";
 
     @Mock
     private ReportRenderer renderer;
@@ -63,24 +66,27 @@ public class DocTestMachineImplUnitTest {
     private UriHelper uriHelper;
     @Mock
     private HeadersHelper headersHelper;
-    @Mock
-    private ApiRequest apiRequest;
-    @Mock
-    private ApiResponse apiResponse;
 
     @Captor
     private ArgumentCaptor<List<DocItem>> listItemCaptor;
 
+    private ApiRequest apiRequest;
+    private ApiResponse apiResponse;
     private DocTestMachineImpl machine;
-    private final HTTP_REQUEST httpRequest = HTTP_REQUEST.GET;
-    private String uriString;
+    private String uriString = "www.example.de:91/ressource";
     private URI uri;
-    private List<String> headers;
+    private List<String> headersToShow;
+    private Map<String, String> headers;
 
     @Before
     public void setUp() throws URISyntaxException {
         uri = new URI("");
-        headers = new ArrayList<String>();
+        headersToShow = new ArrayList<String>();
+        headers = new HashMap<String, String>();
+        
+        apiRequest = new ApiRequest(uriString, headers);
+        apiResponse = new ApiResponse(RESPONSE_CODE, "", JSON_VALID, headers);
+        
         when(jsonHelper.isJsonValid(JSON_VALID)).thenReturn(true);
         when(jsonHelper.prettyPrintJson(JSON_VALID)).thenReturn(JSON_VALID);
         when(uriHelper.uriToString(uri)).thenReturn(uriString);
@@ -141,7 +147,7 @@ public class DocTestMachineImplUnitTest {
     @Test
     public void addResponseItem() throws Exception {
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayResponse(apiResponse, headers);
+        machine.sayResponse(apiResponse, headersToShow);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -156,7 +162,7 @@ public class DocTestMachineImplUnitTest {
     @Test
     public void addRequestItem() throws Exception {
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayRequest(uri, JSON_VALID, httpRequest);
+        machine.sayRequest(uri, JSON_VALID, HTTP_REQUEST.GET);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -165,14 +171,14 @@ public class DocTestMachineImplUnitTest {
         assertEquals(1, listItems.size());
         assertTrue(listItems.get(0) instanceof RequestDocItem);
         assertEquals(JSON_VALID, ((RequestDocItem) listItems.get(0)).getPayload().getExpected());
-        assertEquals(httpRequest, ((RequestDocItem) listItems.get(0)).getHttp());
+        assertEquals(HTTP_REQUEST.GET, ((RequestDocItem) listItems.get(0)).getHttp());
         assertEquals(uriString, ((RequestDocItem) listItems.get(0)).getUri());
     }
 
     @Test
     public void addUploadRequestItem() throws Exception {
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayUploadRequest(apiRequest, "file", "fileBody", 10l, "", headers);
+        machine.sayUploadRequest(apiRequest, "file", "fileBody", 10l, "", headersToShow);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -180,7 +186,7 @@ public class DocTestMachineImplUnitTest {
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
         assertTrue(listItems.get(0) instanceof RequestUploadDocItem);
-        assertEquals(httpRequest, ((RequestUploadDocItem) listItems.get(0)).getHttp());
+        assertEquals(HTTP_REQUEST.POST, ((RequestUploadDocItem) listItems.get(0)).getHttp());
         assertEquals(uriString, ((RequestUploadDocItem) listItems.get(0)).getUri());
         assertEquals("file", ((RequestUploadDocItem) listItems.get(0)).getFileName());
         assertEquals("fileBody", ((RequestUploadDocItem) listItems.get(0)).getFileBody());
@@ -188,8 +194,9 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addUploadRequestItemUriIsNull() throws Exception {
+        apiRequest = new ApiRequest(null, headers);
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayUploadRequest(apiRequest, "file", "fileBody", 10l, "", headers);
+        machine.sayUploadRequest(apiRequest, "file", "fileBody", 10l, "", headersToShow);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -201,7 +208,7 @@ public class DocTestMachineImplUnitTest {
     @Test
     public void addRequestItemWihtoutUri() throws Exception {
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayRequest(null, JSON_VALID, httpRequest);
+        machine.sayRequest(null, JSON_VALID, HTTP_REQUEST.GET);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -213,7 +220,7 @@ public class DocTestMachineImplUnitTest {
     @Test
     public void addRequestItemWihtInvalidJson() throws Exception {
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayRequest(uri, JSON_INVALID, httpRequest);
+        machine.sayRequest(uri, JSON_INVALID, HTTP_REQUEST.GET);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -222,7 +229,7 @@ public class DocTestMachineImplUnitTest {
         assertEquals(1, listItems.size());
         assertTrue(listItems.get(0) instanceof RequestDocItem);
         assertEquals(JSON_INVALID, ((RequestDocItem) listItems.get(0)).getPayload().getExpected());
-        assertEquals(httpRequest, ((RequestDocItem) listItems.get(0)).getHttp());
+        assertEquals(HTTP_REQUEST.GET, ((RequestDocItem) listItems.get(0)).getHttp());
         assertEquals(uriString, ((RequestDocItem) listItems.get(0)).getUri());
     }
 
@@ -246,8 +253,8 @@ public class DocTestMachineImplUnitTest {
         machine.say(TEXT + "_first");
         machine.sayPreformatted(JSON_VALID);
         machine.say(TEXT + "_second");
-        machine.sayRequest(uri, JSON_VALID, httpRequest);
-        machine.sayResponse(apiResponse, headers);
+        machine.sayRequest(uri, JSON_VALID, HTTP_REQUEST.GET);
+        machine.sayResponse(apiResponse, headersToShow);
         machine.sayVerify(TEXT);
         machine.sayNextSectionTitle(TEXT);
         machine.endDocTest();
