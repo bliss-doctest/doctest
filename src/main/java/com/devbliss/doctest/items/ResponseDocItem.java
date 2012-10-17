@@ -1,18 +1,21 @@
 package com.devbliss.doctest.items;
 
+import java.util.List;
+
+import com.devbliss.doctest.Response;
+
+
+
 public class ResponseDocItem implements DocItem {
 
     private int responseCode;
     private JsonDocItem payload;
+    private List<String> headers;
 
-    public ResponseDocItem(int responseCode, JsonDocItem payload) {
-        this.responseCode = responseCode;
-        this.payload = payload;
-    }
-
-    public ResponseDocItem(int responseCode, String json) {
-        this.responseCode = responseCode;
-        this.payload = new JsonDocItem(json);
+    public ResponseDocItem(Response response, List<String> headersToShow) {
+        this.responseCode = response.httpStatus;
+        this.payload = new JsonDocItem(response.payload);
+        this.headers = headersToShow;
     }
 
     public int getResponseCode() {
@@ -35,4 +38,11 @@ public class ResponseDocItem implements DocItem {
         return "response";
     }
 
+    public List<String> getHeaders() {
+        return this.headers;
+    }
+
+    public void setHeaders(List<String> headers) {
+        this.headers = headers;
+    }
 }

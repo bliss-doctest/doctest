@@ -139,7 +139,7 @@ public abstract class LogicDocTest {
     protected Response makeGetRequest(URI uri) throws Exception {
         sayUri(uri, HTTP_REQUEST.GET);
         Response response = makeGetRequestSilent(uri);
-        docTestMachine.sayResponse(response.httpStatus, response.payload);
+        docTestMachine.sayResponse(response, showHeaders());
         return response;
     }
 
@@ -154,7 +154,7 @@ public abstract class LogicDocTest {
     protected Response makePostRequest(URI uri, Object obj) throws Exception {
         sayUri(uri, obj, HTTP_REQUEST.POST);
         Response response = makePostRequestSilent(uri, obj);
-        docTestMachine.sayResponse(response.httpStatus, response.payload);
+        docTestMachine.sayResponse(response, showHeaders());
         return response;
     }
 
@@ -166,10 +166,14 @@ public abstract class LogicDocTest {
         Context context =
                 apiTest.post(uri, null, new PostUploadWithoutRedirectImpl(paramName,
                         fileBodyToUpload));
-        Response response = new Response(context.apiResponse);
+
         docTestMachine.sayUploadRequest(context.httpRequest, fileBodyToUpload.getFilename(),
                 fileHelper.readFile(fileToUpload), fileToUpload.length(), mimeType, showHeaders());
-        docTestMachine.sayResponse(response.httpStatus, response.payload);
+
+        Response response = new Response(context.apiResponse);
+
+        // @ApiTestUtil convertToApiResponse extracts the headers from the HttpResponse
+        docTestMachine.sayResponse(response, showHeaders());
 
         return response;
     }
@@ -185,7 +189,7 @@ public abstract class LogicDocTest {
     protected Response makePutRequest(URI uri, Object obj) throws Exception {
         sayUri(uri, obj, HTTP_REQUEST.PUT);
         Response response = makePutRequestSilent(uri, obj);
-        docTestMachine.sayResponse(response.httpStatus, response.payload);
+        docTestMachine.sayResponse(response, showHeaders());
         return response;
     }
 
@@ -204,7 +208,7 @@ public abstract class LogicDocTest {
     protected Response makeDeleteRequest(URI uri, Object obj) throws Exception {
         sayUri(uri, obj, HTTP_REQUEST.DELETE);
         Response response = makeDeleteRequestSilent(uri, obj);
-        docTestMachine.sayResponse(response.httpStatus, response.payload);
+        docTestMachine.sayResponse(response, showHeaders());
         return response;
     }
 

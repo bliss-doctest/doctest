@@ -8,5 +8,11 @@
 				<pre>${payload.expected}</pre>
 			</li>
 		</#if>
+		
+		<li>Headers</li>
+		${headers}
+		<#list headers?keys as header>
+			    <li>${header} = ${headers[header]}</li>
+		</#list>
     </ul>
 </div>

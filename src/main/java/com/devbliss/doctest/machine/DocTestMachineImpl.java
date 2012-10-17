@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.http.HttpRequest;
 import org.json.JSONException;
 
+import com.devbliss.doctest.Response;
 import com.devbliss.doctest.items.AssertDocItem;
 import com.devbliss.doctest.items.DocItem;
 import com.devbliss.doctest.items.JsonDocItem;
@@ -114,8 +115,9 @@ public class DocTestMachineImpl implements DocTestMachine {
                 size, mimeType, headersToShow));
     }
 
-    public void sayResponse(int responseCode, String payload) throws Exception {
-        listItem.add(new ResponseDocItem(responseCode, getPayload(payload)));
+    public void sayResponse(Response response, List<String> headersToShow)
+            throws Exception {
+        listItem.add(new ResponseDocItem(response, headersToShow));
     }
 
     public void sayVerify(String condition) {
@@ -141,5 +143,4 @@ public class DocTestMachineImpl implements DocTestMachine {
     public void say(String say, String[] strings) {
         listItem.add(new MultipleTextDocItem(say, strings));
     }
-
 }

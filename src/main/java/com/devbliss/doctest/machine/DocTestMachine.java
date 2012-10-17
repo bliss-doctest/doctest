@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.http.HttpRequest;
 import org.json.JSONException;
 
+import com.devbliss.doctest.Response;
 import com.devbliss.doctest.items.AssertDocItem;
 import com.devbliss.doctest.items.JsonDocItem;
 import com.devbliss.doctest.items.RequestDocItem;
@@ -85,14 +86,6 @@ public interface DocTestMachine {
      */
     void sayRequest(URI uri, String payload, HTTP_REQUEST httpRequest) throws JSONException;
 
-    /**
-     * Writes a new {@link ResponseDocItem} into the report.
-     * 
-     * @param responseCode
-     * @param payload
-     * @throws Exception
-     */
-    void sayResponse(int responseCode, String payload) throws Exception;
 
     /**
      * Writes a new {@link AssertDocItem} into the report.
@@ -110,4 +103,12 @@ public interface DocTestMachine {
 
     void sayUploadRequest(HttpRequest httpRequest, String fileName, String fileBody, long l,
             String mimetype, List<String> headersToShow) throws JSONException;
+
+    /**
+     * Writes a new {@link ResponseDocItem} into the report.
+     * 
+     * @param response
+     * @throws Exception
+     */
+    void sayResponse(Response response, List<String> headersToShow) throws Exception;
 }
