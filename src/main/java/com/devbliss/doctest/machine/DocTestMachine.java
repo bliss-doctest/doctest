@@ -3,10 +3,8 @@ package com.devbliss.doctest.machine;
 import java.net.URI;
 import java.util.List;
 
-import org.apache.http.HttpRequest;
 import org.json.JSONException;
 
-import com.devbliss.doctest.Response;
 import com.devbliss.doctest.items.AssertDocItem;
 import com.devbliss.doctest.items.JsonDocItem;
 import com.devbliss.doctest.items.RequestDocItem;
@@ -14,6 +12,8 @@ import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
 
+import de.devbliss.apitester.ApiRequest;
+import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 /**
@@ -101,7 +101,7 @@ public interface DocTestMachine {
      */
     void sayPreformatted(String preformattedText);
 
-    void sayUploadRequest(HttpRequest httpRequest, String fileName, String fileBody, long l,
+    void sayUploadRequest(ApiRequest httpRequest, String fileName, String fileBody, long l,
             String mimetype, List<String> headersToShow) throws JSONException;
 
     /**
@@ -110,5 +110,5 @@ public interface DocTestMachine {
      * @param response
      * @throws Exception
      */
-    void sayResponse(Response response, List<String> headersToShow) throws Exception;
+    void sayResponse(ApiResponse response, List<String> headersToShow) throws Exception;
 }

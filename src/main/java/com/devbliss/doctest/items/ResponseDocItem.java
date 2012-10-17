@@ -1,48 +1,35 @@
 package com.devbliss.doctest.items;
 
-import java.util.List;
+import java.util.Map;
 
-import com.devbliss.doctest.Response;
-
+import de.devbliss.apitester.ApiResponse;
 
 
 public class ResponseDocItem implements DocItem {
 
     private int responseCode;
     private JsonDocItem payload;
-    private List<String> headers;
+    private Map<String, String> headers;
 
-    public ResponseDocItem(Response response, List<String> headersToShow) {
+    public ResponseDocItem(ApiResponse response, Map<String, String> headers) {
         this.responseCode = response.httpStatus;
         this.payload = new JsonDocItem(response.payload);
-        this.headers = headersToShow;
+        this.headers = headers;
     }
 
     public int getResponseCode() {
         return responseCode;
     }
 
-    public void setResponseCode(int responseCode) {
-        this.responseCode = responseCode;
-    }
-
     public JsonDocItem getPayload() {
         return payload;
-    }
-
-    public void setPayload(JsonDocItem payload) {
-        this.payload = payload;
     }
 
     public String getItemName() {
         return "response";
     }
 
-    public List<String> getHeaders() {
+    public Map<String, String> getHeaders() {
         return this.headers;
-    }
-
-    public void setHeaders(List<String> headers) {
-        this.headers = headers;
     }
 }

@@ -13,8 +13,9 @@ public class RequestDocItem implements DocItem {
     protected Boolean isAnUploadRequest = false;
     protected Map<String, String> headers;
 
-    public RequestDocItem(HTTP_REQUEST http, String uri) {
+    public RequestDocItem(HTTP_REQUEST http, String uri, Map<String, String> headers) {
         this(http, uri, new JsonDocItem(null));
+        this.headers = headers;
     }
 
     public RequestDocItem(HTTP_REQUEST http, String uri, String payload) {

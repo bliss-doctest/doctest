@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -28,9 +29,12 @@ import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
+import com.devbliss.doctest.utils.HeadersHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.devbliss.doctest.utils.UriHelper;
 
+import de.devbliss.apitester.ApiRequest;
+import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 /**
@@ -57,6 +61,12 @@ public class DocTestMachineImplUnitTest {
     private List<DocItem> listItem;
     @Mock
     private UriHelper uriHelper;
+    @Mock
+    private HeadersHelper headersHelper;
+    @Mock
+    private ApiRequest apiRequest;
+    @Mock
+    private ApiResponse apiResponse;
 
     @Captor
     private ArgumentCaptor<List<DocItem>> listItemCaptor;
@@ -65,15 +75,16 @@ public class DocTestMachineImplUnitTest {
     private final HTTP_REQUEST httpRequest = HTTP_REQUEST.GET;
     private String uriString;
     private URI uri;
+    private List<String> headers;
 
     @Before
     public void setUp() throws URISyntaxException {
         uri = new URI("");
-
+        headers = new ArrayList<String>();
         when(jsonHelper.isJsonValid(JSON_VALID)).thenReturn(true);
         when(jsonHelper.prettyPrintJson(JSON_VALID)).thenReturn(JSON_VALID);
         when(uriHelper.uriToString(uri)).thenReturn(uriString);
-        machine = spy(new DocTestMachineImpl(renderer, jsonHelper, uriHelper));
+        machine = spy(new DocTestMachineImpl(renderer, jsonHelper, uriHelper, headersHelper));
     }
 
     @Test
@@ -130,7 +141,7 @@ public class DocTestMachineImplUnitTest {
     @Test
     public void addResponseItem() throws Exception {
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayResponse(RESPONSE_CODE, JSON_VALID);
+        machine.sayResponse(apiResponse, headers);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -161,7 +172,7 @@ public class DocTestMachineImplUnitTest {
     @Test
     public void addUploadRequestItem() throws Exception {
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayUploadRequest(uri, httpRequest, "file", "fileBody", 10l, "");
+        machine.sayUploadRequest(apiRequest, "file", "fileBody", 10l, "", headers);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -178,7 +189,7 @@ public class DocTestMachineImplUnitTest {
     @Test
     public void addUploadRequestItemUriIsNull() throws Exception {
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayUploadRequest(null, httpRequest, "file", "fileBody", 10l, "");
+        machine.sayUploadRequest(apiRequest, "file", "fileBody", 10l, "", headers);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -236,7 +247,7 @@ public class DocTestMachineImplUnitTest {
         machine.sayPreformatted(JSON_VALID);
         machine.say(TEXT + "_second");
         machine.sayRequest(uri, JSON_VALID, httpRequest);
-        machine.sayResponse(RESPONSE_CODE, JSON_VALID);
+        machine.sayResponse(apiResponse, headers);
         machine.sayVerify(TEXT);
         machine.sayNextSectionTitle(TEXT);
         machine.endDocTest();

@@ -4,10 +4,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpRequest;
 import org.json.JSONException;
 
-import com.devbliss.doctest.Response;
 import com.devbliss.doctest.items.AssertDocItem;
 import com.devbliss.doctest.items.DocItem;
 import com.devbliss.doctest.items.JsonDocItem;
@@ -18,10 +16,13 @@ import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
+import com.devbliss.doctest.utils.HeadersHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.devbliss.doctest.utils.UriHelper;
 import com.google.inject.Inject;
 
+import de.devbliss.apitester.ApiRequest;
+import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 /**
@@ -50,17 +51,20 @@ public class DocTestMachineImpl implements DocTestMachine {
     private final ReportRenderer reportRenderer;
     private final JSONHelper jsonHelper;
     private final UriHelper uriHelper;
+    private final HeadersHelper headersHelper;
     private String introduction;
 
     @Inject
     public DocTestMachineImpl(
             ReportRenderer reportRenderer,
             JSONHelper jsonHelper,
-            UriHelper uriHelper) {
+            UriHelper uriHelper,
+            HeadersHelper headersHelper) {
         this.uriHelper = uriHelper;
         listItem = new ArrayList<DocItem>();
         this.reportRenderer = reportRenderer;
         this.jsonHelper = jsonHelper;
+        this.headersHelper = headersHelper;
     }
 
     public void beginDoctest(String fileName, String introduction) {
@@ -109,15 +113,16 @@ public class DocTestMachineImpl implements DocTestMachine {
     // }
     // }
 
-    public void sayUploadRequest(HttpRequest httpRequest, String fileName, String fileBody,
+    public void sayUploadRequest(ApiRequest apiRequest, String fileName, String fileBody,
             long size, String mimeType, List<String> headersToShow) {
-        listItem.add(new RequestUploadDocItem(HTTP_REQUEST.POST, httpRequest, fileName, fileBody,
-                size, mimeType, headersToShow));
+        listItem.add(new RequestUploadDocItem(HTTP_REQUEST.POST, apiRequest, fileName, fileBody,
+                size, mimeType, headersHelper.filter(apiRequest.headers, headersToShow)));
     }
 
-    public void sayResponse(Response response, List<String> headersToShow)
+    public void sayResponse(ApiResponse response, List<String> headersToShow)
             throws Exception {
-        listItem.add(new ResponseDocItem(response, headersToShow));
+        listItem.add(new ResponseDocItem(response, headersHelper.filter(response.headers,
+                headersToShow)));
     }
 
     public void sayVerify(String condition) {

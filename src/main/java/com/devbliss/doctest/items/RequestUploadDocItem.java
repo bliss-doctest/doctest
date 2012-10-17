@@ -1,11 +1,10 @@
 package com.devbliss.doctest.items;
 
-import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.http.Header;
-import org.apache.http.HttpRequest;
 
+import de.devbliss.apitester.ApiRequest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 public class RequestUploadDocItem extends RequestDocItem {
@@ -20,25 +19,19 @@ public class RequestUploadDocItem extends RequestDocItem {
 
     public RequestUploadDocItem(
             HTTP_REQUEST http,
-            HttpRequest httpRequest,
+            ApiRequest apiRequest,
             String fileName,
             String fileBody,
             long fileSize,
             String mimeType,
-            List<String> headersToShow) {
-        super(http, httpRequest.getRequestLine().getUri());
+            Map<String, String> headersToShow) {
+        super(http, apiRequest.uri, headersToShow);
         this.fileName = fileName;
         this.fileBody = fileBody;
         this.isAnUploadRequest = true;
         this.fileSize = fileSize;
         this.mimeType = mimeType;
         this.id = "request" + NB_ITEMS++;
-        this.headers.clear();
-        for (Header header : httpRequest.getAllHeaders()) {
-            if (headersToShow.contains(header.getName())) {
-                headers.put(header.getName(), header.getValue());
-            }
-        }
     }
 
     public String getFileName() {

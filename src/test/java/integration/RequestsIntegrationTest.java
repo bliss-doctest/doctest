@@ -10,13 +10,11 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.http.Header;
-import org.apache.http.HttpRequest;
-import org.apache.http.RequestLine;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.message.BasicHeader;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,9 +23,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.DocTest;
-import com.devbliss.doctest.Response;
 import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
 
+import de.devbliss.apitester.ApiRequest;
 import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.Context;
@@ -82,33 +80,33 @@ public class RequestsIntegrationTest extends DocTest {
     private ApiResponse response;
     private URI uri;
     private Context context;
-    private HttpRequest httpRequest;
-    private RequestLine requestLine;
-    private final Header[] headers = new Header[2];
+    private ApiRequest apiRequest;
+    private final Map<String, String> headers = new HashMap<String, String>();
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         obj = new Object();
-        httpRequest = mock(HttpRequest.class);
-        requestLine = mock(RequestLine.class);
-        headers[0] = new BasicHeader(HEADER_NAME1, HEADER_VALUE1);
-        headers[1] = new BasicHeader(HEADER_NAME2, HEADER_VALUE2);
-        when(httpRequest.getAllHeaders()).thenReturn(headers);
-        // httpRequest.setHeader(HEADER_NAME1, HEADER_VALUE1);
-        // httpRequest.setHeader(HEADER_NAME2, HEADER_VALUE2);
-        when(httpRequest.getRequestLine()).thenReturn(requestLine);
-        when(requestLine.getUri()).thenReturn("/resource/id:12345");
+        apiRequest = mock(ApiRequest.class);
+
+        headers.put(HEADER_NAME1, HEADER_VALUE1);
+        headers.put(HEADER_NAME2, HEADER_VALUE2);
+
+        when(apiRequest.getHeaders()).thenReturn(headers);
+
         response =
                 new ApiResponse(HTTP_STATUS, REASON_PHRASE, PAYLOAD, Collections
                         .<String, String> emptyMap());
-        context = new Context(response, httpRequest);
+
+
+        context = new Context(response, apiRequest);
         uri =
                 new URIBuilder().setScheme("http").setHost("www.hostname.com").setPort(8080)
                         .setPath("/resource/id:12345").build();
-        when(API.put(uri, obj)).thenReturn(response);
-        when(API.get(uri)).thenReturn(response);
-        when(API.delete(uri, null)).thenReturn(response);
+
+        when(API.put(uri, obj)).thenReturn(context);
+        when(API.get(uri)).thenReturn(context);
+        when(API.delete(uri, null)).thenReturn(context);
         when(API.post(uri, obj)).thenReturn(context);
         when(API.post(uri, null)).thenReturn(context);
         when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
@@ -118,7 +116,7 @@ public class RequestsIntegrationTest extends DocTest {
     @Test
     public void get() throws Exception {
         sayNextSection("Making a get request");
-        Response resp = makeGetRequest(uri);
+        ApiResponse resp = makeGetRequest(uri);
 
         assertEqualsAndSay(HTTP_STATUS, resp.httpStatus, HTTP_TEXT);
         assertEqualsAndSay(PAYLOAD, resp.payload, JSON_TEXT);
@@ -127,7 +125,7 @@ public class RequestsIntegrationTest extends DocTest {
     @Test
     public void delete() throws Exception {
         sayNextSection("Making a delete request");
-        Response response = makeDeleteRequest(uri);
+        ApiResponse response = makeDeleteRequest(uri);
 
         assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
         assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
@@ -136,7 +134,7 @@ public class RequestsIntegrationTest extends DocTest {
     @Test
     public void post() throws Exception {
         sayNextSection("Making a post request");
-        Response response = makePostRequest(uri, obj);
+        ApiResponse response = makePostRequest(uri, obj);
 
         assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
         assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
@@ -145,7 +143,7 @@ public class RequestsIntegrationTest extends DocTest {
     @Test
     public void put() throws Exception {
         sayNextSection("Making a put request with encöding chäracters");
-        Response response = makePutRequest(uri, obj);
+        ApiResponse response = makePutRequest(uri, obj);
 
         assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
         assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
@@ -155,7 +153,7 @@ public class RequestsIntegrationTest extends DocTest {
     public void postUploadText() throws Exception {
         sayNextSection("Making an upload post request");
 
-        Response response =
+        ApiResponse response =
                 makePostUploadRequest(uri, new File("src/test/resources/file.txt"), "paramName");
         assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
         assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
@@ -166,7 +164,7 @@ public class RequestsIntegrationTest extends DocTest {
 
         sayNextSection("Making an upload post request with an image file");
 
-        Response response =
+        ApiResponse response =
                 makePostUploadRequest(uri, new File("src/test/resources/picture.png"), "paramName");
 
         assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
@@ -176,7 +174,7 @@ public class RequestsIntegrationTest extends DocTest {
     @Test
     public void suiteRequests() throws Exception {
 
-        Response response =
+        ApiResponse response =
                 makePostUploadRequest(uri, new File("src/test/resources/file.txt"), "paramName");
         assertEquals(HTTP_STATUS, response.httpStatus);
         assertEquals(PAYLOAD, response.payload);
