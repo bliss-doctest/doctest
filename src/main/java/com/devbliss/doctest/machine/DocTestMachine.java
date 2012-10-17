@@ -1,6 +1,5 @@
 package com.devbliss.doctest.machine;
 
-import java.net.URI;
 import java.util.List;
 
 import org.json.JSONException;
@@ -84,7 +83,9 @@ public interface DocTestMachine {
      * @param httpRequest
      * @throws JSONException
      */
-    void sayRequest(URI uri, String payload, HTTP_REQUEST httpRequest) throws JSONException;
+    void sayRequest(ApiRequest apiRequest, String payload, HTTP_REQUEST httpRequest,
+            List<String> headersToShow)
+            throws JSONException;
 
 
     /**

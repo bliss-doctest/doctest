@@ -122,15 +122,17 @@ public class LogicDocTestUnitTest {
     public void makeGetRequest() throws Exception {
         when(apiTest.get(uri)).thenReturn(context);
         docTest.makeGetRequest(uri);
-        verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.GET);
+        verify(docTestMachine).sayRequest(request, NULL, HTTP_REQUEST.GET, headers);
         verify(docTestMachine).sayResponse(response, headers);
     }
+
+    // TODO: NULL TEST URI, EXCEPTION HANDLING?
 
     @Test
     public void makeDeleteRequest() throws Exception {
         when(apiTest.delete(uri, null)).thenReturn(context);
         docTest.makeDeleteRequest(uri);
-        verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.DELETE);
+        verify(docTestMachine).sayRequest(request, NULL, HTTP_REQUEST.DELETE, headers);
         verify(docTestMachine).sayResponse(response, headers);
     }
 
@@ -138,7 +140,7 @@ public class LogicDocTestUnitTest {
     public void makeDeleteRequestWithBody() throws Exception {
         when(apiTest.delete(uri, obj)).thenReturn(context);
         docTest.makeDeleteRequest(uri, obj);
-        verify(docTestMachine).sayRequest(uri, OBJECT, HTTP_REQUEST.DELETE);
+        verify(docTestMachine).sayRequest(request, OBJECT, HTTP_REQUEST.DELETE, headers);
         verify(docTestMachine).sayResponse(response, headers);
     }
 
@@ -146,7 +148,7 @@ public class LogicDocTestUnitTest {
     public void makePostRequest() throws Exception {
         when(apiTest.post(uri, null)).thenReturn(context);
         docTest.makePostRequest(uri);
-        verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.POST);
+        verify(docTestMachine).sayRequest(request, NULL, HTTP_REQUEST.POST, headers);
         verify(docTestMachine).sayResponse(response, headers);
     }
 
@@ -154,7 +156,7 @@ public class LogicDocTestUnitTest {
     public void makePostRequestWithBody() throws Exception {
         when(apiTest.post(uri, obj)).thenReturn(context);
         docTest.makePostRequest(uri, obj);
-        verify(docTestMachine).sayRequest(uri, OBJECT, HTTP_REQUEST.POST);
+        verify(docTestMachine).sayRequest(request, OBJECT, HTTP_REQUEST.POST, headers);
         verify(docTestMachine).sayResponse(response, headers);
     }
 
@@ -182,7 +184,7 @@ public class LogicDocTestUnitTest {
     public void makePutRequest() throws Exception {
         when(apiTest.put(uri, null)).thenReturn(context);
         docTest.makePutRequest(uri);
-        verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.PUT);
+        verify(docTestMachine).sayRequest(request, NULL, HTTP_REQUEST.PUT, headers);
         verify(docTestMachine).sayResponse(response, headers);
     }
 
@@ -190,7 +192,7 @@ public class LogicDocTestUnitTest {
     public void makePutRequestWithBody() throws Exception {
         when(apiTest.put(uri, obj)).thenReturn(context);
         docTest.makePutRequest(uri, obj);
-        verify(docTestMachine).sayRequest(uri, OBJECT, HTTP_REQUEST.PUT);
+        verify(docTestMachine).sayRequest(request, OBJECT, HTTP_REQUEST.PUT, headers);
         verify(docTestMachine).sayResponse(response, headers);
     }
 

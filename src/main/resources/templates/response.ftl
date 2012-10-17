@@ -9,9 +9,11 @@
 			</li>
 		</#if>
 		
-		<li>Headers</li>
-		<#list headers?keys as header>
+		<#if headers?has_content>
+			<li>Headers</li>
+			<#list headers?keys as header>
 			    <li>${header} = ${headers[header]}</li>
-		</#list>
+			</#list>
+		</#if>
     </ul>
 </div>

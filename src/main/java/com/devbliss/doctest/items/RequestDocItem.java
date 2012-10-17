@@ -1,6 +1,5 @@
 package com.devbliss.doctest.items;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
@@ -14,23 +13,22 @@ public class RequestDocItem implements DocItem {
     protected Map<String, String> headers;
 
     public RequestDocItem(HTTP_REQUEST http, String uri, Map<String, String> headers) {
-        this(http, uri, new JsonDocItem(null));
-        this.headers = headers;
+        this(http, uri, new JsonDocItem(null), headers);
     }
 
-    public RequestDocItem(HTTP_REQUEST http, String uri, String payload) {
-        this(http, uri, new JsonDocItem(payload));
+    public RequestDocItem(HTTP_REQUEST http, String uri, String payload, Map<String, String> headers) {
+        this(http, uri, new JsonDocItem(payload), headers);
     }
 
-    public RequestDocItem(HTTP_REQUEST http, String uri, JsonDocItem payload) {
+    private RequestDocItem(
+            HTTP_REQUEST http,
+            String uri,
+            JsonDocItem payload,
+            Map<String, String> headers) {
         this.http = http;
         this.uri = uri;
         this.payload = payload;
-        this.headers = new HashMap<String, String>();
-        // headers.put("header1", "value1");
-        // headers.put("header2", "value2");
-        // headers.put("header3", "value3");
-        // headers.put("header4", "value4");
+        this.headers = headers;
     }
 
     public HTTP_REQUEST getHttp() {

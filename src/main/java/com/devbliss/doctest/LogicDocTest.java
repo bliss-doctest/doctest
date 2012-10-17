@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import integration.RequestsIntegrationTest;
 
 import java.io.File;
 import java.net.URI;
@@ -22,6 +23,7 @@ import com.devbliss.doctest.machine.DocTestMachine;
 import com.devbliss.doctest.utils.FileHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 
+import de.devbliss.apitester.ApiRequest;
 import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
 import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
@@ -103,12 +105,13 @@ public abstract class LogicDocTest {
         docTestMachine.sayNextSectionTitle(sectionName);
     }
 
-    protected void sayUri(URI uri, HTTP_REQUEST httpRequest) throws Exception {
-        sayUri(uri, null, httpRequest);
+    private void sayUri(ApiRequest apiRequest, HTTP_REQUEST httpRequest) throws Exception {
+        sayUri(apiRequest, null, httpRequest);
     }
 
-    protected void sayUri(URI uri, Object obj, HTTP_REQUEST httpRequest) throws Exception {
-        docTestMachine.sayRequest(uri, jsonHelper.toJson(obj), httpRequest);
+    private void sayUri(ApiRequest apiRequest, Object obj, HTTP_REQUEST httpRequest)
+            throws Exception {
+        docTestMachine.sayRequest(apiRequest, jsonHelper.toJson(obj), httpRequest, showHeaders());
     }
 
     /**
@@ -133,19 +136,19 @@ public abstract class LogicDocTest {
         docTestMachine.sayPreformatted(code == null ? "" : code);
     }
 
-    protected ApiResponse makeGetRequestSilent(URI uri) throws Exception {
-        return apiTest.get(uri).apiResponse;
+    protected Context makeGetRequestSilent(URI uri) throws Exception {
+        return apiTest.get(uri);
     }
 
     protected ApiResponse makeGetRequest(URI uri) throws Exception {
-        sayUri(uri, HTTP_REQUEST.GET);
-        ApiResponse apiResponse = makeGetRequestSilent(uri);
-        docTestMachine.sayResponse(apiResponse, showHeaders());
-        return apiResponse;
+        Context context = makeGetRequestSilent(uri);
+        sayUri(context.apiRequest, HTTP_REQUEST.GET);
+        docTestMachine.sayResponse(context.apiResponse, showHeaders());
+        return context.apiResponse;
     }
 
-    protected ApiResponse makePostRequestSilent(URI uri, Object obj) throws Exception {
-        return apiTest.post(uri, obj).apiResponse;
+    protected Context makePostRequestSilent(URI uri, Object obj) throws Exception {
+        return apiTest.post(uri, obj);
     }
 
     protected ApiResponse makePostRequest(URI uri) throws Exception {
@@ -153,10 +156,10 @@ public abstract class LogicDocTest {
     }
 
     protected ApiResponse makePostRequest(URI uri, Object obj) throws Exception {
-        sayUri(uri, obj, HTTP_REQUEST.POST);
-        ApiResponse apiResponse = makePostRequestSilent(uri, obj);
-        docTestMachine.sayResponse(apiResponse, showHeaders());
-        return apiResponse;
+        Context context = makePostRequestSilent(uri, obj);
+        sayUri(context.apiRequest, obj, HTTP_REQUEST.POST);
+        docTestMachine.sayResponse(context.apiResponse, showHeaders());
+        return context.apiResponse;
     }
 
     protected ApiResponse makePostUploadRequest(URI uri, File fileToUpload, String paramName)
@@ -172,14 +175,13 @@ public abstract class LogicDocTest {
                 fileHelper.readFile(fileToUpload), fileToUpload.length(), mimeType, showHeaders());
 
 
-        // @ApiTestUtil convertToApiApiResponse extracts the headers from the HttpApiResponse
         docTestMachine.sayResponse(context.apiResponse, showHeaders());
 
         return context.apiResponse;
     }
 
-    protected ApiResponse makePutRequestSilent(URI uri, Object obj) throws Exception {
-        return apiTest.put(uri, obj).apiResponse;
+    protected Context makePutRequestSilent(URI uri, Object obj) throws Exception {
+        return apiTest.put(uri, obj);
     }
 
     protected ApiResponse makePutRequest(URI uri) throws Exception {
@@ -187,18 +189,19 @@ public abstract class LogicDocTest {
     }
 
     protected ApiResponse makePutRequest(URI uri, Object obj) throws Exception {
-        sayUri(uri, obj, HTTP_REQUEST.PUT);
-        ApiResponse apiResponse = makePutRequestSilent(uri, obj);
-        docTestMachine.sayResponse(apiResponse, showHeaders());
-        return apiResponse;
+
+        Context context = makePutRequestSilent(uri, obj);
+        sayUri(context.apiRequest, obj, HTTP_REQUEST.PUT);
+        docTestMachine.sayResponse(context.apiResponse, showHeaders());
+        return context.apiResponse;
     }
 
-    protected ApiResponse makeDeleteRequestSilent(URI uri) throws Exception {
-        return apiTest.delete(uri).apiResponse;
+    protected Context makeDeleteRequestSilent(URI uri) throws Exception {
+        return apiTest.delete(uri);
     }
 
-    protected ApiResponse makeDeleteRequestSilent(URI uri, Object obj) throws Exception {
-        return apiTest.delete(uri, obj).apiResponse;
+    protected Context makeDeleteRequestSilent(URI uri, Object obj) throws Exception {
+        return apiTest.delete(uri, obj);
     }
 
     protected ApiResponse makeDeleteRequest(URI uri) throws Exception {
@@ -206,10 +209,10 @@ public abstract class LogicDocTest {
     }
 
     protected ApiResponse makeDeleteRequest(URI uri, Object obj) throws Exception {
-        sayUri(uri, obj, HTTP_REQUEST.DELETE);
-        ApiResponse apiResponse = makeDeleteRequestSilent(uri, obj);
-        docTestMachine.sayResponse(apiResponse, showHeaders());
-        return apiResponse;
+        Context context = makeDeleteRequestSilent(uri, obj);
+        sayUri(context.apiRequest, obj, HTTP_REQUEST.DELETE);
+        docTestMachine.sayResponse(context.apiResponse, showHeaders());
+        return context.apiResponse;
     }
 
     /**
@@ -389,6 +392,17 @@ public abstract class LogicDocTest {
         apiTest.getTestState().clearCookies();
     }
 
+    /**
+     * defines the headers that we want to render for the documentation
+     * for this case: its the default declaration and no headers are declared
+     * if you want to define headers to display for a request or response,
+     * you HAVE TO override this function in your test
+     * see example {@link RequestsIntegrationTest} </br>
+     * <strong>IMPORTANT</strong>: you dont have to care about the case of the headers name
+     * 
+     * 
+     * @return
+     */
     public List<String> showHeaders() {
         return new ArrayList<String>();
     }

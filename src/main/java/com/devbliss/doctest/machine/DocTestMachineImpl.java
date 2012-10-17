@@ -1,6 +1,5 @@
 package com.devbliss.doctest.machine;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,21 +97,25 @@ public class DocTestMachineImpl implements DocTestMachine {
         listItem.add(new SectionDocItem(sectionName));
     }
 
-    public void sayRequest(URI uri, String payload, HTTP_REQUEST httpRequest) throws JSONException {
-        if (uri != null) {
-            listItem.add(new RequestDocItem(httpRequest, uriHelper.uriToString(uri),
-                    getPayload(payload)));
+    /**
+     * if the uri is null, no documentation for this request/response will be created
+     * 
+     */
+    public void sayRequest(ApiRequest apiRequest, String payload, HTTP_REQUEST httpRequest,
+            List<String> headersToShow)
+            throws JSONException {
+
+        if (apiRequest.uri != null) {
+            // TODO: uriHelper.uriToString()!! accept an URI object but we have string here :(
+            listItem.add(new RequestDocItem(httpRequest, apiRequest.uri,
+                    getPayload(payload), headersHelper.filter(apiRequest.headers, headersToShow)));
         }
     }
 
-    // public void sayUploadRequest(URI uri, HTTP_REQUEST httpRequest, String fileName,
-    // String fileBody, long size, String mimeType) {
-    // if (uri != null) {
-    // listItem.add(new RequestUploadDocItem(httpRequest, uriHelper.uriToString(uri),
-    // fileName, fileBody, size, mimeType));
-    // }
-    // }
-
+    /**
+     * if the uri is null, no documentation for this request/response will be created
+     * 
+     */
     public void sayUploadRequest(ApiRequest apiRequest, String fileName, String fileBody,
             long size, String mimeType, List<String> headersToShow) {
 
@@ -123,6 +126,10 @@ public class DocTestMachineImpl implements DocTestMachine {
         }
     }
 
+    /**
+     * add new item for doctest
+     * and filter the headers from the ApiResponse
+     */
     public void sayResponse(ApiResponse response, List<String> headersToShow)
             throws Exception {
         listItem.add(new ResponseDocItem(response, headersHelper.filter(response.headers,
