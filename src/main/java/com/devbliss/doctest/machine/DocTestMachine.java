@@ -13,7 +13,6 @@ import com.devbliss.doctest.items.TextDocItem;
 
 import de.devbliss.apitester.ApiRequest;
 import de.devbliss.apitester.ApiResponse;
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 /**
  * The {@link DocTestMachine} offers method to generate a report. <code>
@@ -83,10 +82,8 @@ public interface DocTestMachine {
      * @param httpRequest
      * @throws JSONException
      */
-    void sayRequest(ApiRequest apiRequest, String payload, HTTP_REQUEST httpRequest,
-            List<String> headersToShow)
+    void sayRequest(ApiRequest apiRequest, String payload, List<String> headersToShow)
             throws JSONException;
-
 
     /**
      * Writes a new {@link AssertDocItem} into the report.

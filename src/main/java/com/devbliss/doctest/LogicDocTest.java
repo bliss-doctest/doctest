@@ -25,7 +25,6 @@ import com.devbliss.doctest.utils.JSONHelper;
 import de.devbliss.apitester.ApiRequest;
 import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 import de.devbliss.apitester.Context;
 import de.devbliss.apitester.Cookie;
 
@@ -104,13 +103,12 @@ public abstract class LogicDocTest {
         docTestMachine.sayNextSectionTitle(sectionName);
     }
 
-    private void sayUri(ApiRequest apiRequest, HTTP_REQUEST httpRequest) throws Exception {
-        sayUri(apiRequest, null, httpRequest);
+    private void sayUri(ApiRequest apiRequest, Object obj) throws Exception {
+        docTestMachine.sayRequest(apiRequest, jsonHelper.toJson(obj), showHeaders());
     }
 
-    private void sayUri(ApiRequest apiRequest, Object obj, HTTP_REQUEST httpRequest)
-            throws Exception {
-        docTestMachine.sayRequest(apiRequest, jsonHelper.toJson(obj), httpRequest, showHeaders());
+    private void sayUri(ApiRequest apiRequest) throws Exception {
+        docTestMachine.sayRequest(apiRequest, null, showHeaders());
     }
 
     /**
@@ -141,7 +139,7 @@ public abstract class LogicDocTest {
 
     protected ApiResponse makeGetRequest(URI uri) throws Exception {
         Context context = makeGetRequestSilent(uri);
-        sayUri(context.apiRequest, HTTP_REQUEST.GET);
+        sayUri(context.apiRequest);
         docTestMachine.sayResponse(context.apiResponse, showHeaders());
         return context.apiResponse;
     }
@@ -156,7 +154,7 @@ public abstract class LogicDocTest {
 
     protected ApiResponse makePostRequest(URI uri, Object obj) throws Exception {
         Context context = makePostRequestSilent(uri, obj);
-        sayUri(context.apiRequest, obj, HTTP_REQUEST.POST);
+        sayUri(context.apiRequest, obj);
         docTestMachine.sayResponse(context.apiResponse, showHeaders());
         return context.apiResponse;
     }
@@ -189,7 +187,7 @@ public abstract class LogicDocTest {
     protected ApiResponse makePutRequest(URI uri, Object obj) throws Exception {
 
         Context context = makePutRequestSilent(uri, obj);
-        sayUri(context.apiRequest, obj, HTTP_REQUEST.PUT);
+        sayUri(context.apiRequest, obj);
         docTestMachine.sayResponse(context.apiResponse, showHeaders());
         return context.apiResponse;
     }
@@ -208,7 +206,7 @@ public abstract class LogicDocTest {
 
     protected ApiResponse makeDeleteRequest(URI uri, Object obj) throws Exception {
         Context context = makeDeleteRequestSilent(uri, obj);
-        sayUri(context.apiRequest, obj, HTTP_REQUEST.DELETE);
+        sayUri(context.apiRequest, obj);
         docTestMachine.sayResponse(context.apiResponse, showHeaders());
         return context.apiResponse;
     }

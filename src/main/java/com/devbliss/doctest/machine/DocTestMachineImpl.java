@@ -22,7 +22,6 @@ import com.google.inject.Inject;
 
 import de.devbliss.apitester.ApiRequest;
 import de.devbliss.apitester.ApiResponse;
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 /**
  * Default implementation of {@link DocTestMachine}.
@@ -101,8 +100,8 @@ public class DocTestMachineImpl implements DocTestMachine {
      * if the uri is null, no documentation for this request/response will be created
      * 
      */
-    public void sayRequest(ApiRequest apiRequest, String payload, HTTP_REQUEST httpRequest,
-            List<String> headersToShow) throws JSONException {
+    public void sayRequest(ApiRequest apiRequest, String payload, List<String> headersToShow)
+            throws JSONException {
 
         if (apiRequest.uri != null) {
             listItem.add(new RequestDocItem(apiRequest.httpMethod, uriHelper

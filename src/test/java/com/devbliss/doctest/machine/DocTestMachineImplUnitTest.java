@@ -37,7 +37,6 @@ import com.devbliss.doctest.utils.UriHelper;
 
 import de.devbliss.apitester.ApiRequest;
 import de.devbliss.apitester.ApiResponse;
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
 
 /**
  * Unit test for {@link DocTestMachineImpl}
@@ -162,7 +161,7 @@ public class DocTestMachineImplUnitTest {
     @Test
     public void addRequestItem() throws Exception {
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayRequest(apiRequest, JSON_VALID, HTTP_REQUEST.GET, headersToShow);
+        machine.sayRequest(apiRequest, JSON_VALID, headersToShow);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -210,7 +209,7 @@ public class DocTestMachineImplUnitTest {
         apiRequest = new ApiRequest(null, HTTP_METHOD, headers);
 
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayRequest(apiRequest, JSON_VALID, HTTP_REQUEST.GET, headersToShow);
+        machine.sayRequest(apiRequest, JSON_VALID, headersToShow);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -222,7 +221,7 @@ public class DocTestMachineImplUnitTest {
     @Test
     public void addRequestItemWihtInvalidJson() throws Exception {
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayRequest(apiRequest, JSON_INVALID, HTTP_REQUEST.GET, headersToShow);
+        machine.sayRequest(apiRequest, JSON_INVALID, headersToShow);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -255,7 +254,7 @@ public class DocTestMachineImplUnitTest {
         machine.say(TEXT + "_first");
         machine.sayPreformatted(JSON_VALID);
         machine.say(TEXT + "_second");
-        machine.sayRequest(apiRequest, JSON_VALID, HTTP_REQUEST.GET, headersToShow);
+        machine.sayRequest(apiRequest, JSON_VALID, headersToShow);
         machine.sayResponse(apiResponse, headersToShow);
         machine.sayVerify(TEXT);
         machine.sayNextSectionTitle(TEXT);
