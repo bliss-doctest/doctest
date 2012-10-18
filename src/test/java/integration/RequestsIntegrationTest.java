@@ -18,6 +18,8 @@ import org.apache.http.client.utils.URIBuilder;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.DocTest;
 import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
@@ -35,6 +37,7 @@ import de.devbliss.apitester.Context;
  * @author bmary
  * 
  */
+@RunWith(MockitoJUnitRunner.class)
 public class RequestsIntegrationTest extends DocTest {
 
     private static final String JSON_TEXT = "The response contains a JSON payload";
@@ -43,7 +46,7 @@ public class RequestsIntegrationTest extends DocTest {
     private static final String REASON_PHRASE = "This is not a normal response code";
     private static final String HEADER_VALUE1 = "application/json";
     private static final String HEADER_VALUE2 = "value2";
-    private static final String HEADER_NAME1 = "Content-type";
+    private static final String HEADER_NAME1 = "content-type";
     private static final String HEADER_NAME2 = "name2";
     private static ApiTest API;
 
@@ -66,7 +69,7 @@ public class RequestsIntegrationTest extends DocTest {
     @Override
     public List<String> showHeaders() {
         ArrayList<String> headersToShow = new ArrayList<String>();
-        headersToShow.add("Content-type");
+        headersToShow.add(HEADER_NAME1);
         headersToShow.add("Cookie");
         return headersToShow;
     }
@@ -76,7 +79,7 @@ public class RequestsIntegrationTest extends DocTest {
     private URI uri;
     private Context context;
     private ApiRequest apiRequest;
-    private final Map<String, String> headers = new HashMap<String, String>();
+    private Map<String, String> headers;
 
     @Before
     public void setUp() throws Exception {
@@ -84,7 +87,7 @@ public class RequestsIntegrationTest extends DocTest {
         uri =
                 new URIBuilder().setScheme("http").setHost("www.hostname.com").setPort(8080)
                         .setPath("/resource/id:12345").build();
-
+        headers = new HashMap<String, String>();
         headers.put(HEADER_NAME1, HEADER_VALUE1);
         headers.put(HEADER_NAME2, HEADER_VALUE2);
     }
