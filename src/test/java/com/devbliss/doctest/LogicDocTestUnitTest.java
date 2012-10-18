@@ -2,6 +2,7 @@ package com.devbliss.doctest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -14,9 +15,13 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,9 +34,10 @@ import com.devbliss.doctest.machine.DocTestMachine;
 import com.devbliss.doctest.utils.FileHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 
+import de.devbliss.apitester.ApiRequest;
 import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
+import de.devbliss.apitester.Context;
 import de.devbliss.apitester.Cookie;
 import de.devbliss.apitester.TestState;
 
@@ -55,6 +61,8 @@ public class LogicDocTestUnitTest {
     private static final int HTTP_STATUS = 204;
     private static final String REASON_PHRASE = "No Content";
     protected static final String FILE_NAME = "file-name";
+    private static final String HEADER_NAME1 = "Content-type";
+    private static final String HTTP_METHOD = "httpMethod";
 
     @Mock
     private ApiTest apiTest;
@@ -72,14 +80,27 @@ public class LogicDocTestUnitTest {
     private LogicDocTest docTest;
     private URI uri;
     private ApiResponse response;
+    private ApiRequest request;
+
     private File fileToUpload;
+    private Context context;
+    private List<String> headersToShow;
+    private Map<String, String> headers;
 
     @Before
     public void setUp() throws Exception {
+        headersToShow = new ArrayList<String>();
+        headersToShow.add(HEADER_NAME1);
+
+        headers = new HashMap<String, String>();
+
         uri = new URI("");
+        request = new ApiRequest(uri, HTTP_METHOD, headers);
         response =
                 new ApiResponse(HTTP_STATUS, REASON_PHRASE, RESPONSE_PAYLOAD, Collections
                         .<String, String> emptyMap());
+
+        context = new Context(response, request);
         when(jsonHelper.toJson(null)).thenReturn(NULL);
         when(jsonHelper.toJson(obj)).thenReturn(OBJECT);
         when(apiTest.getTestState()).thenReturn(testState);
@@ -102,76 +123,78 @@ public class LogicDocTestUnitTest {
 
     @Test
     public void makeGetRequest() throws Exception {
-        when(apiTest.get(uri)).thenReturn(response);
+        when(apiTest.get(uri)).thenReturn(context);
         docTest.makeGetRequest(uri);
-        verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.GET);
-        verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
+        verify(docTestMachine).sayRequest(request, null, headersToShow);
+        verify(docTestMachine).sayResponse(response, headersToShow);
     }
 
     @Test
     public void makeDeleteRequest() throws Exception {
-        when(apiTest.delete(uri, null)).thenReturn(response);
+        when(apiTest.delete(uri, null)).thenReturn(context);
         docTest.makeDeleteRequest(uri);
-        verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.DELETE);
-        verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
+        verify(docTestMachine).sayRequest(request, NULL, headersToShow);
+        verify(docTestMachine).sayResponse(response, headersToShow);
     }
 
     @Test
     public void makeDeleteRequestWithBody() throws Exception {
-        when(apiTest.delete(uri, obj)).thenReturn(response);
+        when(apiTest.delete(uri, obj)).thenReturn(context);
         docTest.makeDeleteRequest(uri, obj);
-        verify(docTestMachine).sayRequest(uri, OBJECT, HTTP_REQUEST.DELETE);
-        verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
+        verify(docTestMachine).sayRequest(request, OBJECT, headersToShow);
+        verify(docTestMachine).sayResponse(response, headersToShow);
     }
 
     @Test
     public void makePostRequest() throws Exception {
-        when(apiTest.post(uri, null)).thenReturn(response);
+        when(apiTest.post(uri, null)).thenReturn(context);
         docTest.makePostRequest(uri);
-        verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.POST);
-        verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
+        verify(docTestMachine).sayRequest(request, NULL, headersToShow);
+        verify(docTestMachine).sayResponse(response, headersToShow);
     }
 
     @Test
     public void makePostRequestWithBody() throws Exception {
-        when(apiTest.post(uri, obj)).thenReturn(response);
+        when(apiTest.post(uri, obj)).thenReturn(context);
         docTest.makePostRequest(uri, obj);
-        verify(docTestMachine).sayRequest(uri, OBJECT, HTTP_REQUEST.POST);
-        verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
+        verify(docTestMachine).sayRequest(request, OBJECT, headersToShow);
+        verify(docTestMachine).sayResponse(response, headersToShow);
     }
 
     @Test
     public void makePostUploadRequest() throws Exception {
         when(apiTest.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
-                response);
+                context);
         when(fileHelper.readFile(fileToUpload)).thenReturn("fileBody");
         docTest.makePostUploadRequest(uri, fileToUpload, "paramName");
-        verify(docTestMachine).sayUploadRequest(uri, HTTP_REQUEST.POST, "file.txt", "fileBody",
-                fileToUpload.length(), "text/plain");
-        verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
+
+        verify(docTestMachine).sayUploadRequest(request, "file.txt", "fileBody",
+                fileToUpload.length(), "text/plain", headersToShow);
+        verify(docTestMachine).sayResponse(response, headersToShow);
     }
 
     @Test(expected = FileNotFoundException.class)
     public void makePostUploadRequestFileNotFound() throws Exception {
-        when(apiTest.post(uri, null)).thenReturn(response);
+        when(apiTest.post(eq(uri), eq(null), any(PostUploadWithoutRedirectImpl.class))).thenReturn(
+                context);
         doThrow(new FileNotFoundException()).when(fileHelper).readFile(fileToUpload);
         docTest.makePostUploadRequest(uri, fileToUpload, "paramName");
     }
 
     @Test
     public void makePutRequest() throws Exception {
-        when(apiTest.put(uri, null)).thenReturn(response);
+        when(apiTest.put(uri, null)).thenReturn(context);
         docTest.makePutRequest(uri);
-        verify(docTestMachine).sayRequest(uri, NULL, HTTP_REQUEST.PUT);
-        verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
+        verify(docTestMachine).sayRequest(request, NULL, headersToShow);
+        verify(docTestMachine).sayResponse(response, headersToShow);
     }
 
     @Test
     public void makePutRequestWithBody() throws Exception {
-        when(apiTest.put(uri, obj)).thenReturn(response);
+        when(apiTest.put(uri, obj)).thenReturn(context);
         docTest.makePutRequest(uri, obj);
-        verify(docTestMachine).sayRequest(uri, OBJECT, HTTP_REQUEST.PUT);
-        verify(docTestMachine).sayResponse(HTTP_STATUS, RESPONSE_PAYLOAD);
+        verify(docTestMachine).sayRequest(request, OBJECT, headersToShow);
+        verify(docTestMachine).sayResponse(response, headersToShow);
     }
 
     @Test
@@ -419,6 +442,11 @@ public class LogicDocTestUnitTest {
             @Override
             protected String getFileName() {
                 return FILE_NAME;
+            }
+
+            @Override
+            public List<String> showHeaders() {
+                return headersToShow;
             }
         };
     }

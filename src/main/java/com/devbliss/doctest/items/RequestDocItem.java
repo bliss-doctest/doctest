@@ -1,30 +1,32 @@
 package com.devbliss.doctest.items;
 
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
+import java.util.Map;
 
 public class RequestDocItem implements DocItem {
 
-    protected final HTTP_REQUEST http;
+    protected final String http;
     protected final String uri;
     protected final JsonDocItem payload;
     protected Boolean isAnUploadRequest = false;
+    protected Map<String, String> headers;
 
-    public RequestDocItem(HTTP_REQUEST http, String uri) {
-        this(http, uri, new JsonDocItem(null));
+    public RequestDocItem(String http, String uri, Map<String, String> headers) {
+        this(http, uri, new JsonDocItem(null), headers);
     }
 
-    public RequestDocItem(HTTP_REQUEST http, String uri, String payload) {
-        this(http, uri, new JsonDocItem(payload));
+    public RequestDocItem(String http, String uri, String payload, Map<String, String> headers) {
+        this(http, uri, new JsonDocItem(payload), headers);
     }
 
-    public RequestDocItem(HTTP_REQUEST http, String uri, JsonDocItem payload) {
+    private RequestDocItem(String http, String uri, JsonDocItem payload, Map<String, String> headers) {
         this.http = http;
         this.uri = uri;
         this.payload = payload;
+        this.headers = headers;
     }
 
-    public HTTP_REQUEST getHttp() {
-        return http;
+    public String getHttp() {
+        return http.toUpperCase();
     }
 
     public String getUri() {
@@ -41,5 +43,9 @@ public class RequestDocItem implements DocItem {
 
     public String getItemName() {
         return "request";
+    }
+
+    public Map<String, String> getHeaders() {
+        return this.headers;
     }
 }

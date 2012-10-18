@@ -9,6 +9,17 @@
 	<ul>
 		<li>HTTP: ${http}</li>
 		<li>URI: ${uri}</li>
+		
+		<#if headers?has_content>
+			<li>Headers:
+				<ol>
+				<#list headers?keys as header>
+				    <li>${header} = ${headers[header]}</li>
+				</#list>
+				</ol>
+			</li>
+		</#if>
+		
 		<#if payload?? && payload.expected?has_content && payload.expected != "" && payload.expected != "null" && payload.expected != "{}" >
 			<pre>${payload.expected}</pre>
 		</#if>

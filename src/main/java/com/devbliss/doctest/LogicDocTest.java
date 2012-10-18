@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.activation.MimetypesFileTypeMap;
@@ -21,8 +22,10 @@ import com.devbliss.doctest.machine.DocTestMachine;
 import com.devbliss.doctest.utils.FileHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 
+import de.devbliss.apitester.ApiRequest;
+import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
+import de.devbliss.apitester.Context;
 import de.devbliss.apitester.Cookie;
 
 public abstract class LogicDocTest {
@@ -100,12 +103,12 @@ public abstract class LogicDocTest {
         docTestMachine.sayNextSectionTitle(sectionName);
     }
 
-    protected void sayUri(URI uri, HTTP_REQUEST httpRequest) throws Exception {
-        sayUri(uri, null, httpRequest);
+    private void sayUri(ApiRequest apiRequest, Object obj) throws Exception {
+        docTestMachine.sayRequest(apiRequest, jsonHelper.toJson(obj), showHeaders());
     }
 
-    protected void sayUri(URI uri, Object obj, HTTP_REQUEST httpRequest) throws Exception {
-        docTestMachine.sayRequest(uri, jsonHelper.toJson(obj), httpRequest);
+    private void sayUri(ApiRequest apiRequest) throws Exception {
+        docTestMachine.sayRequest(apiRequest, null, showHeaders());
     }
 
     /**
@@ -130,79 +133,101 @@ public abstract class LogicDocTest {
         docTestMachine.sayPreformatted(code == null ? "" : code);
     }
 
-    protected Response makeGetRequestSilent(URI uri) throws Exception {
-        return new Response(apiTest.get(uri));
+    protected ApiResponse makeGetRequestSilent(URI uri) throws Exception {
+        return doGetRequest(uri).apiResponse;
     }
 
-    protected Response makeGetRequest(URI uri) throws Exception {
-        sayUri(uri, HTTP_REQUEST.GET);
-        Response response = makeGetRequestSilent(uri);
-        docTestMachine.sayResponse(response.httpStatus, response.payload);
-        return response;
+    private Context doGetRequest(URI uri) throws Exception {
+        return apiTest.get(uri);
     }
 
-    protected Response makePostRequestSilent(URI uri, Object obj) throws Exception {
-        return new Response(apiTest.post(uri, obj));
+    protected ApiResponse makeGetRequest(URI uri) throws Exception {
+        Context context = doGetRequest(uri);
+        sayUri(context.apiRequest);
+        docTestMachine.sayResponse(context.apiResponse, showHeaders());
+        return context.apiResponse;
     }
 
-    protected Response makePostRequest(URI uri) throws Exception {
+    protected ApiResponse makePostRequestSilent(URI uri, Object obj) throws Exception {
+        return doPostRequest(uri, obj).apiResponse;
+    }
+
+    private Context doPostRequest(URI uri, Object obj) throws Exception {
+        return apiTest.post(uri, obj);
+    }
+
+    protected ApiResponse makePostRequest(URI uri) throws Exception {
         return makePostRequest(uri, null);
     }
 
-    protected Response makePostRequest(URI uri, Object obj) throws Exception {
-        sayUri(uri, obj, HTTP_REQUEST.POST);
-        Response response = makePostRequestSilent(uri, obj);
-        docTestMachine.sayResponse(response.httpStatus, response.payload);
-        return response;
+    protected ApiResponse makePostRequest(URI uri, Object obj) throws Exception {
+        Context context = doPostRequest(uri, obj);
+        sayUri(context.apiRequest, obj);
+        docTestMachine.sayResponse(context.apiResponse, showHeaders());
+        return context.apiResponse;
     }
 
-    protected Response makePostUploadRequest(URI uri, File fileToUpload, String paramName)
+    protected ApiResponse makePostUploadRequest(URI uri, File fileToUpload, String paramName)
             throws Exception {
         FileBody fileBodyToUpload = new FileBody(fileToUpload);
         String mimeType = new MimetypesFileTypeMap().getContentType(fileToUpload);
 
-        docTestMachine.sayUploadRequest(uri, HTTP_REQUEST.POST, fileBodyToUpload.getFilename(),
-                fileHelper.readFile(fileToUpload), fileToUpload.length(), mimeType);
-        Response response =
-                new Response(apiTest.post(uri, null, new PostUploadWithoutRedirectImpl(paramName,
-                        fileBodyToUpload)));
-        docTestMachine.sayResponse(response.httpStatus, response.payload);
+        Context context =
+                apiTest.post(uri, null, new PostUploadWithoutRedirectImpl(paramName,
+                        fileBodyToUpload));
 
-        return response;
+        docTestMachine.sayUploadRequest(context.apiRequest, fileBodyToUpload.getFilename(),
+                fileHelper.readFile(fileToUpload), fileToUpload.length(), mimeType, showHeaders());
+
+        docTestMachine.sayResponse(context.apiResponse, showHeaders());
+
+        return context.apiResponse;
     }
 
-    protected Response makePutRequestSilent(URI uri, Object obj) throws Exception {
-        return new Response(apiTest.put(uri, obj));
+    protected ApiResponse makePutRequestSilent(URI uri, Object obj) throws Exception {
+        return doPutRequest(uri, obj).apiResponse;
     }
 
-    protected Response makePutRequest(URI uri) throws Exception {
+    private Context doPutRequest(URI uri, Object obj) throws Exception {
+        return apiTest.put(uri, obj);
+    }
+
+    protected ApiResponse makePutRequest(URI uri) throws Exception {
         return makePutRequest(uri, null);
     }
 
-    protected Response makePutRequest(URI uri, Object obj) throws Exception {
-        sayUri(uri, obj, HTTP_REQUEST.PUT);
-        Response response = makePutRequestSilent(uri, obj);
-        docTestMachine.sayResponse(response.httpStatus, response.payload);
-        return response;
+    protected ApiResponse makePutRequest(URI uri, Object obj) throws Exception {
+        Context context = doPutRequest(uri, obj);
+        sayUri(context.apiRequest, obj);
+        docTestMachine.sayResponse(context.apiResponse, showHeaders());
+        return context.apiResponse;
     }
 
-    protected Response makeDeleteRequestSilent(URI uri) throws Exception {
-        return new Response(apiTest.delete(uri));
+    protected ApiResponse makeDeleteRequestSilent(URI uri) throws Exception {
+        return doDeleteRequest(uri).apiResponse;
     }
 
-    protected Response makeDeleteRequestSilent(URI uri, Object obj) throws Exception {
-        return new Response(apiTest.delete(uri, obj));
+    private Context doDeleteRequest(URI uri) throws Exception {
+        return apiTest.delete(uri);
     }
 
-    protected Response makeDeleteRequest(URI uri) throws Exception {
+    protected ApiResponse makeDeleteRequestSilent(URI uri, Object obj) throws Exception {
+        return doDeleteRequest(uri, obj).apiResponse;
+    }
+
+    private Context doDeleteRequest(URI uri, Object obj) throws Exception {
+        return apiTest.delete(uri, obj);
+    }
+
+    protected ApiResponse makeDeleteRequest(URI uri) throws Exception {
         return makeDeleteRequest(uri, null);
     }
 
-    protected Response makeDeleteRequest(URI uri, Object obj) throws Exception {
-        sayUri(uri, obj, HTTP_REQUEST.DELETE);
-        Response response = makeDeleteRequestSilent(uri, obj);
-        docTestMachine.sayResponse(response.httpStatus, response.payload);
-        return response;
+    protected ApiResponse makeDeleteRequest(URI uri, Object obj) throws Exception {
+        Context context = doDeleteRequest(uri, obj);
+        sayUri(context.apiRequest, obj);
+        docTestMachine.sayResponse(context.apiResponse, showHeaders());
+        return context.apiResponse;
     }
 
     /**
@@ -380,5 +405,19 @@ public abstract class LogicDocTest {
      */
     protected void clearCookies() {
         apiTest.getTestState().clearCookies();
+    }
+
+    /**
+     * defines the headers that we want to render for the documentation
+     * for this case: its the default declaration and no headers are declared
+     * if you want to define headers to display for a request or response,
+     * you HAVE TO override this function in your test
+     * <strong>IMPORTANT</strong>: you don't have to care about the case of the headers name
+     * 
+     * 
+     * @return
+     */
+    public List<String> showHeaders() {
+        return new ArrayList<String>();
     }
 }

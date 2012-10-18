@@ -129,6 +129,8 @@ public class HtmlRendererUnitTest {
         renderer.render(listTemplates, NAME, INTRODUCTION);
         verify(htmlItems).getReportFileTemplate(fileCaptor.capture());
         ReportFileDocItem docItem = fileCaptor.getValue();
+        assertEquals(NAME, docItem.getName());
+        assertEquals(INTRODUCTION, docItem.getIntroduction());
         assertEquals(REQUEST + RESPONSE + ASSERT, docItem.getItems());
         verifyFilesAreCreated();
     }

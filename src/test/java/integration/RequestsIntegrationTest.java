@@ -1,6 +1,6 @@
 package integration;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
@@ -8,20 +8,24 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.net.URI;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.http.HttpStatus;
 import org.apache.http.client.utils.URIBuilder;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.MockitoAnnotations;
 
 import com.devbliss.doctest.DocTest;
-import com.devbliss.doctest.Response;
 import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
 
+import de.devbliss.apitester.ApiRequest;
 import de.devbliss.apitester.ApiResponse;
 import de.devbliss.apitester.ApiTest;
+import de.devbliss.apitester.Context;
 
 /**
  * Example implementation of a unit test class extending the {@link DocTest}.
@@ -36,8 +40,11 @@ public class RequestsIntegrationTest extends DocTest {
     private static final String JSON_TEXT = "The response contains a JSON payload";
     private static final String HTTP_TEXT = "The response contains the HTTP_STATUS of the request";
     private static final String PAYLOAD = "{'abc':'123'}";
-    private static final int HTTP_STATUS = 230;
     private static final String REASON_PHRASE = "This is not a normal response code";
+    private static final String HEADER_VALUE1 = "application/json";
+    private static final String HEADER_VALUE2 = "value2";
+    private static final String HEADER_NAME1 = "Content-type";
+    private static final String HEADER_NAME2 = "name2";
     private static ApiTest API;
 
     @BeforeClass
@@ -56,107 +63,147 @@ public class RequestsIntegrationTest extends DocTest {
         return "This documentation describes the input/output of the four http methods.";
     }
 
+    @Override
+    public List<String> showHeaders() {
+        ArrayList<String> headersToShow = new ArrayList<String>();
+        headersToShow.add("Content-type");
+        headersToShow.add("Cookie");
+        return headersToShow;
+    }
+
     private Object obj;
-    private ApiResponse response;
+    private ApiResponse apiResponse;
     private URI uri;
+    private Context context;
+    private ApiRequest apiRequest;
+    private final Map<String, String> headers = new HashMap<String, String>();
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
         obj = new Object();
-        response =
-                new ApiResponse(HTTP_STATUS, REASON_PHRASE, PAYLOAD, Collections
-                        .<String, String> emptyMap());
         uri =
                 new URIBuilder().setScheme("http").setHost("www.hostname.com").setPort(8080)
                         .setPath("/resource/id:12345").build();
-        when(API.put(uri, obj)).thenReturn(response);
-        when(API.get(uri)).thenReturn(response);
-        when(API.delete(uri, null)).thenReturn(response);
-        when(API.post(uri, obj)).thenReturn(response);
-        when(API.post(uri, null)).thenReturn(response);
-        when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
-                response);
+
+        headers.put(HEADER_NAME1, HEADER_VALUE1);
+        headers.put(HEADER_NAME2, HEADER_VALUE2);
     }
 
     @Test
     public void get() throws Exception {
-        sayNextSection("Making a get request");
-        Response resp = makeGetRequest(uri);
+        apiRequest = new ApiRequest(uri, "get", headers);
+        apiResponse = new ApiResponse(HttpStatus.SC_OK, REASON_PHRASE, PAYLOAD, headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.get(uri)).thenReturn(context);
 
-        assertEqualsAndSay(HTTP_STATUS, resp.httpStatus, HTTP_TEXT);
+        sayNextSection("Making a get request");
+        ApiResponse resp = makeGetRequest(uri);
+
+        assertEqualsAndSay(HttpStatus.SC_OK, resp.httpStatus, HTTP_TEXT);
         assertEqualsAndSay(PAYLOAD, resp.payload, JSON_TEXT);
     }
 
     @Test
     public void delete() throws Exception {
-        sayNextSection("Making a delete request");
-        Response response = makeDeleteRequest(uri);
+        apiRequest = new ApiRequest(uri, "delete", headers);
+        apiResponse = new ApiResponse(HttpStatus.SC_NO_CONTENT, REASON_PHRASE, null, headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.delete(uri, null)).thenReturn(context);
 
-        assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
-        assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
+        sayNextSection("Making a delete request");
+        ApiResponse response = makeDeleteRequest(uri);
+
+        assertEqualsAndSay(HttpStatus.SC_NO_CONTENT, response.httpStatus, HTTP_TEXT);
+        assertNull(response.payload);
     }
 
     @Test
     public void post() throws Exception {
-        sayNextSection("Making a post request");
-        Response response = makePostRequest(uri, obj);
+        apiRequest = new ApiRequest(uri, "post", headers);
+        apiResponse = new ApiResponse(HttpStatus.SC_CREATED, REASON_PHRASE, PAYLOAD, headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.post(uri, obj)).thenReturn(context);
 
-        assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
+        sayNextSection("Making a post request");
+        ApiResponse response = makePostRequest(uri, obj);
+
+        assertEqualsAndSay(HttpStatus.SC_CREATED, response.httpStatus, HTTP_TEXT);
         assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
     }
 
     @Test
     public void put() throws Exception {
-        sayNextSection("Making a put request with encöding chäracters");
-        Response response = makePutRequest(uri, obj);
+        apiRequest = new ApiRequest(uri, "put", headers);
+        apiResponse = new ApiResponse(HttpStatus.SC_NO_CONTENT, REASON_PHRASE, PAYLOAD, headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.put(uri, obj)).thenReturn(context);
 
-        assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
+        sayNextSection("Making a put request with encöding chäracters");
+        ApiResponse response = makePutRequest(uri, obj);
+
+        assertEqualsAndSay(HttpStatus.SC_NO_CONTENT, response.httpStatus, HTTP_TEXT);
         assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
     }
 
     @Test
     public void postUploadText() throws Exception {
+        apiRequest = new ApiRequest(uri, "post", headers);
+        apiResponse = new ApiResponse(HttpStatus.SC_CREATED, "", null, headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
+                context);
         sayNextSection("Making an upload post request");
 
-        Response response =
+        ApiResponse response =
                 makePostUploadRequest(uri, new File("src/test/resources/file.txt"), "paramName");
-        assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
-        assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
+        assertEqualsAndSay(HttpStatus.SC_CREATED, response.httpStatus, HTTP_TEXT);
+        assertNull(response.payload);
     }
 
     @Test
     public void postUploadImage() throws Exception {
+        apiRequest = new ApiRequest(uri, "post", headers);
+        apiResponse = new ApiResponse(HttpStatus.SC_CREATED, "", null, headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
+                context);
         sayNextSection("Making an upload post request with an image file");
 
-        Response response =
+        ApiResponse response =
                 makePostUploadRequest(uri, new File("src/test/resources/picture.png"), "paramName");
 
-        assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
-        assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
+        assertEqualsAndSay(HttpStatus.SC_CREATED, response.httpStatus, HTTP_TEXT);
+        assertNull(response.payload);
     }
 
     @Test
     public void suiteRequests() throws Exception {
+        sayNextSection("Suite of requests");
 
-        Response response =
-                makePostUploadRequest(uri, new File("src/test/resources/file.txt"), "paramName");
-        assertEquals(HTTP_STATUS, response.httpStatus);
-        assertEquals(PAYLOAD, response.payload);
+        say("All requests are independent and can be done in a sequentially way.");
+        say("Let's first upload a resource:");
 
-        response = makeGetRequest(uri);
-        assertEquals(HTTP_STATUS, response.httpStatus);
-        assertEquals(PAYLOAD, response.payload);
+        apiRequest = new ApiRequest(uri, "post", headers);
+        apiResponse = new ApiResponse(HttpStatus.SC_CREATED, "", null, headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
+                context);
 
-        response = makeDeleteRequest(uri);
-        assertEquals(HTTP_STATUS, response.httpStatus);
+        ApiResponse response =
+                makePostUploadRequest(uri, new File("src/test/resources/picture.png"), "paramName");
 
-        response = makePostRequest(uri, obj);
-        assertEquals(HTTP_STATUS, response.httpStatus);
-        assertEquals(PAYLOAD, response.payload);
+        assertEqualsAndSay(HttpStatus.SC_CREATED, response.httpStatus, HTTP_TEXT);
+        assertNull(response.payload);
+
+        say("And now we would like to update another resource:");
+        apiRequest = new ApiRequest(uri, "put", headers);
+        apiResponse = new ApiResponse(HttpStatus.SC_OK, "", PAYLOAD, headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.put(uri, obj)).thenReturn(context);
 
         response = makePutRequest(uri, obj);
-        assertEquals(HTTP_STATUS, response.httpStatus);
-        assertEquals(PAYLOAD, response.payload);
+
+        assertEqualsAndSay(HttpStatus.SC_OK, response.httpStatus, HTTP_TEXT);
+        assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
     }
 }

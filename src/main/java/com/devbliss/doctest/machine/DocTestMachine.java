@@ -1,6 +1,6 @@
 package com.devbliss.doctest.machine;
 
-import java.net.URI;
+import java.util.List;
 
 import org.json.JSONException;
 
@@ -11,7 +11,8 @@ import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
 
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
+import de.devbliss.apitester.ApiRequest;
+import de.devbliss.apitester.ApiResponse;
 
 /**
  * The {@link DocTestMachine} offers method to generate a report. <code>
@@ -81,16 +82,8 @@ public interface DocTestMachine {
      * @param httpRequest
      * @throws JSONException
      */
-    void sayRequest(URI uri, String payload, HTTP_REQUEST httpRequest) throws JSONException;
-
-    /**
-     * Writes a new {@link ResponseDocItem} into the report.
-     * 
-     * @param responseCode
-     * @param payload
-     * @throws Exception
-     */
-    void sayResponse(int responseCode, String payload) throws Exception;
+    void sayRequest(ApiRequest apiRequest, String payload, List<String> headersToShow)
+            throws JSONException;
 
     /**
      * Writes a new {@link AssertDocItem} into the report.
@@ -106,6 +99,14 @@ public interface DocTestMachine {
      */
     void sayPreformatted(String preformattedText);
 
-    void sayUploadRequest(URI uri, HTTP_REQUEST httpRequest, String fileName, String fileBody,
-            long l, String mimetype) throws JSONException;
+    void sayUploadRequest(ApiRequest httpRequest, String fileName, String fileBody, long l,
+            String mimetype, List<String> headersToShow) throws JSONException;
+
+    /**
+     * Writes a new {@link ResponseDocItem} into the report.
+     * 
+     * @param response
+     * @throws Exception
+     */
+    void sayResponse(ApiResponse response, List<String> headersToShow) throws Exception;
 }

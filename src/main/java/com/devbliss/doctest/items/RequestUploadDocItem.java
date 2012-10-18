@@ -1,8 +1,8 @@
 package com.devbliss.doctest.items;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import java.util.Map;
 
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
+import org.apache.commons.lang.StringEscapeUtils;
 
 public class RequestUploadDocItem extends RequestDocItem {
 
@@ -15,13 +15,14 @@ public class RequestUploadDocItem extends RequestDocItem {
     private final String mimeType;
 
     public RequestUploadDocItem(
-            HTTP_REQUEST http,
+            String http,
             String uri,
             String fileName,
             String fileBody,
             long fileSize,
-            String mimeType) {
-        super(http, uri);
+            String mimeType,
+            Map<String, String> headersToShow) {
+        super(http, uri, headersToShow);
         this.fileName = fileName;
         this.fileBody = fileBody;
         this.isAnUploadRequest = true;

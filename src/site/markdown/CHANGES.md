@@ -4,6 +4,7 @@ CHANGES
 develop
 -------
 - add links to "maven site" generated content
+- add headers to Request and Response object and render the headers if user decides it
 
 Version 0.5.3 25.09.2012
 ------------------------

@@ -1,6 +1,5 @@
 package com.devbliss.doctest.machine;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +15,13 @@ import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
+import com.devbliss.doctest.utils.HeadersHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.devbliss.doctest.utils.UriHelper;
 import com.google.inject.Inject;
 
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
+import de.devbliss.apitester.ApiRequest;
+import de.devbliss.apitester.ApiResponse;
 
 /**
  * Default implementation of {@link DocTestMachine}.
@@ -48,17 +49,20 @@ public class DocTestMachineImpl implements DocTestMachine {
     private final ReportRenderer reportRenderer;
     private final JSONHelper jsonHelper;
     private final UriHelper uriHelper;
+    private final HeadersHelper headersHelper;
     private String introduction;
 
     @Inject
     public DocTestMachineImpl(
             ReportRenderer reportRenderer,
             JSONHelper jsonHelper,
-            UriHelper uriHelper) {
+            UriHelper uriHelper,
+            HeadersHelper headersHelper) {
         this.uriHelper = uriHelper;
         listItem = new ArrayList<DocItem>();
         this.reportRenderer = reportRenderer;
         this.jsonHelper = jsonHelper;
+        this.headersHelper = headersHelper;
     }
 
     public void beginDoctest(String fileName, String introduction) {
@@ -92,23 +96,41 @@ public class DocTestMachineImpl implements DocTestMachine {
         listItem.add(new SectionDocItem(sectionName));
     }
 
-    public void sayRequest(URI uri, String payload, HTTP_REQUEST httpRequest) throws JSONException {
-        if (uri != null) {
-            listItem.add(new RequestDocItem(httpRequest, uriHelper.uriToString(uri),
-                    getPayload(payload)));
+    /**
+     * if apiRequest's uri is null, no documentation for this request/response will be created
+     * 
+     */
+    public void sayRequest(ApiRequest apiRequest, String payload, List<String> headersToShow)
+            throws JSONException {
+
+        if (apiRequest.uri != null) {
+            listItem.add(new RequestDocItem(apiRequest.httpMethod, uriHelper
+                    .uriToString(apiRequest.uri), getPayload(payload), headersHelper.filter(
+                    apiRequest.headers, headersToShow)));
         }
     }
 
-    public void sayUploadRequest(URI uri, HTTP_REQUEST httpRequest, String fileName,
-            String fileBody, long size, String mimeType) {
-        if (uri != null) {
-            listItem.add(new RequestUploadDocItem(httpRequest, uriHelper.uriToString(uri),
-                    fileName, fileBody, size, mimeType));
+    /**
+     * if apiRequest's uri is null, no documentation for this request/response will be created
+     * 
+     */
+    public void sayUploadRequest(ApiRequest apiRequest, String fileName, String fileBody,
+            long size, String mimeType, List<String> headersToShow) {
+
+        if (apiRequest.uri != null) {
+            listItem.add(new RequestUploadDocItem(apiRequest.httpMethod, uriHelper
+                    .uriToString(apiRequest.uri), fileName, fileBody, size, mimeType, headersHelper
+                    .filter(apiRequest.headers, headersToShow)));
         }
     }
 
-    public void sayResponse(int responseCode, String payload) throws Exception {
-        listItem.add(new ResponseDocItem(responseCode, getPayload(payload)));
+    /**
+     * add new item for doctest
+     * and filter the headers from the ApiResponse
+     */
+    public void sayResponse(ApiResponse response, List<String> headersToShow) throws Exception {
+        listItem.add(new ResponseDocItem(response, headersHelper.filter(response.headers,
+                headersToShow)));
     }
 
     public void sayVerify(String condition) {
@@ -134,5 +156,4 @@ public class DocTestMachineImpl implements DocTestMachine {
     public void say(String say, String[] strings) {
         listItem.add(new MultipleTextDocItem(say, strings));
     }
-
 }

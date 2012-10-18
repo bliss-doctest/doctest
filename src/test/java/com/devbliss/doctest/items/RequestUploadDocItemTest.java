@@ -3,9 +3,10 @@ package com.devbliss.doctest.items;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
+import java.util.HashMap;
+import java.util.Map;
 
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
+import org.junit.Test;
 
 /**
  * Unit tests for the {@link RequestUploadDocItem}
@@ -18,21 +19,22 @@ public class RequestUploadDocItemTest {
     private long fileSize;
     private String fileBody;
     private String fileName;
+    private final Map<String, String> headers = new HashMap<String, String>();
     private String uri;
-    private HTTP_REQUEST http;
 
     @Test
     public void doNotshowFileBody() {
         RequestUploadDocItem item =
-                new RequestUploadDocItem(http, uri, fileName, fileBody, fileSize,
-                        "application/octet-stream");
+                new RequestUploadDocItem("post", uri, fileName, fileBody, fileSize,
+                        "application/octet-stream", headers);
         assertFalse(item.getShowFileBody());
     }
 
     @Test
     public void showFileBody() {
         RequestUploadDocItem item =
-                new RequestUploadDocItem(http, uri, fileName, fileBody, fileSize, "text/plain");
+                new RequestUploadDocItem("post", uri, fileName, fileBody, fileSize, "text/plain",
+                        headers);
         assertTrue(item.getShowFileBody());
     }
 }
