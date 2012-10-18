@@ -11,6 +11,8 @@ import java.util.Map.Entry;
  * Headershelper filters the original request or response headers
  * depending on the headers for the documentation
  * 
+ * The original headers will be transformed to lower case in the ApiTester project by ApiTestUtil
+ * 
  * @author katharinairrgang, bmary
  * 
  */
