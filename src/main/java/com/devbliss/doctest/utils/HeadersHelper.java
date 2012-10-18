@@ -1,10 +1,8 @@
 package com.devbliss.doctest.utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * 
@@ -23,22 +21,12 @@ public class HeadersHelper {
 
         Map<String, String> headers = new HashMap<String, String>();
 
-        List<String> headersToShowLowerCase = listToLowerCase(headersToShow);
-
-        for (Entry<String, String> header : originalHeaders.entrySet()) {
-            if (headersToShowLowerCase.contains(header.getKey())) {
-                headers.put(header.getKey(), header.getValue());
+        for (String header : headersToShow) {
+            String lowerCasedHeader = header.toLowerCase();
+            if (originalHeaders.containsKey(lowerCasedHeader)) {
+                headers.put(lowerCasedHeader, originalHeaders.get(lowerCasedHeader));
             }
         }
         return headers;
-    }
-
-    private List<String> listToLowerCase(List<String> list) {
-        List<String> listToLower = new ArrayList<String>();
-
-        for (String ele : list) {
-            listToLower.add(ele.toLowerCase());
-        }
-        return listToLower;
     }
 }

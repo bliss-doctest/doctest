@@ -97,7 +97,7 @@ public class DocTestMachineImpl implements DocTestMachine {
     }
 
     /**
-     * if the uri is null, no documentation for this request/response will be created
+     * if apiRequest's uri is null, no documentation for this request/response will be created
      * 
      */
     public void sayRequest(ApiRequest apiRequest, String payload, List<String> headersToShow)
@@ -111,7 +111,7 @@ public class DocTestMachineImpl implements DocTestMachine {
     }
 
     /**
-     * if the uri is null, no documentation for this request/response will be created
+     * if apiRequest's uri is null, no documentation for this request/response will be created
      * 
      */
     public void sayUploadRequest(ApiRequest apiRequest, String fileName, String fileBody,

@@ -133,18 +133,26 @@ public abstract class LogicDocTest {
         docTestMachine.sayPreformatted(code == null ? "" : code);
     }
 
-    protected Context makeGetRequestSilent(URI uri) throws Exception {
+    protected ApiResponse makeGetRequestSilent(URI uri) throws Exception {
+        return doGetRequest(uri).apiResponse;
+    }
+
+    private Context doGetRequest(URI uri) throws Exception {
         return apiTest.get(uri);
     }
 
     protected ApiResponse makeGetRequest(URI uri) throws Exception {
-        Context context = makeGetRequestSilent(uri);
+        Context context = doGetRequest(uri);
         sayUri(context.apiRequest);
         docTestMachine.sayResponse(context.apiResponse, showHeaders());
         return context.apiResponse;
     }
 
-    protected Context makePostRequestSilent(URI uri, Object obj) throws Exception {
+    protected ApiResponse makePostRequestSilent(URI uri, Object obj) throws Exception {
+        return doPostRequest(uri, obj).apiResponse;
+    }
+
+    private Context doPostRequest(URI uri, Object obj) throws Exception {
         return apiTest.post(uri, obj);
     }
 
@@ -153,7 +161,7 @@ public abstract class LogicDocTest {
     }
 
     protected ApiResponse makePostRequest(URI uri, Object obj) throws Exception {
-        Context context = makePostRequestSilent(uri, obj);
+        Context context = doPostRequest(uri, obj);
         sayUri(context.apiRequest, obj);
         docTestMachine.sayResponse(context.apiResponse, showHeaders());
         return context.apiResponse;
@@ -176,7 +184,11 @@ public abstract class LogicDocTest {
         return context.apiResponse;
     }
 
-    protected Context makePutRequestSilent(URI uri, Object obj) throws Exception {
+    protected ApiResponse makePutRequestSilent(URI uri, Object obj) throws Exception {
+        return doPutRequest(uri, obj).apiResponse;
+    }
+
+    private Context doPutRequest(URI uri, Object obj) throws Exception {
         return apiTest.put(uri, obj);
     }
 
@@ -185,18 +197,25 @@ public abstract class LogicDocTest {
     }
 
     protected ApiResponse makePutRequest(URI uri, Object obj) throws Exception {
-
-        Context context = makePutRequestSilent(uri, obj);
+        Context context = doPutRequest(uri, obj);
         sayUri(context.apiRequest, obj);
         docTestMachine.sayResponse(context.apiResponse, showHeaders());
         return context.apiResponse;
     }
 
-    protected Context makeDeleteRequestSilent(URI uri) throws Exception {
+    protected ApiResponse makeDeleteRequestSilent(URI uri) throws Exception {
+        return doDeleteRequest(uri).apiResponse;
+    }
+
+    private Context doDeleteRequest(URI uri) throws Exception {
         return apiTest.delete(uri);
     }
 
-    protected Context makeDeleteRequestSilent(URI uri, Object obj) throws Exception {
+    protected ApiResponse makeDeleteRequestSilent(URI uri, Object obj) throws Exception {
+        return doDeleteRequest(uri, obj).apiResponse;
+    }
+
+    private Context doDeleteRequest(URI uri, Object obj) throws Exception {
         return apiTest.delete(uri, obj);
     }
 
@@ -205,7 +224,7 @@ public abstract class LogicDocTest {
     }
 
     protected ApiResponse makeDeleteRequest(URI uri, Object obj) throws Exception {
-        Context context = makeDeleteRequestSilent(uri, obj);
+        Context context = doDeleteRequest(uri, obj);
         sayUri(context.apiRequest, obj);
         docTestMachine.sayResponse(context.apiResponse, showHeaders());
         return context.apiResponse;
@@ -393,7 +412,7 @@ public abstract class LogicDocTest {
      * for this case: its the default declaration and no headers are declared
      * if you want to define headers to display for a request or response,
      * you HAVE TO override this function in your test
-     * <strong>IMPORTANT</strong>: you dont have to care about the case of the headers name
+     * <strong>IMPORTANT</strong>: you don't have to care about the case of the headers name
      * 
      * 
      * @return

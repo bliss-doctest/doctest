@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * Unit tests for the {@link RequestUploadDocItem}
@@ -16,7 +14,6 @@ import org.mockito.runners.MockitoJUnitRunner;
  * @author bmary
  * 
  */
-@RunWith(MockitoJUnitRunner.class)
 public class RequestUploadDocItemTest {
 
     private long fileSize;

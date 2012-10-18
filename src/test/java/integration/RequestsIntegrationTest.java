@@ -18,9 +18,6 @@ import org.apache.http.client.utils.URIBuilder;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.DocTest;
 import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
@@ -38,7 +35,6 @@ import de.devbliss.apitester.Context;
  * @author bmary
  * 
  */
-@RunWith(MockitoJUnitRunner.class)
 public class RequestsIntegrationTest extends DocTest {
 
     private static final String JSON_TEXT = "The response contains a JSON payload";
@@ -84,7 +80,6 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
         obj = new Object();
         uri =
                 new URIBuilder().setScheme("http").setHost("www.hostname.com").setPort(8080)

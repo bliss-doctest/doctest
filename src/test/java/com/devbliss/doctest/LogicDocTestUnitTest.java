@@ -62,7 +62,7 @@ public class LogicDocTestUnitTest {
     private static final String REASON_PHRASE = "No Content";
     protected static final String FILE_NAME = "file-name";
     private static final String HEADER_NAME1 = "Content-type";
-    private static final String HHTP_METHOD = "httpMethod";
+    private static final String HTTP_METHOD = "httpMethod";
 
     @Mock
     private ApiTest apiTest;
@@ -89,14 +89,13 @@ public class LogicDocTestUnitTest {
 
     @Before
     public void setUp() throws Exception {
-
         headersToShow = new ArrayList<String>();
         headersToShow.add(HEADER_NAME1);
 
         headers = new HashMap<String, String>();
 
         uri = new URI("");
-        request = new ApiRequest(uri, HHTP_METHOD, headers);
+        request = new ApiRequest(uri, HTTP_METHOD, headers);
         response =
                 new ApiResponse(HTTP_STATUS, REASON_PHRASE, RESPONSE_PAYLOAD, Collections
                         .<String, String> emptyMap());

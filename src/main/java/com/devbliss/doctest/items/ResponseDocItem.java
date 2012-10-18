@@ -7,9 +7,9 @@ import de.devbliss.apitester.ApiResponse;
 
 public class ResponseDocItem implements DocItem {
 
-    private int responseCode;
-    private JsonDocItem payload;
-    private Map<String, String> headers;
+    private final int responseCode;
+    private final JsonDocItem payload;
+    private final Map<String, String> headers;
 
     public ResponseDocItem(ApiResponse response, Map<String, String> headers) {
         this.responseCode = response.httpStatus;
