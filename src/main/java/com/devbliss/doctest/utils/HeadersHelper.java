@@ -23,10 +23,10 @@ public class HeadersHelper {
 
         Map<String, String> headers = new HashMap<String, String>();
 
-        listToLowerCase(headersToShow);
+        List<String> headersToShowLowerCase = listToLowerCase(headersToShow);
 
         for (Entry<String, String> header : originalHeaders.entrySet()) {
-            if (headersToShow.contains(header.getKey())) {
+            if (headersToShowLowerCase.contains(header.getKey())) {
                 headers.put(header.getKey(), header.getValue());
             }
         }

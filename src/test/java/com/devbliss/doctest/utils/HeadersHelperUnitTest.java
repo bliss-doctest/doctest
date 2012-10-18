@@ -32,7 +32,7 @@ public class HeadersHelperUnitTest {
     private static final String HEADER4 = "CONTENT-TYPE";
     private static final String HEADER5 = "META-INFORMATION";
     private static final String HEADER6 = "accept-language";
-    
+
     private Map<String, String> headers;
     private List<String> headersToShow;
     private HeadersHelper headersHelper;
