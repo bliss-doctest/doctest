@@ -10,10 +10,13 @@
 		</#if>
 		
 		<#if headers?has_content>
-			<li>Headers</li>
-			<#list headers?keys as header>
-			    <li>${header} = ${headers[header]}</li>
-			</#list>
+			<li>Headers
+				<ol>
+				<#list headers?keys as header>
+				    <li>${header} = ${headers[header]}</li>
+				</#list>
+				</ol>
+			</li>
 		</#if>
     </ul>
 </div>

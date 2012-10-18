@@ -102,13 +102,12 @@ public class DocTestMachineImpl implements DocTestMachine {
      * 
      */
     public void sayRequest(ApiRequest apiRequest, String payload, HTTP_REQUEST httpRequest,
-            List<String> headersToShow)
-            throws JSONException {
+            List<String> headersToShow) throws JSONException {
 
         if (apiRequest.uri != null) {
-            // TODO: uriHelper.uriToString()!! accept an URI object but we have string here :(
-            listItem.add(new RequestDocItem(httpRequest, apiRequest.uri,
-                    getPayload(payload), headersHelper.filter(apiRequest.headers, headersToShow)));
+            listItem.add(new RequestDocItem(apiRequest.httpMethod, uriHelper
+                    .uriToString(apiRequest.uri), getPayload(payload), headersHelper.filter(
+                    apiRequest.headers, headersToShow)));
         }
     }
 
@@ -120,9 +119,9 @@ public class DocTestMachineImpl implements DocTestMachine {
             long size, String mimeType, List<String> headersToShow) {
 
         if (apiRequest.uri != null) {
-            listItem.add(new RequestUploadDocItem(HTTP_REQUEST.POST, apiRequest, fileName,
-                    fileBody, size, mimeType, headersHelper.filter(apiRequest.headers,
-                            headersToShow)));
+            listItem.add(new RequestUploadDocItem(apiRequest.httpMethod, uriHelper
+                    .uriToString(apiRequest.uri), fileName, fileBody, size, mimeType, headersHelper
+                    .filter(apiRequest.headers, headersToShow)));
         }
     }
 
@@ -130,8 +129,7 @@ public class DocTestMachineImpl implements DocTestMachine {
      * add new item for doctest
      * and filter the headers from the ApiResponse
      */
-    public void sayResponse(ApiResponse response, List<String> headersToShow)
-            throws Exception {
+    public void sayResponse(ApiResponse response, List<String> headersToShow) throws Exception {
         listItem.add(new ResponseDocItem(response, headersHelper.filter(response.headers,
                 headersToShow)));
     }

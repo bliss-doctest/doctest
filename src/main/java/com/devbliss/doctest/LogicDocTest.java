@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import integration.RequestsIntegrationTest;
 
 import java.io.File;
 import java.net.URI;
@@ -173,7 +172,6 @@ public abstract class LogicDocTest {
 
         docTestMachine.sayUploadRequest(context.apiRequest, fileBodyToUpload.getFilename(),
                 fileHelper.readFile(fileToUpload), fileToUpload.length(), mimeType, showHeaders());
-
 
         docTestMachine.sayResponse(context.apiResponse, showHeaders());
 
@@ -397,7 +395,6 @@ public abstract class LogicDocTest {
      * for this case: its the default declaration and no headers are declared
      * if you want to define headers to display for a request or response,
      * you HAVE TO override this function in your test
-     * see example {@link RequestsIntegrationTest} </br>
      * <strong>IMPORTANT</strong>: you dont have to care about the case of the headers name
      * 
      * 

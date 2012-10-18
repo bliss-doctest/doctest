@@ -1,6 +1,5 @@
 package integration;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
@@ -9,7 +8,6 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +70,7 @@ public class RequestsIntegrationTest extends DocTest {
     public List<String> showHeaders() {
         ArrayList<String> headersToShow = new ArrayList<String>();
         headersToShow.add("Content-type");
-        headersToShow.add("GAMMA-SESSION");
+        headersToShow.add("Cookie");
         return headersToShow;
     }
 
@@ -94,26 +92,15 @@ public class RequestsIntegrationTest extends DocTest {
         headers.put(HEADER_NAME1, HEADER_VALUE1);
         headers.put(HEADER_NAME2, HEADER_VALUE2);
 
-        apiRequest = new ApiRequest(uri.toString(), headers);
-
-        apiResponse =
-                new ApiResponse(HTTP_STATUS, REASON_PHRASE, PAYLOAD, Collections
-                        .<String, String> emptyMap());
-
-
-        context = new Context(apiResponse, apiRequest);
-
-        when(API.put(uri, obj)).thenReturn(context);
-        when(API.get(uri)).thenReturn(context);
-        when(API.delete(uri, null)).thenReturn(context);
-        when(API.post(uri, obj)).thenReturn(context);
-        when(API.post(uri, null)).thenReturn(context);
-        when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
-                context);
+        apiResponse = new ApiResponse(HTTP_STATUS, REASON_PHRASE, PAYLOAD, headers);
     }
 
     @Test
     public void get() throws Exception {
+        apiRequest = new ApiRequest(uri, "get", headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.get(uri)).thenReturn(context);
+
         sayNextSection("Making a get request");
         ApiResponse resp = makeGetRequest(uri);
 
@@ -123,6 +110,10 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void delete() throws Exception {
+        apiRequest = new ApiRequest(uri, "delete", headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.delete(uri, null)).thenReturn(context);
+
         sayNextSection("Making a delete request");
         ApiResponse response = makeDeleteRequest(uri);
 
@@ -132,6 +123,10 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void post() throws Exception {
+        apiRequest = new ApiRequest(uri, "post", headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.post(uri, obj)).thenReturn(context);
+
         sayNextSection("Making a post request");
         ApiResponse response = makePostRequest(uri, obj);
 
@@ -141,6 +136,10 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void put() throws Exception {
+        apiRequest = new ApiRequest(uri, "put", headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.put(uri, obj)).thenReturn(context);
+
         sayNextSection("Making a put request with encöding chäracters");
         ApiResponse response = makePutRequest(uri, obj);
 
@@ -150,6 +149,10 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void postUploadText() throws Exception {
+        apiRequest = new ApiRequest(uri, "post", headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
+                context);
         sayNextSection("Making an upload post request");
 
         ApiResponse response =
@@ -160,7 +163,10 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void postUploadImage() throws Exception {
-
+        apiRequest = new ApiRequest(uri, "post", headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
+                context);
         sayNextSection("Making an upload post request with an image file");
 
         ApiResponse response =
@@ -168,29 +174,5 @@ public class RequestsIntegrationTest extends DocTest {
 
         assertEqualsAndSay(HTTP_STATUS, response.httpStatus, HTTP_TEXT);
         assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
-    }
-
-    @Test
-    public void suiteRequests() throws Exception {
-
-        ApiResponse response =
-                makePostUploadRequest(uri, new File("src/test/resources/file.txt"), "paramName");
-        assertEquals(HTTP_STATUS, response.httpStatus);
-        assertEquals(PAYLOAD, response.payload);
-
-        response = makeGetRequest(uri);
-        assertEquals(HTTP_STATUS, response.httpStatus);
-        assertEquals(PAYLOAD, response.payload);
-
-        response = makeDeleteRequest(uri);
-        assertEquals(HTTP_STATUS, response.httpStatus);
-
-        response = makePostRequest(uri, obj);
-        assertEquals(HTTP_STATUS, response.httpStatus);
-        assertEquals(PAYLOAD, response.payload);
-
-        response = makePutRequest(uri, obj);
-        assertEquals(HTTP_STATUS, response.httpStatus);
-        assertEquals(PAYLOAD, response.payload);
     }
 }

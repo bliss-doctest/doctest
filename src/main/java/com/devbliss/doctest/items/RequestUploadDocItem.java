@@ -4,9 +4,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
-import de.devbliss.apitester.ApiRequest;
-import de.devbliss.apitester.ApiTest.HTTP_REQUEST;
-
 public class RequestUploadDocItem extends RequestDocItem {
 
     private static int NB_ITEMS = 0;
@@ -18,14 +15,14 @@ public class RequestUploadDocItem extends RequestDocItem {
     private final String mimeType;
 
     public RequestUploadDocItem(
-            HTTP_REQUEST http,
-            ApiRequest apiRequest,
+            String http,
+            String uri,
             String fileName,
             String fileBody,
             long fileSize,
             String mimeType,
             Map<String, String> headersToShow) {
-        super(http, apiRequest.uri, headersToShow);
+        super(http, uri, headersToShow);
         this.fileName = fileName;
         this.fileBody = fileBody;
         this.isAnUploadRequest = true;
