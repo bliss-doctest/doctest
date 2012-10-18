@@ -185,18 +185,29 @@ button {
     margin: 5px 0 0 0;
 }
 
-pre {
+.box ul li ol, pre {
     color: #EBEFE7;
     padding: 8px;
     margin: 10px 0px;
-    background-color: #585858;
+    background-color: #96979d;
     border: 1px dashed #E6EBE0;
-    border-radius: 2px 2px 2px 2px;
+    border-radius: 4px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     overflow: auto;
     max-height: 160px;
 }
 
+pre {
+    background-color: #585858;
+}
+.box ul li ol li {
+    border-top: 1px solid #B4B5BB;
+    padding: 5px 3px 0 0;
+}
+.box ul li ol li:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
 
 span.highlight {
     color: #EBEFE7;
