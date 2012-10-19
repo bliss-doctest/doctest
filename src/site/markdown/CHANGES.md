@@ -3,6 +3,9 @@ CHANGES
 
 develop
 -------
+
+Version 0.6.1 19.10.2012
+------------------------
 - make the integration better by using a dummy test object for the request payload
 - prettify the json payload in the response
 
