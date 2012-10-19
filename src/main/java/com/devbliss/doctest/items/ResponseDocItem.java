@@ -4,16 +4,15 @@ import java.util.Map;
 
 import de.devbliss.apitester.ApiResponse;
 
-
 public class ResponseDocItem implements DocItem {
 
     private final int responseCode;
     private final JsonDocItem payload;
     private final Map<String, String> headers;
 
-    public ResponseDocItem(ApiResponse response, Map<String, String> headers) {
+    public ResponseDocItem(ApiResponse response, String payload, Map<String, String> headers) {
         this.responseCode = response.httpStatus;
-        this.payload = new JsonDocItem(response.payload);
+        this.payload = new JsonDocItem(payload);
         this.headers = headers;
     }
 

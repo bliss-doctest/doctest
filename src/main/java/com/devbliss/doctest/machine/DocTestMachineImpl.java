@@ -105,8 +105,8 @@ public class DocTestMachineImpl implements DocTestMachine {
 
         if (apiRequest.uri != null) {
             listItem.add(new RequestDocItem(apiRequest.httpMethod, uriHelper
-                    .uriToString(apiRequest.uri), getPayload(payload), headersHelper.filter(
-                    apiRequest.headers, headersToShow)));
+                    .uriToString(apiRequest.uri), validateAndPrettifyJson(payload), headersHelper
+                    .filter(apiRequest.headers, headersToShow)));
         }
     }
 
@@ -129,8 +129,8 @@ public class DocTestMachineImpl implements DocTestMachine {
      * and filter the headers from the ApiResponse
      */
     public void sayResponse(ApiResponse response, List<String> headersToShow) throws Exception {
-        listItem.add(new ResponseDocItem(response, headersHelper.filter(response.headers,
-                headersToShow)));
+        listItem.add(new ResponseDocItem(response, validateAndPrettifyJson(response.payload),
+                headersHelper.filter(response.headers, headersToShow)));
     }
 
     public void sayVerify(String condition) {
@@ -141,7 +141,14 @@ public class DocTestMachineImpl implements DocTestMachine {
         listItem.add(new JsonDocItem(preformattedText));
     }
 
-    private String getPayload(String payload) {
+    /**
+     * Checks whether the given {@link String} is a valid Json.
+     * If the json is valid, it will be prettyfied.
+     * 
+     * @param payload
+     * @return
+     */
+    private String validateAndPrettifyJson(String payload) {
         String payloadToShow;
         if (jsonHelper.isJsonValid(payload)) {
             payloadToShow = jsonHelper.prettyPrintJson(payload);

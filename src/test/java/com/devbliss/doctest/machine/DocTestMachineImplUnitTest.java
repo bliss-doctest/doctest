@@ -54,6 +54,7 @@ public class DocTestMachineImplUnitTest {
     private static final String JSON_INVALID = "invalid";
     private static final String INTRODUCTION = "";
     private static final String HTTP_METHOD = "get";
+    private static final String PRETTY_JSON = "pretty_json";
 
     @Mock
     private ReportRenderer renderer;
@@ -87,7 +88,7 @@ public class DocTestMachineImplUnitTest {
         apiResponse = new ApiResponse(RESPONSE_CODE, "", JSON_VALID, headers);
 
         when(jsonHelper.isJsonValid(JSON_VALID)).thenReturn(true);
-        when(jsonHelper.prettyPrintJson(JSON_VALID)).thenReturn(JSON_VALID);
+        when(jsonHelper.prettyPrintJson(JSON_VALID)).thenReturn(PRETTY_JSON);
         when(uriHelper.uriToString(uri)).thenReturn(uriString);
         machine = spy(new DocTestMachineImpl(renderer, jsonHelper, uriHelper, headersHelper));
     }
@@ -154,7 +155,7 @@ public class DocTestMachineImplUnitTest {
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
         assertTrue(listItems.get(0) instanceof ResponseDocItem);
-        assertEquals(JSON_VALID, ((ResponseDocItem) listItems.get(0)).getPayload().getExpected());
+        assertEquals(PRETTY_JSON, ((ResponseDocItem) listItems.get(0)).getPayload().getExpected());
         assertEquals(RESPONSE_CODE, ((ResponseDocItem) listItems.get(0)).getResponseCode());
     }
 
@@ -169,7 +170,7 @@ public class DocTestMachineImplUnitTest {
         List<DocItem> listItems = listItemCaptor.getValue();
         assertEquals(1, listItems.size());
         assertTrue(listItems.get(0) instanceof RequestDocItem);
-        assertEquals(JSON_VALID, ((RequestDocItem) listItems.get(0)).getPayload().getExpected());
+        assertEquals(PRETTY_JSON, ((RequestDocItem) listItems.get(0)).getPayload().getExpected());
         assertEquals(HTTP_METHOD.toUpperCase(), ((RequestDocItem) listItems.get(0)).getHttp());
         assertEquals(uriString, ((RequestDocItem) listItems.get(0)).getUri());
     }
