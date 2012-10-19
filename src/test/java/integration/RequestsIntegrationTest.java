@@ -43,7 +43,8 @@ public class RequestsIntegrationTest extends DocTest {
 
     private static final String JSON_TEXT = "The response contains a JSON payload";
     private static final String HTTP_TEXT = "The response contains the HTTP_STATUS of the request";
-    private static final String PAYLOAD = "{'abc':'123'}";
+    private static final String PAYLOAD =
+            "{'abc':'123', 'cde': {'start': 'today', 'end':'tomorrow'}}";
     private static final String REASON_PHRASE = "This is not a normal response code";
     private static final String HEADER_VALUE1 = "application/json";
     private static final String HEADER_VALUE2 = "value2";
