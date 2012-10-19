@@ -32,7 +32,8 @@ import de.devbliss.apitester.Context;
 /**
  * Example implementation of a unit test class extending the {@link DocTest}.
  * 
- * This class is used in the {@link ReportCreatedIntegrationTest} class.
+ * This class is used in the {@link ReportCreatedIntegrationTest} class and describes how to use the
+ * doctest library to make some http requests.
  * 
  * @author bmary
  * 
