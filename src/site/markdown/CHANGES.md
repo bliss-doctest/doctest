@@ -3,6 +3,7 @@ CHANGES
 
 develop
 -------
+- make the integration better by using a dummy test object for the request payload
 - prettify the json payload in the response
 
 Version 0.6 19.10.2012

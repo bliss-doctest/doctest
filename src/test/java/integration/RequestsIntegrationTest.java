@@ -85,7 +85,7 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Before
     public void setUp() throws Exception {
-        obj = new Object();
+        obj = new TestObject();
         uri =
                 new URIBuilder().setScheme("http").setHost("www.hostname.com").setPort(8080)
                         .setPath("/resource/id:12345").build();

@@ -21,7 +21,10 @@
 		</#if>
 		
 		<#if payload?? && payload.expected?has_content && payload.expected != "" && payload.expected != "null" && payload.expected != "{}" >
-			<pre>${payload.expected}</pre>
+			<li>
+				<div>payload:</div>
+				<pre>${payload.expected}</pre>
+			</li>
 		</#if>
 		<#if isAnUploadRequest>
 		<li>FileName: ${fileName}</li>
