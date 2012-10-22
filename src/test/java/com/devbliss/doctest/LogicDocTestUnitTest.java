@@ -87,11 +87,14 @@ public class LogicDocTestUnitTest {
     private List<String> headersToShow;
     private Map<String, String> headers;
     private Map<String, String> cookies;
+    private List<String> cookiesToShow;
 
     @Before
     public void setUp() throws Exception {
         headersToShow = new ArrayList<String>();
         headersToShow.add(HEADER_NAME1);
+
+        cookiesToShow = new ArrayList<String>();
 
         headers = new HashMap<String, String>();
         cookies = new HashMap<String, String>();
@@ -127,7 +130,7 @@ public class LogicDocTestUnitTest {
     public void makeGetRequest() throws Exception {
         when(apiTest.get(uri)).thenReturn(context);
         docTest.makeGetRequest(uri);
-        verify(docTestMachine).sayRequest(request, null, headersToShow);
+        verify(docTestMachine).sayRequest(request, null, headersToShow, cookiesToShow);
         verify(docTestMachine).sayResponse(response, headersToShow);
     }
 
@@ -135,7 +138,7 @@ public class LogicDocTestUnitTest {
     public void makeDeleteRequest() throws Exception {
         when(apiTest.delete(uri, null)).thenReturn(context);
         docTest.makeDeleteRequest(uri);
-        verify(docTestMachine).sayRequest(request, NULL, headersToShow);
+        verify(docTestMachine).sayRequest(request, NULL, headersToShow, cookiesToShow);
         verify(docTestMachine).sayResponse(response, headersToShow);
     }
 
@@ -143,7 +146,7 @@ public class LogicDocTestUnitTest {
     public void makeDeleteRequestWithBody() throws Exception {
         when(apiTest.delete(uri, obj)).thenReturn(context);
         docTest.makeDeleteRequest(uri, obj);
-        verify(docTestMachine).sayRequest(request, OBJECT, headersToShow);
+        verify(docTestMachine).sayRequest(request, OBJECT, headersToShow, cookiesToShow);
         verify(docTestMachine).sayResponse(response, headersToShow);
     }
 
@@ -151,7 +154,7 @@ public class LogicDocTestUnitTest {
     public void makePostRequest() throws Exception {
         when(apiTest.post(uri, null)).thenReturn(context);
         docTest.makePostRequest(uri);
-        verify(docTestMachine).sayRequest(request, NULL, headersToShow);
+        verify(docTestMachine).sayRequest(request, NULL, headersToShow, cookiesToShow);
         verify(docTestMachine).sayResponse(response, headersToShow);
     }
 
@@ -159,7 +162,7 @@ public class LogicDocTestUnitTest {
     public void makePostRequestWithBody() throws Exception {
         when(apiTest.post(uri, obj)).thenReturn(context);
         docTest.makePostRequest(uri, obj);
-        verify(docTestMachine).sayRequest(request, OBJECT, headersToShow);
+        verify(docTestMachine).sayRequest(request, OBJECT, headersToShow, cookiesToShow);
         verify(docTestMachine).sayResponse(response, headersToShow);
     }
 
@@ -171,7 +174,7 @@ public class LogicDocTestUnitTest {
         docTest.makePostUploadRequest(uri, fileToUpload, "paramName");
 
         verify(docTestMachine).sayUploadRequest(request, "file.txt", "fileBody",
-                fileToUpload.length(), "text/plain", headersToShow);
+                fileToUpload.length(), "text/plain", headersToShow, cookiesToShow);
         verify(docTestMachine).sayResponse(response, headersToShow);
     }
 
@@ -187,7 +190,7 @@ public class LogicDocTestUnitTest {
     public void makePutRequest() throws Exception {
         when(apiTest.put(uri, null)).thenReturn(context);
         docTest.makePutRequest(uri);
-        verify(docTestMachine).sayRequest(request, NULL, headersToShow);
+        verify(docTestMachine).sayRequest(request, NULL, headersToShow, cookiesToShow);
         verify(docTestMachine).sayResponse(response, headersToShow);
     }
 
@@ -195,7 +198,7 @@ public class LogicDocTestUnitTest {
     public void makePutRequestWithBody() throws Exception {
         when(apiTest.put(uri, obj)).thenReturn(context);
         docTest.makePutRequest(uri, obj);
-        verify(docTestMachine).sayRequest(request, OBJECT, headersToShow);
+        verify(docTestMachine).sayRequest(request, OBJECT, headersToShow, cookiesToShow);
         verify(docTestMachine).sayResponse(response, headersToShow);
     }
 

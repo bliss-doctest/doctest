@@ -104,11 +104,11 @@ public abstract class LogicDocTest {
     }
 
     private void sayUri(ApiRequest apiRequest, Object obj) throws Exception {
-        docTestMachine.sayRequest(apiRequest, jsonHelper.toJson(obj), showHeaders());
+        docTestMachine.sayRequest(apiRequest, jsonHelper.toJson(obj), showHeaders(), showCookies());
     }
 
     private void sayUri(ApiRequest apiRequest) throws Exception {
-        docTestMachine.sayRequest(apiRequest, null, showHeaders());
+        docTestMachine.sayRequest(apiRequest, null, showHeaders(), showCookies());
     }
 
     /**
@@ -177,7 +177,8 @@ public abstract class LogicDocTest {
                         fileBodyToUpload));
 
         docTestMachine.sayUploadRequest(context.apiRequest, fileBodyToUpload.getFilename(),
-                fileHelper.readFile(fileToUpload), fileToUpload.length(), mimeType, showHeaders());
+                fileHelper.readFile(fileToUpload), fileToUpload.length(), mimeType, showHeaders(),
+                showCookies());
 
         docTestMachine.sayResponse(context.apiResponse, showHeaders());
 
@@ -418,6 +419,20 @@ public abstract class LogicDocTest {
      * @return
      */
     public List<String> showHeaders() {
+        return new ArrayList<String>();
+    }
+
+    /**
+     * defines the cookies that we want to render for the documentation
+     * for this case: its the default declaration and no cookies are declared
+     * if you want to define cookies to display for a request,
+     * you HAVE TO override this function in your test
+     * <strong>IMPORTANT</strong>: you don't have to care about the case of the cookies name
+     * 
+     * 
+     * @return
+     */
+    public List<String> showCookies() {
         return new ArrayList<String>();
     }
 }

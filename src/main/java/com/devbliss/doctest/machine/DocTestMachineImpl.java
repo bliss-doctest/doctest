@@ -100,13 +100,14 @@ public class DocTestMachineImpl implements DocTestMachine {
      * if apiRequest's uri is null, no documentation for this request/response will be created
      * 
      */
-    public void sayRequest(ApiRequest apiRequest, String payload, List<String> headersToShow)
-            throws JSONException {
+    public void sayRequest(ApiRequest apiRequest, String payload, List<String> headersToShow,
+            List<String> cookiesToShow) throws JSONException {
 
         if (apiRequest.uri != null) {
             listItem.add(new RequestDocItem(apiRequest.httpMethod, uriHelper
                     .uriToString(apiRequest.uri), validateAndPrettifyJson(payload), headersHelper
-                    .filter(apiRequest.headers, headersToShow), apiRequest.cookies));
+                    .filter(apiRequest.headers, headersToShow), headersHelper.filter(
+                    apiRequest.cookies, cookiesToShow)));
         }
     }
 
@@ -115,12 +116,13 @@ public class DocTestMachineImpl implements DocTestMachine {
      * 
      */
     public void sayUploadRequest(ApiRequest apiRequest, String fileName, String fileBody,
-            long size, String mimeType, List<String> headersToShow) {
+            long size, String mimeType, List<String> headersToShow, List<String> cookiesToShow) {
 
         if (apiRequest.uri != null) {
             listItem.add(new RequestUploadDocItem(apiRequest.httpMethod, uriHelper
                     .uriToString(apiRequest.uri), fileName, fileBody, size, mimeType, headersHelper
-                    .filter(apiRequest.headers, headersToShow), apiRequest.cookies));
+                    .filter(apiRequest.headers, headersToShow), headersHelper.filter(
+                    apiRequest.cookies, cookiesToShow)));
         }
     }
 

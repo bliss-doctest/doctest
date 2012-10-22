@@ -82,8 +82,8 @@ public interface DocTestMachine {
      * @param httpRequest
      * @throws JSONException
      */
-    void sayRequest(ApiRequest apiRequest, String payload, List<String> headersToShow)
-            throws JSONException;
+    void sayRequest(ApiRequest apiRequest, String payload, List<String> headersToShow,
+            List<String> cookiesToShow) throws JSONException;
 
     /**
      * Writes a new {@link AssertDocItem} into the report.
@@ -100,7 +100,8 @@ public interface DocTestMachine {
     void sayPreformatted(String preformattedText);
 
     void sayUploadRequest(ApiRequest httpRequest, String fileName, String fileBody, long l,
-            String mimetype, List<String> headersToShow) throws JSONException;
+            String mimetype, List<String> headersToShow, List<String> cookiesToShow)
+            throws JSONException;
 
     /**
      * Writes a new {@link ResponseDocItem} into the report.

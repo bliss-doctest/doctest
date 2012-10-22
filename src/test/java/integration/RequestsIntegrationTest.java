@@ -78,6 +78,13 @@ public class RequestsIntegrationTest extends DocTest {
         return headersToShow;
     }
 
+    @Override
+    public List<String> showCookies() {
+        List<String> cookies = new ArrayList<String>();
+        cookies.add(COOKIE_NAME_1);
+        return cookies;
+    }
+
     private Object obj;
     private ApiResponse apiResponse;
     private URI uri;
