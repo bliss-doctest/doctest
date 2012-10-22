@@ -97,20 +97,6 @@ public class DocTestMachineImplUnitTest {
         machine = spy(new DocTestMachineImpl(renderer, jsonHelper, uriHelper, headersHelper));
     }
 
-    private void initHeadersAndCookies() {
-        headersToShow = new ArrayList<String>();
-        headers = new HashMap<String, String>();
-        headers.put("header_1", "header_value");
-        filteredHeaders = new HashMap<String, String>();
-
-        cookiesToShow = new ArrayList<String>();
-        cookies = new HashMap<String, String>();
-        cookies.put("cookie_1", "cookie_value");
-        filteredCookies = new HashMap<String, String>();
-        when(headersHelper.filter(headers, headersToShow)).thenReturn(filteredHeaders);
-        when(headersHelper.filter(cookies, cookiesToShow)).thenReturn(filteredCookies);
-    }
-
     @Test
     public void render() throws Exception {
         when(machine.getListItem()).thenReturn(listItem);
@@ -192,7 +178,7 @@ public class DocTestMachineImplUnitTest {
         assertEquals(HTTP_METHOD.toUpperCase(), ((RequestDocItem) listItems.get(0)).getHttp());
         assertEquals(uriString, ((RequestDocItem) listItems.get(0)).getUri());
         assertEquals(filteredCookies, ((RequestDocItem) listItems.get(0)).getCookies());
-        assertEquals(filteredCookies, ((RequestDocItem) listItems.get(0)).getHeaders());
+        assertEquals(filteredHeaders, ((RequestDocItem) listItems.get(0)).getHeaders());
     }
 
     @Test
@@ -211,6 +197,8 @@ public class DocTestMachineImplUnitTest {
         assertEquals(uriString, ((RequestUploadDocItem) listItems.get(0)).getUri());
         assertEquals("file", ((RequestUploadDocItem) listItems.get(0)).getFileName());
         assertEquals("fileBody", ((RequestUploadDocItem) listItems.get(0)).getFileBody());
+        assertEquals(filteredCookies, ((RequestDocItem) listItems.get(0)).getCookies());
+        assertEquals(filteredHeaders, ((RequestDocItem) listItems.get(0)).getHeaders());
     }
 
     @Test
@@ -255,6 +243,8 @@ public class DocTestMachineImplUnitTest {
         assertEquals(JSON_INVALID, ((RequestDocItem) listItems.get(0)).getPayload().getExpected());
         assertEquals(HTTP_METHOD.toUpperCase(), ((RequestDocItem) listItems.get(0)).getHttp());
         assertEquals(uriString, ((RequestDocItem) listItems.get(0)).getUri());
+        assertEquals(filteredCookies, ((RequestDocItem) listItems.get(0)).getCookies());
+        assertEquals(filteredHeaders, ((RequestDocItem) listItems.get(0)).getHeaders());
     }
 
     @Test
@@ -321,5 +311,26 @@ public class DocTestMachineImplUnitTest {
         assertEquals("say-1", ((TextDocItem) listItems.get(0)).getText());
         assertTrue(listItems.get(1) instanceof TextDocItem);
         assertEquals("say-2", ((TextDocItem) listItems.get(1)).getText());
+    }
+
+    private void initHeadersAndCookies() {
+        headersToShow = new ArrayList<String>();
+        headersToShow.add("header_1");
+        headers = new HashMap<String, String>();
+        headers.put("header_1", "header_value_1");
+        headers.put("header_2", "header_value_2");
+        filteredHeaders = new HashMap<String, String>();
+        filteredHeaders.put("header_1", "header_value_1");
+
+        cookiesToShow = new ArrayList<String>();
+        headersToShow.add("cookie_1");
+        cookies = new HashMap<String, String>();
+        cookies.put("cookie_1", "cookie_value_1");
+        cookies.put("cookie_2", "cookie_value_2");
+        filteredCookies = new HashMap<String, String>();
+        filteredCookies.put("cookie_1", "cookie_value_1");
+
+        when(headersHelper.filter(headers, headersToShow)).thenReturn(filteredHeaders);
+        when(headersHelper.filter(cookies, cookiesToShow)).thenReturn(filteredCookies);
     }
 }
