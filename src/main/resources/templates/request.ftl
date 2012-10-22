@@ -18,8 +18,8 @@
 				</#list>
 				</ol>
 				<#if cookies?has_content>
-					<ol>
 					Cookies:
+					<ol>
 						<#list cookies?keys as cookie>
 						    <li>${cookie} = ${cookies[cookie]}</li>
 						</#list>
