@@ -2,10 +2,13 @@ package testutils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.io.FileUtils;
 
 public class Utils {
 
@@ -27,6 +30,25 @@ public class Utils {
         assertTrue("The report '" + OUTPUT_DIRECTORY + fileName
                 + "' has not been created. The created files are: " + toString(listFiles),
                 isFilePresent);
+    }
+
+    /**
+     * 
+     * Verifies the given File does have the given content somewhere in the file.
+     * This also checks, whether the UTF-8 encoding was used properly throughout the whole process.
+     * 
+     * @param file
+     * @param content
+     */
+    public static void verifyTheFileHasThisContent(File file, String content) {
+        try {
+            String fileContent = FileUtils.readFileToString(file, "UTF-8");
+            assertTrue("The report " + file.getAbsolutePath() + "doesn't contain the content '"
+                    + content + "'.", fileContent.contains(content));
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 
     private static String toString(File[] listFiles) {

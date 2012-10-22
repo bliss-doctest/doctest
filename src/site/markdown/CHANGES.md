@@ -3,6 +3,7 @@ CHANGES
 
 develop
 -------
+- Configure the encoding of the surefire JVM to UTF-8
 
 Version 0.6.1 19.10.2012
 ------------------------
