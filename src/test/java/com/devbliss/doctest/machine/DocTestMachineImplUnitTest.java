@@ -77,14 +77,16 @@ public class DocTestMachineImplUnitTest {
     private URI uri;
     private List<String> headersToShow;
     private Map<String, String> headers;
+    private Map<String, String> cookies;
 
     @Before
     public void setUp() throws URISyntaxException {
         uri = new URI("");
         headersToShow = new ArrayList<String>();
         headers = new HashMap<String, String>();
+        cookies = new HashMap<String, String>();
 
-        apiRequest = new ApiRequest(uri, HTTP_METHOD, headers);
+        apiRequest = new ApiRequest(uri, HTTP_METHOD, headers, cookies);
         apiResponse = new ApiResponse(RESPONSE_CODE, "", JSON_VALID, headers);
 
         when(jsonHelper.isJsonValid(JSON_VALID)).thenReturn(true);
@@ -194,7 +196,7 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addUploadRequestItemUriIsNull() throws Exception {
-        apiRequest = new ApiRequest(null, HTTP_METHOD, headers);
+        apiRequest = new ApiRequest(null, HTTP_METHOD, headers, cookies);
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.sayUploadRequest(apiRequest, "file", "fileBody", 10l, "", headersToShow);
         machine.endDocTest();
@@ -207,7 +209,7 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addRequestItemWihtoutUri() throws Exception {
-        apiRequest = new ApiRequest(null, HTTP_METHOD, headers);
+        apiRequest = new ApiRequest(null, HTTP_METHOD, headers, cookies);
 
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.sayRequest(apiRequest, JSON_VALID, headersToShow);

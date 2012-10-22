@@ -86,6 +86,7 @@ public class LogicDocTestUnitTest {
     private Context context;
     private List<String> headersToShow;
     private Map<String, String> headers;
+    private Map<String, String> cookies;
 
     @Before
     public void setUp() throws Exception {
@@ -93,9 +94,10 @@ public class LogicDocTestUnitTest {
         headersToShow.add(HEADER_NAME1);
 
         headers = new HashMap<String, String>();
+        cookies = new HashMap<String, String>();
 
         uri = new URI("");
-        request = new ApiRequest(uri, HTTP_METHOD, headers);
+        request = new ApiRequest(uri, HTTP_METHOD, headers, cookies);
         response =
                 new ApiResponse(HTTP_STATUS, REASON_PHRASE, RESPONSE_PAYLOAD, Collections
                         .<String, String> emptyMap());

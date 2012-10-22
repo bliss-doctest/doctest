@@ -106,7 +106,7 @@ public class DocTestMachineImpl implements DocTestMachine {
         if (apiRequest.uri != null) {
             listItem.add(new RequestDocItem(apiRequest.httpMethod, uriHelper
                     .uriToString(apiRequest.uri), validateAndPrettifyJson(payload), headersHelper
-                    .filter(apiRequest.headers, headersToShow)));
+                    .filter(apiRequest.headers, headersToShow), apiRequest.cookies));
         }
     }
 
@@ -120,7 +120,7 @@ public class DocTestMachineImpl implements DocTestMachine {
         if (apiRequest.uri != null) {
             listItem.add(new RequestUploadDocItem(apiRequest.httpMethod, uriHelper
                     .uriToString(apiRequest.uri), fileName, fileBody, size, mimeType, headersHelper
-                    .filter(apiRequest.headers, headersToShow)));
+                    .filter(apiRequest.headers, headersToShow), apiRequest.cookies));
         }
     }
 

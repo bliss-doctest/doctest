@@ -9,20 +9,36 @@ public class RequestDocItem implements DocItem {
     protected final JsonDocItem payload;
     protected Boolean isAnUploadRequest = false;
     protected Map<String, String> headers;
+    protected Map<String, String> cookies;
 
-    public RequestDocItem(String http, String uri, Map<String, String> headers) {
-        this(http, uri, new JsonDocItem(null), headers);
+    public RequestDocItem(
+            String http,
+            String uri,
+            Map<String, String> headers,
+            Map<String, String> cookies) {
+        this(http, uri, new JsonDocItem(null), headers, cookies);
     }
 
-    public RequestDocItem(String http, String uri, String payload, Map<String, String> headers) {
-        this(http, uri, new JsonDocItem(payload), headers);
+    public RequestDocItem(
+            String http,
+            String uri,
+            String payload,
+            Map<String, String> headers,
+            Map<String, String> cookies) {
+        this(http, uri, new JsonDocItem(payload), headers, cookies);
     }
 
-    private RequestDocItem(String http, String uri, JsonDocItem payload, Map<String, String> headers) {
+    private RequestDocItem(
+            String http,
+            String uri,
+            JsonDocItem payload,
+            Map<String, String> headers,
+            Map<String, String> cookies) {
         this.http = http;
         this.uri = uri;
         this.payload = payload;
         this.headers = headers;
+        this.cookies = cookies;
     }
 
     public String getHttp() {
@@ -47,5 +63,9 @@ public class RequestDocItem implements DocItem {
 
     public Map<String, String> getHeaders() {
         return this.headers;
+    }
+
+    public Map<String, String> getCookies() {
+        return this.cookies;
     }
 }

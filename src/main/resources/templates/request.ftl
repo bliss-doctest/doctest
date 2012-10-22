@@ -17,6 +17,14 @@
 				    <li>${header} = ${headers[header]}</li>
 				</#list>
 				</ol>
+				<#if cookies?has_content>
+					<ol>
+					Cookies:
+						<#list cookies?keys as cookie>
+						    <li>${cookie} = ${cookies[cookie]}</li>
+						</#list>
+					</ol>
+				</#if>
 			</li>
 		</#if>
 		
