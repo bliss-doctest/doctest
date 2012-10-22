@@ -21,10 +21,10 @@
 				</#if>
 				<#if cookies?has_content>
 					
-					<ol>
+					<ol class="cookies">
 					 <li><b>Cookies:</b></li>
 						<#list cookies?keys as cookie>
-						    <li>${cookie} = ${cookies[cookie]}</li>
+						    <li><div>${cookie} = </div><div>${cookies[cookie]}</div></li>
 						</#list>
 					</ol>
 				</#if>
