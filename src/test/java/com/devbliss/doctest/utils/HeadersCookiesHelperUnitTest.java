@@ -25,55 +25,54 @@ public class HeadersCookiesHelperUnitTest {
      * will be transformed in the ApiTester project
      */
 
-    private static final String HEADER1 = "content-type";
-    private static final String VALUE1 = "application/json";
-    private static final String HEADER2 = "accept-charset";
-    private static final String VALUE2 = "utf-8";
-    private static final String HEADER3 = "accept-language";
-    private static final String VALUE3 = "en-US";
+    private static final String NAME_1 = "content-type";
+    private static final String VALUE_1 = "application/json";
+    private static final String NAME_2 = "accept-charset";
+    private static final String VALUE_2 = "utf-8";
+    private static final String NAME_3 = "accept-language";
+    private static final String VALUE_3 = "en-US";
 
-    private static final String HEADER4 = "CONTENT-TYPE";
-    private static final String HEADER5 = "META-INFORMATION";
-    private static final String HEADER6 = "accept-language";
+    private static final String NAME_4 = "CONTENT-TYPE";
+    private static final String NAME_5 = "META-INFORMATION";
+    private static final String NAME_6 = "accept-language";
 
-    private Map<String, String> headers;
-    private List<String> headersToShow;
-    private HeadersCookiesHelper headersHelper;
+    private Map<String, String> elements;
+    private List<String> elementsToShow;
+    private HeadersCookiesHelper helper;
 
     @Before
     public void setUp() {
-        headersHelper = new HeadersCookiesHelper();
+        helper = new HeadersCookiesHelper();
 
-        // original headers from e.g. httprequest
-        headers = new HashMap<String, String>();
-        headers.put(HEADER1, VALUE1);
-        headers.put(HEADER2, VALUE2);
-        headers.put(HEADER3, VALUE3);
+        // original elements
+        elements = new HashMap<String, String>();
+        elements.put(NAME_1, VALUE_1);
+        elements.put(NAME_2, VALUE_2);
+        elements.put(NAME_3, VALUE_3);
     }
 
     @Test
     public void testFilter() {
-        // headers which should be displayed in the documentation and
+        // elements which should be displayed in the documentation and
         // they should be declared by developer
-        headersToShow = new ArrayList<String>();
-        headersToShow.add(HEADER4);
-        headersToShow.add(HEADER5);
-        headersToShow.add(HEADER6);
+        elementsToShow = new ArrayList<String>();
+        elementsToShow.add(NAME_4);
+        elementsToShow.add(NAME_5);
+        elementsToShow.add(NAME_6);
 
-        Map<String, String> filteredHeaders = headersHelper.filter(headers, headersToShow);
-        assertEquals(VALUE1, filteredHeaders.get(HEADER1));
-        assertEquals(VALUE3, filteredHeaders.get(HEADER3));
+        Map<String, String> filteredHeaders = helper.filter(elements, elementsToShow);
+        assertEquals(VALUE_1, filteredHeaders.get(NAME_1));
+        assertEquals(VALUE_3, filteredHeaders.get(NAME_3));
 
-        assertFalse(filteredHeaders.containsKey(HEADER2));
-        assertFalse(filteredHeaders.containsKey(HEADER4));
+        assertFalse(filteredHeaders.containsKey(NAME_2));
+        assertFalse(filteredHeaders.containsKey(NAME_4));
     }
 
     @Test
-    public void testShowAllHeaders() {
-        Map<String, String> filteredHeaders = headersHelper.filter(headers, LogicDocTest.ALL);
-        assertEquals(VALUE1, filteredHeaders.get(HEADER1));
-        assertEquals(VALUE2, filteredHeaders.get(HEADER2));
-        assertEquals(VALUE3, filteredHeaders.get(HEADER3));
-
+    public void testShowAllElements() {
+        Map<String, String> filteredHeaders = helper.filter(elements, LogicDocTest.ALL);
+        assertEquals(VALUE_1, filteredHeaders.get(NAME_1));
+        assertEquals(VALUE_2, filteredHeaders.get(NAME_2));
+        assertEquals(VALUE_3, filteredHeaders.get(NAME_3));
     }
 }

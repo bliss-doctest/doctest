@@ -49,7 +49,7 @@ public class DocTestMachineImpl implements DocTestMachine {
     private final ReportRenderer reportRenderer;
     private final JSONHelper jsonHelper;
     private final UriHelper uriHelper;
-    private final HeadersCookiesHelper headersHelper;
+    private final HeadersCookiesHelper headersCookiesHelper;
     private String introduction;
 
     @Inject
@@ -62,7 +62,7 @@ public class DocTestMachineImpl implements DocTestMachine {
         listItem = new ArrayList<DocItem>();
         this.reportRenderer = reportRenderer;
         this.jsonHelper = jsonHelper;
-        this.headersHelper = headersHelper;
+        this.headersCookiesHelper = headersHelper;
     }
 
     public void beginDoctest(String fileName, String introduction) {
@@ -105,8 +105,8 @@ public class DocTestMachineImpl implements DocTestMachine {
 
         if (apiRequest.uri != null) {
             listItem.add(new RequestDocItem(apiRequest.httpMethod, uriHelper
-                    .uriToString(apiRequest.uri), validateAndPrettifyJson(payload), headersHelper
-                    .filter(apiRequest.headers, headersToShow), headersHelper.filter(
+                    .uriToString(apiRequest.uri), validateAndPrettifyJson(payload), headersCookiesHelper
+                    .filter(apiRequest.headers, headersToShow), headersCookiesHelper.filter(
                     apiRequest.cookies, cookiesToShow)));
         }
     }
@@ -120,8 +120,8 @@ public class DocTestMachineImpl implements DocTestMachine {
 
         if (apiRequest.uri != null) {
             listItem.add(new RequestUploadDocItem(apiRequest.httpMethod, uriHelper
-                    .uriToString(apiRequest.uri), fileName, fileBody, size, mimeType, headersHelper
-                    .filter(apiRequest.headers, headersToShow), headersHelper.filter(
+                    .uriToString(apiRequest.uri), fileName, fileBody, size, mimeType, headersCookiesHelper
+                    .filter(apiRequest.headers, headersToShow), headersCookiesHelper.filter(
                     apiRequest.cookies, cookiesToShow)));
         }
     }
@@ -132,7 +132,7 @@ public class DocTestMachineImpl implements DocTestMachine {
      */
     public void sayResponse(ApiResponse response, List<String> headersToShow) throws Exception {
         listItem.add(new ResponseDocItem(response, validateAndPrettifyJson(response.payload),
-                headersHelper.filter(response.headers, headersToShow)));
+                headersCookiesHelper.filter(response.headers, headersToShow)));
     }
 
     public void sayVerify(String condition) {
