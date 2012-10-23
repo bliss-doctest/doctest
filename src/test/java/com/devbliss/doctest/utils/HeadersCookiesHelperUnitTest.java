@@ -14,7 +14,7 @@ import org.junit.Test;
 import com.devbliss.doctest.LogicDocTest;
 
 /**
- * Unit Test for {@link HeadersCookiesHelper}
+ * Unit Test for {@link UserInputHelper}
  * 
  * @author katharinairrgang
  */
@@ -38,11 +38,11 @@ public class HeadersCookiesHelperUnitTest {
 
     private Map<String, String> elements;
     private List<String> elementsToShow;
-    private HeadersCookiesHelper helper;
+    private UserInputHelper helper;
 
     @Before
     public void setUp() {
-        helper = new HeadersCookiesHelper();
+        helper = new UserInputHelper();
 
         // original elements
         elements = new HashMap<String, String>();
@@ -60,7 +60,7 @@ public class HeadersCookiesHelperUnitTest {
         elementsToShow.add(NAME_5);
         elementsToShow.add(NAME_6);
 
-        Map<String, String> filteredHeaders = helper.filter(elements, elementsToShow);
+        Map<String, String> filteredHeaders = helper.filterMap(elements, elementsToShow);
         assertEquals(VALUE_1, filteredHeaders.get(NAME_1));
         assertEquals(VALUE_3, filteredHeaders.get(NAME_3));
 
@@ -70,7 +70,7 @@ public class HeadersCookiesHelperUnitTest {
 
     @Test
     public void testShowAllElements() {
-        Map<String, String> filteredHeaders = helper.filter(elements, LogicDocTest.ALL);
+        Map<String, String> filteredHeaders = helper.filterMap(elements, LogicDocTest.ALL_ELEMENTS);
         assertEquals(VALUE_1, filteredHeaders.get(NAME_1));
         assertEquals(VALUE_2, filteredHeaders.get(NAME_2));
         assertEquals(VALUE_3, filteredHeaders.get(NAME_3));

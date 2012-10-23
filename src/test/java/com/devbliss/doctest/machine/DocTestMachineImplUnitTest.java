@@ -31,9 +31,9 @@ import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
-import com.devbliss.doctest.utils.HeadersCookiesHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.devbliss.doctest.utils.UriHelper;
+import com.devbliss.doctest.utils.UserInputHelper;
 
 import de.devbliss.apitester.ApiRequest;
 import de.devbliss.apitester.ApiResponse;
@@ -65,7 +65,7 @@ public class DocTestMachineImplUnitTest {
     @Mock
     private UriHelper uriHelper;
     @Mock
-    private HeadersCookiesHelper headersHelper;
+    private UserInputHelper headersHelper;
 
     @Captor
     private ArgumentCaptor<List<DocItem>> listItemCaptor;
@@ -323,14 +323,14 @@ public class DocTestMachineImplUnitTest {
         filteredHeaders.put("header_1", "header_value_1");
 
         cookiesToShow = new ArrayList<String>();
-        headersToShow.add("cookie_1");
+        cookiesToShow.add("cookie_1");
         cookies = new HashMap<String, String>();
         cookies.put("cookie_1", "cookie_value_1");
         cookies.put("cookie_2", "cookie_value_2");
         filteredCookies = new HashMap<String, String>();
         filteredCookies.put("cookie_1", "cookie_value_1");
 
-        when(headersHelper.filter(headers, headersToShow)).thenReturn(filteredHeaders);
-        when(headersHelper.filter(cookies, cookiesToShow)).thenReturn(filteredCookies);
+        when(headersHelper.filterMap(headers, headersToShow)).thenReturn(filteredHeaders);
+        when(headersHelper.filterMap(cookies, cookiesToShow)).thenReturn(filteredCookies);
     }
 }

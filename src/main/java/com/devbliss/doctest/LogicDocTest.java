@@ -32,9 +32,10 @@ import de.devbliss.apitester.Cookie;
 public abstract class LogicDocTest {
 
     /**
-     * Constant used to show all the headers/cookies that exist
+     * Constant used to show all the elements of a list e.g {@link #cookiesToShow} or
+     * {@link #headersToShow}. Just set this list equals to this {@link #ALL_ELEMENTS}
      */
-    public static final List<String> ALL = Arrays.asList("*");
+    public static final List<String> ALL_ELEMENTS = Arrays.asList("*");
 
     protected static DocTestMachine docTestMachine;
 
@@ -48,7 +49,8 @@ public abstract class LogicDocTest {
      * if you want to define cookies to display for a request,
      * you HAVE TO override this list in your test
      * <p>
-     * If you want to see all the cookies, you have to set <code>cookiesToShow = {@link #ALL}</code>
+     * If you want to see all the cookies, you have to set
+     * <code>cookiesToShow = {@link #ALL_ELEMENTS}</code>
      * </p>
      * <strong>IMPORTANT</strong>: you don't have to care about the case of the cookies name
      * 
@@ -63,7 +65,8 @@ public abstract class LogicDocTest {
      * if you want to define headers to display for a request or response,
      * you HAVE TO override this list in your test
      * <p>
-     * If you want to see all the headers, you have to set <code>headersToShow = {@link #ALL}</code>
+     * If you want to see all the headers, you have to set
+     * <code>headersToShow = {@link #ALL_ELEMENTS}</code>
      * </p>
      * <strong>IMPORTANT</strong>: you don't have to care about the case of the headers name
      * 
@@ -139,11 +142,11 @@ public abstract class LogicDocTest {
         docTestMachine.sayNextSectionTitle(sectionName);
     }
 
-    private void sayUri(ApiRequest apiRequest, Object obj) throws Exception {
+    private void sayRequest(ApiRequest apiRequest, Object obj) throws Exception {
         docTestMachine.sayRequest(apiRequest, jsonHelper.toJson(obj), headersToShow, cookiesToShow);
     }
 
-    private void sayUri(ApiRequest apiRequest) throws Exception {
+    private void sayRequest(ApiRequest apiRequest) throws Exception {
         docTestMachine.sayRequest(apiRequest, null, headersToShow, cookiesToShow);
     }
 
@@ -179,7 +182,7 @@ public abstract class LogicDocTest {
 
     protected ApiResponse makeGetRequest(URI uri) throws Exception {
         Context context = doGetRequest(uri);
-        sayUri(context.apiRequest);
+        sayRequest(context.apiRequest);
         docTestMachine.sayResponse(context.apiResponse, headersToShow);
         return context.apiResponse;
     }
@@ -198,7 +201,7 @@ public abstract class LogicDocTest {
 
     protected ApiResponse makePostRequest(URI uri, Object obj) throws Exception {
         Context context = doPostRequest(uri, obj);
-        sayUri(context.apiRequest, obj);
+        sayRequest(context.apiRequest, obj);
         docTestMachine.sayResponse(context.apiResponse, headersToShow);
         return context.apiResponse;
     }
@@ -235,7 +238,7 @@ public abstract class LogicDocTest {
 
     protected ApiResponse makePutRequest(URI uri, Object obj) throws Exception {
         Context context = doPutRequest(uri, obj);
-        sayUri(context.apiRequest, obj);
+        sayRequest(context.apiRequest, obj);
         docTestMachine.sayResponse(context.apiResponse, headersToShow);
         return context.apiResponse;
     }
@@ -262,7 +265,7 @@ public abstract class LogicDocTest {
 
     protected ApiResponse makeDeleteRequest(URI uri, Object obj) throws Exception {
         Context context = doDeleteRequest(uri, obj);
-        sayUri(context.apiRequest, obj);
+        sayRequest(context.apiRequest, obj);
         docTestMachine.sayResponse(context.apiResponse, headersToShow);
         return context.apiResponse;
     }

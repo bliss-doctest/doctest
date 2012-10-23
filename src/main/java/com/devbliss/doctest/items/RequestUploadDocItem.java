@@ -44,11 +44,6 @@ public class RequestUploadDocItem extends RequestDocItem {
         return StringEscapeUtils.escapeHtml(fileBody);
     }
 
-    @Override
-    public String getItemName() {
-        return "request";
-    }
-
     public long getFileSize() {
         return fileSize;
     }

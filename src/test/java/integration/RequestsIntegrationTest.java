@@ -111,7 +111,7 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void delete() throws Exception {
-        headersToShow = LogicDocTest.ALL;
+        headersToShow = LogicDocTest.ALL_ELEMENTS;
         apiRequest = new ApiRequest(uri, "delete", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_NO_CONTENT, REASON_PHRASE, null, headers);
         context = new Context(apiResponse, apiRequest);

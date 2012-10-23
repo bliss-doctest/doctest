@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URI;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -98,9 +97,7 @@ public class LogicDocTestUnitTest {
 
         uri = new URI("");
         request = new ApiRequest(uri, HTTP_METHOD, headers, cookies);
-        response =
-                new ApiResponse(HTTP_STATUS, REASON_PHRASE, RESPONSE_PAYLOAD, Collections
-                        .<String, String> emptyMap());
+        response = new ApiResponse(HTTP_STATUS, REASON_PHRASE, RESPONSE_PAYLOAD, headers);
 
         context = new Context(response, request);
         when(jsonHelper.toJson(null)).thenReturn(NULL);
