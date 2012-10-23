@@ -62,7 +62,7 @@ public abstract class LogicDocTest {
     /**
      * defines the headers that we want to render for the documentation
      * for this case: its the default declaration and no headers are declared
-     * if you want to define headers to display for a request or response,
+     * if you want to define headers to display for a request and response,
      * you HAVE TO override this list in your test
      * <p>
      * If you want to see all the headers, you have to set

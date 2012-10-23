@@ -15,7 +15,7 @@ import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
-import com.devbliss.doctest.utils.UserInputHelper;
+import com.devbliss.doctest.utils.FilterHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.devbliss.doctest.utils.UriHelper;
 import com.google.inject.Inject;
@@ -49,7 +49,7 @@ public class DocTestMachineImpl implements DocTestMachine {
     private final ReportRenderer reportRenderer;
     private final JSONHelper jsonHelper;
     private final UriHelper uriHelper;
-    private final UserInputHelper headersCookiesHelper;
+    private final FilterHelper filterHelper;
     private String introduction;
 
     @Inject
@@ -57,12 +57,12 @@ public class DocTestMachineImpl implements DocTestMachine {
             ReportRenderer reportRenderer,
             JSONHelper jsonHelper,
             UriHelper uriHelper,
-            UserInputHelper headersHelper) {
+            FilterHelper headersHelper) {
         this.uriHelper = uriHelper;
         listItem = new ArrayList<DocItem>();
         this.reportRenderer = reportRenderer;
         this.jsonHelper = jsonHelper;
-        this.headersCookiesHelper = headersHelper;
+        this.filterHelper = headersHelper;
     }
 
     public void beginDoctest(String fileName, String introduction) {
@@ -105,8 +105,8 @@ public class DocTestMachineImpl implements DocTestMachine {
 
         if (apiRequest.uri != null) {
             listItem.add(new RequestDocItem(apiRequest.httpMethod, uriHelper
-                    .uriToString(apiRequest.uri), validateAndPrettifyJson(payload), headersCookiesHelper
-                    .filterMap(apiRequest.headers, headersToShow), headersCookiesHelper.filterMap(
+                    .uriToString(apiRequest.uri), validateAndPrettifyJson(payload), filterHelper
+                    .filterMap(apiRequest.headers, headersToShow), filterHelper.filterMap(
                     apiRequest.cookies, cookiesToShow)));
         }
     }
@@ -120,8 +120,8 @@ public class DocTestMachineImpl implements DocTestMachine {
 
         if (apiRequest.uri != null) {
             listItem.add(new RequestUploadDocItem(apiRequest.httpMethod, uriHelper
-                    .uriToString(apiRequest.uri), fileName, fileBody, size, mimeType, headersCookiesHelper
-                    .filterMap(apiRequest.headers, headersToShow), headersCookiesHelper.filterMap(
+                    .uriToString(apiRequest.uri), fileName, fileBody, size, mimeType, filterHelper
+                    .filterMap(apiRequest.headers, headersToShow), filterHelper.filterMap(
                     apiRequest.cookies, cookiesToShow)));
         }
     }
@@ -132,7 +132,7 @@ public class DocTestMachineImpl implements DocTestMachine {
      */
     public void sayResponse(ApiResponse response, List<String> headersToShow) throws Exception {
         listItem.add(new ResponseDocItem(response, validateAndPrettifyJson(response.payload),
-                headersCookiesHelper.filterMap(response.headers, headersToShow)));
+                filterHelper.filterMap(response.headers, headersToShow)));
     }
 
     public void sayVerify(String condition) {

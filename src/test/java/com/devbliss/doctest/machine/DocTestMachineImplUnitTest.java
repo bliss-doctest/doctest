@@ -33,7 +33,7 @@ import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.devbliss.doctest.utils.UriHelper;
-import com.devbliss.doctest.utils.UserInputHelper;
+import com.devbliss.doctest.utils.FilterHelper;
 
 import de.devbliss.apitester.ApiRequest;
 import de.devbliss.apitester.ApiResponse;
@@ -65,7 +65,7 @@ public class DocTestMachineImplUnitTest {
     @Mock
     private UriHelper uriHelper;
     @Mock
-    private UserInputHelper headersHelper;
+    private FilterHelper headersHelper;
 
     @Captor
     private ArgumentCaptor<List<DocItem>> listItemCaptor;

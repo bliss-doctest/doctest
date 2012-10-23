@@ -14,11 +14,11 @@ import org.junit.Test;
 import com.devbliss.doctest.LogicDocTest;
 
 /**
- * Unit Test for {@link UserInputHelper}
+ * Unit Test for {@link FilterHelper}
  * 
  * @author katharinairrgang
  */
-public class HeadersCookiesHelperUnitTest {
+public class FilterHelperUnitTest {
 
     /*
      * the original headers are in lower case, because they
@@ -38,11 +38,11 @@ public class HeadersCookiesHelperUnitTest {
 
     private Map<String, String> elements;
     private List<String> elementsToShow;
-    private UserInputHelper helper;
+    private FilterHelper helper;
 
     @Before
     public void setUp() {
-        helper = new UserInputHelper();
+        helper = new FilterHelper();
 
         // original elements
         elements = new HashMap<String, String>();
