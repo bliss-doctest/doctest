@@ -4,22 +4,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.devbliss.doctest.LogicDocTest;
+
 /**
  * 
- * Headershelper filters the original request or response headers
- * depending on the headers for the documentation
+ * {@link HeadersCookiesHelper} filters the original headers/cookies
+ * depending on the headers/cookies that the user wants to show
  * 
- * The original headers will be transformed to lower case in the ApiTester project by ApiTestUtil
+ * The original headers/cookies name will be transformed to lower case.
  * 
  * @author katharinairrgang, bmary
  * 
  */
-public class HeadersHelper {
+public class HeadersCookiesHelper {
 
     public Map<String, String> filter(Map<String, String> originalHeaders,
             List<String> headersToShow) {
 
         Map<String, String> headers = new HashMap<String, String>();
+
+        if (LogicDocTest.ALL.equals(headersToShow)) {
+            headers = originalHeaders;
+        }
 
         for (String header : headersToShow) {
             String lowerCasedHeader = header.toLowerCase();

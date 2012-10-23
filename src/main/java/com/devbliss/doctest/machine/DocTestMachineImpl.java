@@ -15,7 +15,7 @@ import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
-import com.devbliss.doctest.utils.HeadersHelper;
+import com.devbliss.doctest.utils.HeadersCookiesHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.devbliss.doctest.utils.UriHelper;
 import com.google.inject.Inject;
@@ -49,7 +49,7 @@ public class DocTestMachineImpl implements DocTestMachine {
     private final ReportRenderer reportRenderer;
     private final JSONHelper jsonHelper;
     private final UriHelper uriHelper;
-    private final HeadersHelper headersHelper;
+    private final HeadersCookiesHelper headersHelper;
     private String introduction;
 
     @Inject
@@ -57,7 +57,7 @@ public class DocTestMachineImpl implements DocTestMachine {
             ReportRenderer reportRenderer,
             JSONHelper jsonHelper,
             UriHelper uriHelper,
-            HeadersHelper headersHelper) {
+            HeadersCookiesHelper headersHelper) {
         this.uriHelper = uriHelper;
         listItem = new ArrayList<DocItem>();
         this.reportRenderer = reportRenderer;

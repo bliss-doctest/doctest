@@ -8,9 +8,8 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.net.URI;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpStatus;
@@ -22,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.DocTest;
+import com.devbliss.doctest.LogicDocTest;
 import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
 
 import de.devbliss.apitester.ApiRequest;
@@ -70,21 +70,6 @@ public class RequestsIntegrationTest extends DocTest {
         return "This documentation describes the input/output of the four http methods.";
     }
 
-    @Override
-    public List<String> showHeaders() {
-        ArrayList<String> headersToShow = new ArrayList<String>();
-        headersToShow.add(HEADER_NAME1);
-        headersToShow.add("Cookie");
-        return headersToShow;
-    }
-
-    @Override
-    public List<String> showCookies() {
-        List<String> cookies = new ArrayList<String>();
-        cookies.add(COOKIE_NAME_1);
-        return cookies;
-    }
-
     private Object obj;
     private ApiResponse apiResponse;
     private URI uri;
@@ -95,6 +80,8 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Before
     public void setUp() throws Exception {
+        headersToShow = Arrays.asList(HEADER_NAME1, "Cookie");
+        cookiesToShow = Arrays.asList(COOKIE_NAME_1);
         obj = new TestObject();
         uri =
                 new URIBuilder().setScheme("http").setHost("www.hostname.com").setPort(8080)
@@ -124,6 +111,7 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void delete() throws Exception {
+        headersToShow = LogicDocTest.ALL;
         apiRequest = new ApiRequest(uri, "delete", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_NO_CONTENT, REASON_PHRASE, null, headers);
         context = new Context(apiResponse, apiRequest);

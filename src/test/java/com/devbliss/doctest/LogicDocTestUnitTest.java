@@ -15,7 +15,6 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -84,20 +83,18 @@ public class LogicDocTestUnitTest {
 
     private File fileToUpload;
     private Context context;
-    private List<String> headersToShow;
+    private List<String> myHeadersToShow;
+    private List<String> myCookiesToShow;
     private Map<String, String> headers;
     private Map<String, String> cookies;
-    private List<String> cookiesToShow;
 
     @Before
     public void setUp() throws Exception {
-        headersToShow = new ArrayList<String>();
-        headersToShow.add(HEADER_NAME1);
-
-        cookiesToShow = new ArrayList<String>();
-
         headers = new HashMap<String, String>();
         cookies = new HashMap<String, String>();
+
+        myHeadersToShow = Arrays.asList(HEADER_NAME1);
+        myCookiesToShow = Arrays.asList("cookie");
 
         uri = new URI("");
         request = new ApiRequest(uri, HTTP_METHOD, headers, cookies);
@@ -109,7 +106,7 @@ public class LogicDocTestUnitTest {
         when(jsonHelper.toJson(null)).thenReturn(NULL);
         when(jsonHelper.toJson(obj)).thenReturn(OBJECT);
         when(apiTest.getTestState()).thenReturn(testState);
-        docTest = instantiateAbstractDocTest();
+        instantiateAbstractDocTest();
         fileToUpload = new File("src/test/resources/file.txt");
     }
 
@@ -130,40 +127,40 @@ public class LogicDocTestUnitTest {
     public void makeGetRequest() throws Exception {
         when(apiTest.get(uri)).thenReturn(context);
         docTest.makeGetRequest(uri);
-        verify(docTestMachine).sayRequest(request, null, headersToShow, cookiesToShow);
-        verify(docTestMachine).sayResponse(response, headersToShow);
+        verify(docTestMachine).sayRequest(request, null, myHeadersToShow, myCookiesToShow);
+        verify(docTestMachine).sayResponse(response, myHeadersToShow);
     }
 
     @Test
     public void makeDeleteRequest() throws Exception {
         when(apiTest.delete(uri, null)).thenReturn(context);
         docTest.makeDeleteRequest(uri);
-        verify(docTestMachine).sayRequest(request, NULL, headersToShow, cookiesToShow);
-        verify(docTestMachine).sayResponse(response, headersToShow);
+        verify(docTestMachine).sayRequest(request, NULL, myHeadersToShow, myCookiesToShow);
+        verify(docTestMachine).sayResponse(response, myHeadersToShow);
     }
 
     @Test
     public void makeDeleteRequestWithBody() throws Exception {
         when(apiTest.delete(uri, obj)).thenReturn(context);
         docTest.makeDeleteRequest(uri, obj);
-        verify(docTestMachine).sayRequest(request, OBJECT, headersToShow, cookiesToShow);
-        verify(docTestMachine).sayResponse(response, headersToShow);
+        verify(docTestMachine).sayRequest(request, OBJECT, myHeadersToShow, myCookiesToShow);
+        verify(docTestMachine).sayResponse(response, myHeadersToShow);
     }
 
     @Test
     public void makePostRequest() throws Exception {
         when(apiTest.post(uri, null)).thenReturn(context);
         docTest.makePostRequest(uri);
-        verify(docTestMachine).sayRequest(request, NULL, headersToShow, cookiesToShow);
-        verify(docTestMachine).sayResponse(response, headersToShow);
+        verify(docTestMachine).sayRequest(request, NULL, myHeadersToShow, myCookiesToShow);
+        verify(docTestMachine).sayResponse(response, myHeadersToShow);
     }
 
     @Test
     public void makePostRequestWithBody() throws Exception {
         when(apiTest.post(uri, obj)).thenReturn(context);
         docTest.makePostRequest(uri, obj);
-        verify(docTestMachine).sayRequest(request, OBJECT, headersToShow, cookiesToShow);
-        verify(docTestMachine).sayResponse(response, headersToShow);
+        verify(docTestMachine).sayRequest(request, OBJECT, myHeadersToShow, myCookiesToShow);
+        verify(docTestMachine).sayResponse(response, myHeadersToShow);
     }
 
     @Test
@@ -174,8 +171,8 @@ public class LogicDocTestUnitTest {
         docTest.makePostUploadRequest(uri, fileToUpload, "paramName");
 
         verify(docTestMachine).sayUploadRequest(request, "file.txt", "fileBody",
-                fileToUpload.length(), "text/plain", headersToShow, cookiesToShow);
-        verify(docTestMachine).sayResponse(response, headersToShow);
+                fileToUpload.length(), "text/plain", myHeadersToShow, myCookiesToShow);
+        verify(docTestMachine).sayResponse(response, myHeadersToShow);
     }
 
     @Test(expected = FileNotFoundException.class)
@@ -190,16 +187,16 @@ public class LogicDocTestUnitTest {
     public void makePutRequest() throws Exception {
         when(apiTest.put(uri, null)).thenReturn(context);
         docTest.makePutRequest(uri);
-        verify(docTestMachine).sayRequest(request, NULL, headersToShow, cookiesToShow);
-        verify(docTestMachine).sayResponse(response, headersToShow);
+        verify(docTestMachine).sayRequest(request, NULL, myHeadersToShow, myCookiesToShow);
+        verify(docTestMachine).sayResponse(response, myHeadersToShow);
     }
 
     @Test
     public void makePutRequestWithBody() throws Exception {
         when(apiTest.put(uri, obj)).thenReturn(context);
         docTest.makePutRequest(uri, obj);
-        verify(docTestMachine).sayRequest(request, OBJECT, headersToShow, cookiesToShow);
-        verify(docTestMachine).sayResponse(response, headersToShow);
+        verify(docTestMachine).sayRequest(request, OBJECT, myHeadersToShow, myCookiesToShow);
+        verify(docTestMachine).sayResponse(response, myHeadersToShow);
     }
 
     @Test
@@ -441,19 +438,16 @@ public class LogicDocTestUnitTest {
         docTest.ensureDocTestClassSet();
     }
 
-    private LogicDocTest instantiateAbstractDocTest() {
-        return new LogicDocTest(docTestMachine, apiTest, jsonHelper, fileHelper) {
+    private void instantiateAbstractDocTest() {
+        docTest = new LogicDocTest(docTestMachine, apiTest, jsonHelper, fileHelper) {
 
             @Override
             protected String getFileName() {
                 return FILE_NAME;
             }
-
-            @Override
-            public List<String> showHeaders() {
-                return headersToShow;
-            }
         };
+        docTest.headersToShow = myHeadersToShow;
+        docTest.cookiesToShow = myCookiesToShow;
     }
 
     @Test
