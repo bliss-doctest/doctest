@@ -33,9 +33,9 @@ public abstract class LogicDocTest {
 
     /**
      * Constant used to show all the elements of a list e.g {@link #cookiesToShow} or
-     * {@link #headersToShow}. Just set this list equals to this {@link #ALL_ELEMENTS}
+     * {@link #headersToShow}. Just set this list equals to this {@link #SHOW_ALL_ELEMENTS}
      */
-    public static final List<String> ALL_ELEMENTS = Arrays.asList("*");
+    public static final List<String> SHOW_ALL_ELEMENTS = Arrays.asList("*");
 
     protected static DocTestMachine docTestMachine;
 
@@ -50,7 +50,7 @@ public abstract class LogicDocTest {
      * you HAVE TO override this list in your test
      * <p>
      * If you want to see all the cookies, you have to set
-     * <code>cookiesToShow = {@link #ALL_ELEMENTS}</code>
+     * <code>cookiesToShow = {@link #SHOW_ALL_ELEMENTS}</code>
      * </p>
      * <strong>IMPORTANT</strong>: you don't have to care about the case of the cookies name
      * 
@@ -66,7 +66,7 @@ public abstract class LogicDocTest {
      * you HAVE TO override this list in your test
      * <p>
      * If you want to see all the headers, you have to set
-     * <code>headersToShow = {@link #ALL_ELEMENTS}</code>
+     * <code>headersToShow = {@link #SHOW_ALL_ELEMENTS}</code>
      * </p>
      * <strong>IMPORTANT</strong>: you don't have to care about the case of the headers name
      * 

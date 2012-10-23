@@ -70,7 +70,7 @@ public class HeadersCookiesHelperUnitTest {
 
     @Test
     public void testShowAllElements() {
-        Map<String, String> filteredHeaders = helper.filterMap(elements, LogicDocTest.ALL_ELEMENTS);
+        Map<String, String> filteredHeaders = helper.filterMap(elements, LogicDocTest.SHOW_ALL_ELEMENTS);
         assertEquals(VALUE_1, filteredHeaders.get(NAME_1));
         assertEquals(VALUE_2, filteredHeaders.get(NAME_2));
         assertEquals(VALUE_3, filteredHeaders.get(NAME_3));
