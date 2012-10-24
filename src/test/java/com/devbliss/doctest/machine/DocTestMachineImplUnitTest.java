@@ -31,9 +31,9 @@ import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
-import com.devbliss.doctest.utils.HeadersHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.devbliss.doctest.utils.UriHelper;
+import com.devbliss.doctest.utils.FilterHelper;
 
 import de.devbliss.apitester.ApiRequest;
 import de.devbliss.apitester.ApiResponse;
@@ -65,7 +65,7 @@ public class DocTestMachineImplUnitTest {
     @Mock
     private UriHelper uriHelper;
     @Mock
-    private HeadersHelper headersHelper;
+    private FilterHelper headersHelper;
 
     @Captor
     private ArgumentCaptor<List<DocItem>> listItemCaptor;
@@ -77,19 +77,23 @@ public class DocTestMachineImplUnitTest {
     private URI uri;
     private List<String> headersToShow;
     private Map<String, String> headers;
+    private Map<String, String> cookies;
+    private List<String> cookiesToShow;
+    private Map<String, String> filteredHeaders;
+    private Map<String, String> filteredCookies;
 
     @Before
     public void setUp() throws URISyntaxException {
         uri = new URI("");
-        headersToShow = new ArrayList<String>();
-        headers = new HashMap<String, String>();
+        initHeadersAndCookies();
 
-        apiRequest = new ApiRequest(uri, HTTP_METHOD, headers);
+        apiRequest = new ApiRequest(uri, HTTP_METHOD, headers, cookies);
         apiResponse = new ApiResponse(RESPONSE_CODE, "", JSON_VALID, headers);
 
         when(jsonHelper.isJsonValid(JSON_VALID)).thenReturn(true);
         when(jsonHelper.prettyPrintJson(JSON_VALID)).thenReturn(PRETTY_JSON);
         when(uriHelper.uriToString(uri)).thenReturn(uriString);
+
         machine = spy(new DocTestMachineImpl(renderer, jsonHelper, uriHelper, headersHelper));
     }
 
@@ -162,7 +166,7 @@ public class DocTestMachineImplUnitTest {
     @Test
     public void addRequestItem() throws Exception {
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayRequest(apiRequest, JSON_VALID, headersToShow);
+        machine.sayRequest(apiRequest, JSON_VALID, headersToShow, cookiesToShow);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -173,12 +177,15 @@ public class DocTestMachineImplUnitTest {
         assertEquals(PRETTY_JSON, ((RequestDocItem) listItems.get(0)).getPayload().getExpected());
         assertEquals(HTTP_METHOD.toUpperCase(), ((RequestDocItem) listItems.get(0)).getHttp());
         assertEquals(uriString, ((RequestDocItem) listItems.get(0)).getUri());
+        assertEquals(filteredCookies, ((RequestDocItem) listItems.get(0)).getCookies());
+        assertEquals(filteredHeaders, ((RequestDocItem) listItems.get(0)).getHeaders());
     }
 
     @Test
     public void addUploadRequestItem() throws Exception {
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayUploadRequest(apiRequest, "file", "fileBody", 10l, "", headersToShow);
+        machine.sayUploadRequest(apiRequest, "file", "fileBody", 10l, "", headersToShow,
+                cookiesToShow);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -190,13 +197,16 @@ public class DocTestMachineImplUnitTest {
         assertEquals(uriString, ((RequestUploadDocItem) listItems.get(0)).getUri());
         assertEquals("file", ((RequestUploadDocItem) listItems.get(0)).getFileName());
         assertEquals("fileBody", ((RequestUploadDocItem) listItems.get(0)).getFileBody());
+        assertEquals(filteredCookies, ((RequestDocItem) listItems.get(0)).getCookies());
+        assertEquals(filteredHeaders, ((RequestDocItem) listItems.get(0)).getHeaders());
     }
 
     @Test
     public void addUploadRequestItemUriIsNull() throws Exception {
-        apiRequest = new ApiRequest(null, HTTP_METHOD, headers);
+        apiRequest = new ApiRequest(null, HTTP_METHOD, headers, cookies);
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayUploadRequest(apiRequest, "file", "fileBody", 10l, "", headersToShow);
+        machine.sayUploadRequest(apiRequest, "file", "fileBody", 10l, "", headersToShow,
+                cookiesToShow);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -207,10 +217,10 @@ public class DocTestMachineImplUnitTest {
 
     @Test
     public void addRequestItemWihtoutUri() throws Exception {
-        apiRequest = new ApiRequest(null, HTTP_METHOD, headers);
+        apiRequest = new ApiRequest(null, HTTP_METHOD, headers, cookies);
 
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayRequest(apiRequest, JSON_VALID, headersToShow);
+        machine.sayRequest(apiRequest, JSON_VALID, headersToShow, cookiesToShow);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -222,7 +232,7 @@ public class DocTestMachineImplUnitTest {
     @Test
     public void addRequestItemWihtInvalidJson() throws Exception {
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
-        machine.sayRequest(apiRequest, JSON_INVALID, headersToShow);
+        machine.sayRequest(apiRequest, JSON_INVALID, headersToShow, cookiesToShow);
         machine.endDocTest();
 
         verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
@@ -233,6 +243,8 @@ public class DocTestMachineImplUnitTest {
         assertEquals(JSON_INVALID, ((RequestDocItem) listItems.get(0)).getPayload().getExpected());
         assertEquals(HTTP_METHOD.toUpperCase(), ((RequestDocItem) listItems.get(0)).getHttp());
         assertEquals(uriString, ((RequestDocItem) listItems.get(0)).getUri());
+        assertEquals(filteredCookies, ((RequestDocItem) listItems.get(0)).getCookies());
+        assertEquals(filteredHeaders, ((RequestDocItem) listItems.get(0)).getHeaders());
     }
 
     @Test
@@ -255,7 +267,7 @@ public class DocTestMachineImplUnitTest {
         machine.say(TEXT + "_first");
         machine.sayPreformatted(JSON_VALID);
         machine.say(TEXT + "_second");
-        machine.sayRequest(apiRequest, JSON_VALID, headersToShow);
+        machine.sayRequest(apiRequest, JSON_VALID, headersToShow, cookiesToShow);
         machine.sayResponse(apiResponse, headersToShow);
         machine.sayVerify(TEXT);
         machine.sayNextSectionTitle(TEXT);
@@ -299,5 +311,26 @@ public class DocTestMachineImplUnitTest {
         assertEquals("say-1", ((TextDocItem) listItems.get(0)).getText());
         assertTrue(listItems.get(1) instanceof TextDocItem);
         assertEquals("say-2", ((TextDocItem) listItems.get(1)).getText());
+    }
+
+    private void initHeadersAndCookies() {
+        headersToShow = new ArrayList<String>();
+        headersToShow.add("header_1");
+        headers = new HashMap<String, String>();
+        headers.put("header_1", "header_value_1");
+        headers.put("header_2", "header_value_2");
+        filteredHeaders = new HashMap<String, String>();
+        filteredHeaders.put("header_1", "header_value_1");
+
+        cookiesToShow = new ArrayList<String>();
+        cookiesToShow.add("cookie_1");
+        cookies = new HashMap<String, String>();
+        cookies.put("cookie_1", "cookie_value_1");
+        cookies.put("cookie_2", "cookie_value_2");
+        filteredCookies = new HashMap<String, String>();
+        filteredCookies.put("cookie_1", "cookie_value_1");
+
+        when(headersHelper.filterMap(headers, headersToShow)).thenReturn(filteredHeaders);
+        when(headersHelper.filterMap(cookies, cookiesToShow)).thenReturn(filteredCookies);
     }
 }

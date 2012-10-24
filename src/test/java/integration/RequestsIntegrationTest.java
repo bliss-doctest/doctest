@@ -8,9 +8,8 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.net.URI;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpStatus;
@@ -22,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.devbliss.doctest.DocTest;
+import com.devbliss.doctest.LogicDocTest;
 import com.devbliss.doctest.httpfactory.PostUploadWithoutRedirectImpl;
 
 import de.devbliss.apitester.ApiRequest;
@@ -50,6 +50,8 @@ public class RequestsIntegrationTest extends DocTest {
     private static final String HEADER_VALUE2 = "value2";
     private static final String HEADER_NAME1 = "content-type";
     private static final String HEADER_NAME2 = "name2";
+    private static final String COOKIE_VALUE_1 = "123456(-)654321";
+    private static final String COOKIE_NAME_1 = "login";
     private static ApiTest API;
 
     @BeforeClass
@@ -68,35 +70,34 @@ public class RequestsIntegrationTest extends DocTest {
         return "This documentation describes the input/output of the four http methods.";
     }
 
-    @Override
-    public List<String> showHeaders() {
-        ArrayList<String> headersToShow = new ArrayList<String>();
-        headersToShow.add(HEADER_NAME1);
-        headersToShow.add("Cookie");
-        return headersToShow;
-    }
-
     private Object obj;
     private ApiResponse apiResponse;
     private URI uri;
     private Context context;
     private ApiRequest apiRequest;
     private Map<String, String> headers;
+    private Map<String, String> cookies;
 
     @Before
     public void setUp() throws Exception {
+        headersToShow = Arrays.asList(HEADER_NAME1, "Cookie");
+        cookiesToShow = Arrays.asList(COOKIE_NAME_1);
         obj = new TestObject();
         uri =
                 new URIBuilder().setScheme("http").setHost("www.hostname.com").setPort(8080)
                         .setPath("/resource/id:12345").build();
+
         headers = new HashMap<String, String>();
         headers.put(HEADER_NAME1, HEADER_VALUE1);
         headers.put(HEADER_NAME2, HEADER_VALUE2);
+
+        cookies = new HashMap<String, String>();
+        cookies.put(COOKIE_NAME_1, COOKIE_VALUE_1);
     }
 
     @Test
     public void get() throws Exception {
-        apiRequest = new ApiRequest(uri, "get", headers);
+        apiRequest = new ApiRequest(uri, "get", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_OK, REASON_PHRASE, PAYLOAD, headers);
         context = new Context(apiResponse, apiRequest);
         when(API.get(uri)).thenReturn(context);
@@ -110,7 +111,8 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void delete() throws Exception {
-        apiRequest = new ApiRequest(uri, "delete", headers);
+        headersToShow = LogicDocTest.SHOW_ALL_ELEMENTS;
+        apiRequest = new ApiRequest(uri, "delete", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_NO_CONTENT, REASON_PHRASE, null, headers);
         context = new Context(apiResponse, apiRequest);
         when(API.delete(uri, null)).thenReturn(context);
@@ -124,7 +126,7 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void post() throws Exception {
-        apiRequest = new ApiRequest(uri, "post", headers);
+        apiRequest = new ApiRequest(uri, "post", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_CREATED, REASON_PHRASE, PAYLOAD, headers);
         context = new Context(apiResponse, apiRequest);
         when(API.post(uri, obj)).thenReturn(context);
@@ -138,7 +140,7 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void put() throws Exception {
-        apiRequest = new ApiRequest(uri, "put", headers);
+        apiRequest = new ApiRequest(uri, "put", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_NO_CONTENT, REASON_PHRASE, PAYLOAD, headers);
         context = new Context(apiResponse, apiRequest);
         when(API.put(uri, obj)).thenReturn(context);
@@ -152,7 +154,7 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void postUploadText() throws Exception {
-        apiRequest = new ApiRequest(uri, "post", headers);
+        apiRequest = new ApiRequest(uri, "post", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_CREATED, "", null, headers);
         context = new Context(apiResponse, apiRequest);
         when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
@@ -167,7 +169,7 @@ public class RequestsIntegrationTest extends DocTest {
 
     @Test
     public void postUploadImage() throws Exception {
-        apiRequest = new ApiRequest(uri, "post", headers);
+        apiRequest = new ApiRequest(uri, "post", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_CREATED, "", null, headers);
         context = new Context(apiResponse, apiRequest);
         when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
@@ -188,7 +190,7 @@ public class RequestsIntegrationTest extends DocTest {
         say("All requests are independent and can be done in a sequentially way.");
         say("Let's first upload a resource:");
 
-        apiRequest = new ApiRequest(uri, "post", headers);
+        apiRequest = new ApiRequest(uri, "post", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_CREATED, "", null, headers);
         context = new Context(apiResponse, apiRequest);
         when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
@@ -201,7 +203,7 @@ public class RequestsIntegrationTest extends DocTest {
         assertNull(response.payload);
 
         say("And now we would like to update another resource:");
-        apiRequest = new ApiRequest(uri, "put", headers);
+        apiRequest = new ApiRequest(uri, "put", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_OK, "", PAYLOAD, headers);
         context = new Context(apiResponse, apiRequest);
         when(API.put(uri, obj)).thenReturn(context);

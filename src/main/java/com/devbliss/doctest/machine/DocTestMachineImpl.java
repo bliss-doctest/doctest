@@ -15,7 +15,7 @@ import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
-import com.devbliss.doctest.utils.HeadersHelper;
+import com.devbliss.doctest.utils.FilterHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.devbliss.doctest.utils.UriHelper;
 import com.google.inject.Inject;
@@ -49,7 +49,7 @@ public class DocTestMachineImpl implements DocTestMachine {
     private final ReportRenderer reportRenderer;
     private final JSONHelper jsonHelper;
     private final UriHelper uriHelper;
-    private final HeadersHelper headersHelper;
+    private final FilterHelper filterHelper;
     private String introduction;
 
     @Inject
@@ -57,12 +57,12 @@ public class DocTestMachineImpl implements DocTestMachine {
             ReportRenderer reportRenderer,
             JSONHelper jsonHelper,
             UriHelper uriHelper,
-            HeadersHelper headersHelper) {
+            FilterHelper headersHelper) {
         this.uriHelper = uriHelper;
         listItem = new ArrayList<DocItem>();
         this.reportRenderer = reportRenderer;
         this.jsonHelper = jsonHelper;
-        this.headersHelper = headersHelper;
+        this.filterHelper = headersHelper;
     }
 
     public void beginDoctest(String fileName, String introduction) {
@@ -100,13 +100,14 @@ public class DocTestMachineImpl implements DocTestMachine {
      * if apiRequest's uri is null, no documentation for this request/response will be created
      * 
      */
-    public void sayRequest(ApiRequest apiRequest, String payload, List<String> headersToShow)
-            throws JSONException {
+    public void sayRequest(ApiRequest apiRequest, String payload, List<String> headersToShow,
+            List<String> cookiesToShow) throws JSONException {
 
         if (apiRequest.uri != null) {
             listItem.add(new RequestDocItem(apiRequest.httpMethod, uriHelper
-                    .uriToString(apiRequest.uri), validateAndPrettifyJson(payload), headersHelper
-                    .filter(apiRequest.headers, headersToShow)));
+                    .uriToString(apiRequest.uri), validateAndPrettifyJson(payload), filterHelper
+                    .filterMap(apiRequest.headers, headersToShow), filterHelper.filterMap(
+                    apiRequest.cookies, cookiesToShow)));
         }
     }
 
@@ -115,12 +116,13 @@ public class DocTestMachineImpl implements DocTestMachine {
      * 
      */
     public void sayUploadRequest(ApiRequest apiRequest, String fileName, String fileBody,
-            long size, String mimeType, List<String> headersToShow) {
+            long size, String mimeType, List<String> headersToShow, List<String> cookiesToShow) {
 
         if (apiRequest.uri != null) {
             listItem.add(new RequestUploadDocItem(apiRequest.httpMethod, uriHelper
-                    .uriToString(apiRequest.uri), fileName, fileBody, size, mimeType, headersHelper
-                    .filter(apiRequest.headers, headersToShow)));
+                    .uriToString(apiRequest.uri), fileName, fileBody, size, mimeType, filterHelper
+                    .filterMap(apiRequest.headers, headersToShow), filterHelper.filterMap(
+                    apiRequest.cookies, cookiesToShow)));
         }
     }
 
@@ -130,7 +132,7 @@ public class DocTestMachineImpl implements DocTestMachine {
      */
     public void sayResponse(ApiResponse response, List<String> headersToShow) throws Exception {
         listItem.add(new ResponseDocItem(response, validateAndPrettifyJson(response.payload),
-                headersHelper.filter(response.headers, headersToShow)));
+                filterHelper.filterMap(response.headers, headersToShow)));
     }
 
     public void sayVerify(String condition) {

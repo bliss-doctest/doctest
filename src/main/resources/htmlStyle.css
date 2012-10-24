@@ -7,6 +7,9 @@ body {
     background-color:  #EFEFEF;
 }
 
+body * {
+        word-wrap: break-word; /*break long lines for all elements*/
+}
 /* =general
 -------------------------------------------------------------- */
 a {
@@ -32,7 +35,6 @@ img {
 h1, h2, h3, h4, h5, h6, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
     font-weight: bold;
     line-height: 120%;
-    word-wrap: break-word;
     margin: 1.07em 0 0.535em;
 }
 
@@ -167,10 +169,6 @@ button {
     background: #76210f;
 }
 
-.box * {
-    word-wrap: break-word;
-}
-
 .box .headline {
     color: white;
     font-family: monospace;
@@ -197,12 +195,23 @@ button {
     max-height: 160px;
 }
 
+.box ul li ol.cookies div {
+    width: 110px;
+    float: left;
+}
+
+.box ul li ol.cookies div+div {
+    width: 665px;
+}
+ 
 pre {
     background-color: #585858;
 }
+
 .box ul li ol li {
     border-top: 1px solid #B4B5BB;
     padding: 5px 3px 0 0;
+    clear: both;
 }
 .box ul li ol li:first-child {
     border-top: 0;

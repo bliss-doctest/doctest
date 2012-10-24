@@ -19,14 +19,15 @@ public class RequestUploadDocItemTest {
     private long fileSize;
     private String fileBody;
     private String fileName;
-    private final Map<String, String> headers = new HashMap<String, String>();
     private String uri;
+    private final Map<String, String> headers = new HashMap<String, String>();
+    private final Map<String, String> cookies = new HashMap<String, String>();
 
     @Test
     public void doNotshowFileBody() {
         RequestUploadDocItem item =
                 new RequestUploadDocItem("post", uri, fileName, fileBody, fileSize,
-                        "application/octet-stream", headers);
+                        "application/octet-stream", headers, cookies);
         assertFalse(item.getShowFileBody());
     }
 
@@ -34,7 +35,7 @@ public class RequestUploadDocItemTest {
     public void showFileBody() {
         RequestUploadDocItem item =
                 new RequestUploadDocItem("post", uri, fileName, fileBody, fileSize, "text/plain",
-                        headers);
+                        headers, cookies);
         assertTrue(item.getShowFileBody());
     }
 }

@@ -21,8 +21,9 @@ public class RequestUploadDocItem extends RequestDocItem {
             String fileBody,
             long fileSize,
             String mimeType,
-            Map<String, String> headersToShow) {
-        super(http, uri, headersToShow);
+            Map<String, String> headersToShow,
+            Map<String, String> cookies) {
+        super(http, uri, headersToShow, cookies);
         this.fileName = fileName;
         this.fileBody = fileBody;
         this.isAnUploadRequest = true;
@@ -41,11 +42,6 @@ public class RequestUploadDocItem extends RequestDocItem {
 
     public String getHtmlEscapedFileBody() {
         return StringEscapeUtils.escapeHtml(fileBody);
-    }
-
-    @Override
-    public String getItemName() {
-        return "request";
     }
 
     public long getFileSize() {

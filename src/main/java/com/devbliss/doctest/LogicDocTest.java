@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.activation.MimetypesFileTypeMap;
@@ -30,11 +31,49 @@ import de.devbliss.apitester.Cookie;
 
 public abstract class LogicDocTest {
 
+    /**
+     * Constant used to show all the elements of a list e.g {@link #cookiesToShow} or
+     * {@link #headersToShow}. Just set this list equals to this {@link #SHOW_ALL_ELEMENTS}
+     */
+    public static final List<String> SHOW_ALL_ELEMENTS = Arrays.asList("*");
+
     protected static DocTestMachine docTestMachine;
 
     private final ApiTest apiTest;
     private final JSONHelper jsonHelper;
     private final FileHelper fileHelper;
+
+    /**
+     * defines the cookies that we want to render for the documentation
+     * for this case: its the default declaration and no cookies are declared
+     * if you want to define cookies to display for a request,
+     * you HAVE TO override this list in your test
+     * <p>
+     * If you want to see all the cookies, you have to set
+     * <code>cookiesToShow = {@link #SHOW_ALL_ELEMENTS}</code>
+     * </p>
+     * <strong>IMPORTANT</strong>: you don't have to care about the case of the cookies name
+     * 
+     * 
+     * @return
+     */
+    protected List<String> cookiesToShow = new ArrayList<String>();
+
+    /**
+     * defines the headers that we want to render for the documentation
+     * for this case: its the default declaration and no headers are declared
+     * if you want to define headers to display for a request and response,
+     * you HAVE TO override this list in your test
+     * <p>
+     * If you want to see all the headers, you have to set
+     * <code>headersToShow = {@link #SHOW_ALL_ELEMENTS}</code>
+     * </p>
+     * <strong>IMPORTANT</strong>: you don't have to care about the case of the headers name
+     * 
+     * 
+     * @return
+     */
+    protected List<String> headersToShow = new ArrayList<String>();
 
     @Before
     public void ensureDocTestClassSet() {
@@ -103,12 +142,12 @@ public abstract class LogicDocTest {
         docTestMachine.sayNextSectionTitle(sectionName);
     }
 
-    private void sayUri(ApiRequest apiRequest, Object obj) throws Exception {
-        docTestMachine.sayRequest(apiRequest, jsonHelper.toJson(obj), showHeaders());
+    private void sayRequest(ApiRequest apiRequest, Object obj) throws Exception {
+        docTestMachine.sayRequest(apiRequest, jsonHelper.toJson(obj), headersToShow, cookiesToShow);
     }
 
-    private void sayUri(ApiRequest apiRequest) throws Exception {
-        docTestMachine.sayRequest(apiRequest, null, showHeaders());
+    private void sayRequest(ApiRequest apiRequest) throws Exception {
+        docTestMachine.sayRequest(apiRequest, null, headersToShow, cookiesToShow);
     }
 
     /**
@@ -143,8 +182,8 @@ public abstract class LogicDocTest {
 
     protected ApiResponse makeGetRequest(URI uri) throws Exception {
         Context context = doGetRequest(uri);
-        sayUri(context.apiRequest);
-        docTestMachine.sayResponse(context.apiResponse, showHeaders());
+        sayRequest(context.apiRequest);
+        docTestMachine.sayResponse(context.apiResponse, headersToShow);
         return context.apiResponse;
     }
 
@@ -162,8 +201,8 @@ public abstract class LogicDocTest {
 
     protected ApiResponse makePostRequest(URI uri, Object obj) throws Exception {
         Context context = doPostRequest(uri, obj);
-        sayUri(context.apiRequest, obj);
-        docTestMachine.sayResponse(context.apiResponse, showHeaders());
+        sayRequest(context.apiRequest, obj);
+        docTestMachine.sayResponse(context.apiResponse, headersToShow);
         return context.apiResponse;
     }
 
@@ -177,9 +216,10 @@ public abstract class LogicDocTest {
                         fileBodyToUpload));
 
         docTestMachine.sayUploadRequest(context.apiRequest, fileBodyToUpload.getFilename(),
-                fileHelper.readFile(fileToUpload), fileToUpload.length(), mimeType, showHeaders());
+                fileHelper.readFile(fileToUpload), fileToUpload.length(), mimeType, headersToShow,
+                cookiesToShow);
 
-        docTestMachine.sayResponse(context.apiResponse, showHeaders());
+        docTestMachine.sayResponse(context.apiResponse, headersToShow);
 
         return context.apiResponse;
     }
@@ -198,8 +238,8 @@ public abstract class LogicDocTest {
 
     protected ApiResponse makePutRequest(URI uri, Object obj) throws Exception {
         Context context = doPutRequest(uri, obj);
-        sayUri(context.apiRequest, obj);
-        docTestMachine.sayResponse(context.apiResponse, showHeaders());
+        sayRequest(context.apiRequest, obj);
+        docTestMachine.sayResponse(context.apiResponse, headersToShow);
         return context.apiResponse;
     }
 
@@ -225,8 +265,8 @@ public abstract class LogicDocTest {
 
     protected ApiResponse makeDeleteRequest(URI uri, Object obj) throws Exception {
         Context context = doDeleteRequest(uri, obj);
-        sayUri(context.apiRequest, obj);
-        docTestMachine.sayResponse(context.apiResponse, showHeaders());
+        sayRequest(context.apiRequest, obj);
+        docTestMachine.sayResponse(context.apiResponse, headersToShow);
         return context.apiResponse;
     }
 
@@ -405,19 +445,5 @@ public abstract class LogicDocTest {
      */
     protected void clearCookies() {
         apiTest.getTestState().clearCookies();
-    }
-
-    /**
-     * defines the headers that we want to render for the documentation
-     * for this case: its the default declaration and no headers are declared
-     * if you want to define headers to display for a request or response,
-     * you HAVE TO override this function in your test
-     * <strong>IMPORTANT</strong>: you don't have to care about the case of the headers name
-     * 
-     * 
-     * @return
-     */
-    public List<String> showHeaders() {
-        return new ArrayList<String>();
     }
 }
