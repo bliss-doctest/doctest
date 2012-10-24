@@ -3,6 +3,9 @@ CHANGES
 
 develop
 -------
+
+Version 0.6.2 24.10.2012
+------------------------
 - show headers and cookies if the user decides it
 - Configure the encoding of the surefire JVM to UTF-8
 
