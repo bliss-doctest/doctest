@@ -7,7 +7,10 @@
 			<li>Headers
 				<ol>
 				<#list headers?keys as header>
-				    <li>${header} = ${headers[header]}</li>
+				    <li>
+				        <label>${header} = </label>
+				        <div>${headers[header]}</diuv>
+				    </li>
 				</#list>
 				</ol>
 			</li>
