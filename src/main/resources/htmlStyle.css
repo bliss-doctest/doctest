@@ -195,15 +195,16 @@ button {
     max-height: 160px;
 }
 
-.box ul li ol.cookies div {
-    width: 110px;
+.box ul li ol li label {
+    width: 25%;
+    padding-right: 5%;
+    float: left;
+}
+.box ul li ol li label + div {
+    width: 70%;
     float: left;
 }
 
-.box ul li ol.cookies div+div {
-    width: 665px;
-}
- 
 pre {
     background-color: #585858;
 }

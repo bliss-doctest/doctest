@@ -15,16 +15,21 @@
 				<#if headers?has_content>
 					<ol>
 						<#list headers?keys as header>
-						    <li>${header} = ${headers[header]}</li>
+						    <li>
+						        <label>${header} = </label>
+						        <div>${headers[header]}</div>
+						    </li>
 						</#list>
 					</ol>
 				</#if>
 				<#if cookies?has_content>
 					
-					<ol class="cookies">
+					<ol>
 					 <li><b>Cookies:</b></li>
 						<#list cookies?keys as cookie>
-						    <li><div>${cookie} = </div><div>${cookies[cookie]}</div></li>
+						    <li>
+						        <label>${cookie} = </label>
+						        <div>${cookies[cookie]}</div></li>
 						</#list>
 					</ol>
 				</#if>
