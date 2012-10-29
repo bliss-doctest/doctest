@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * Utils class used to transform object into json-formatted {@link String}
@@ -95,8 +96,34 @@ public class JSONHelper {
         return builder.create().toJson(obj);
     }
 
+    /**
+     * Takes a {@link String} and checks whether it's a valid json or not.
+     * 
+     * <p>
+     * The function returns false when the String:
+     * <ul>
+     * <li>is null</li>
+     * <li>equals "null"</li>
+     * <li>is empty</li>
+     * <li>can not be deserialized to a java {@link Object}</li>
+     * </ul>
+     * </p>
+     * 
+     * @param json
+     * @return
+     */
     public boolean isJsonValid(String json) {
-        return json != null && !json.equals("null") && !json.isEmpty() && json.startsWith("{");
+        if (json == null || json.equals("null") || json.isEmpty()) {
+            return false;
+        }
+
+        boolean isJsonValid = true;
+        try {
+            new Gson().fromJson(json, Object.class);
+        } catch (JsonSyntaxException e) {
+            isJsonValid = false;
+        }
+        return isJsonValid;
     }
 
     /**
