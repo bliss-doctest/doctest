@@ -3,6 +3,7 @@ CHANGES
 
 develop
 -------
+- improve the isJsonValid method
 
 Version 0.6.2 24.10.2012
 ------------------------

@@ -43,8 +43,10 @@ public class RequestsIntegrationTest extends DocTest {
 
     private static final String JSON_TEXT = "The response contains a JSON payload";
     private static final String HTTP_TEXT = "The response contains the HTTP_STATUS of the request";
-    private static final String PAYLOAD =
+    private static final String PAYLOAD_OBJECT =
             "{'abc':'123', 'cde': {'start': 'today', 'end':'tomorrow'}}";
+    private static final String PAYLOAD_ARRAY =
+            "[{'objectId': 123},{'objectId':4567}]";
     private static final String REASON_PHRASE = "This is not a normal response code";
     private static final String HEADER_VALUE1 = "application/json";
     private static final String HEADER_VALUE2 = "value2";
@@ -98,7 +100,7 @@ public class RequestsIntegrationTest extends DocTest {
     @Test
     public void get() throws Exception {
         apiRequest = new ApiRequest(uri, "get", headers, cookies);
-        apiResponse = new ApiResponse(HttpStatus.SC_OK, REASON_PHRASE, PAYLOAD, headers);
+        apiResponse = new ApiResponse(HttpStatus.SC_OK, REASON_PHRASE, PAYLOAD_ARRAY, headers);
         context = new Context(apiResponse, apiRequest);
         when(API.get(uri)).thenReturn(context);
 
@@ -106,7 +108,7 @@ public class RequestsIntegrationTest extends DocTest {
         ApiResponse resp = makeGetRequest(uri);
 
         assertEqualsAndSay(HttpStatus.SC_OK, resp.httpStatus, HTTP_TEXT);
-        assertEqualsAndSay(PAYLOAD, resp.payload, JSON_TEXT);
+        assertEqualsAndSay(PAYLOAD_ARRAY, resp.payload, JSON_TEXT);
     }
 
     @Test
@@ -127,7 +129,7 @@ public class RequestsIntegrationTest extends DocTest {
     @Test
     public void post() throws Exception {
         apiRequest = new ApiRequest(uri, "post", headers, cookies);
-        apiResponse = new ApiResponse(HttpStatus.SC_CREATED, REASON_PHRASE, PAYLOAD, headers);
+        apiResponse = new ApiResponse(HttpStatus.SC_CREATED, REASON_PHRASE, PAYLOAD_OBJECT, headers);
         context = new Context(apiResponse, apiRequest);
         when(API.post(uri, obj)).thenReturn(context);
 
@@ -135,13 +137,13 @@ public class RequestsIntegrationTest extends DocTest {
         ApiResponse response = makePostRequest(uri, obj);
 
         assertEqualsAndSay(HttpStatus.SC_CREATED, response.httpStatus, HTTP_TEXT);
-        assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
+        assertEqualsAndSay(PAYLOAD_OBJECT, response.payload, JSON_TEXT);
     }
 
     @Test
     public void put() throws Exception {
         apiRequest = new ApiRequest(uri, "put", headers, cookies);
-        apiResponse = new ApiResponse(HttpStatus.SC_NO_CONTENT, REASON_PHRASE, PAYLOAD, headers);
+        apiResponse = new ApiResponse(HttpStatus.SC_NO_CONTENT, REASON_PHRASE, PAYLOAD_OBJECT, headers);
         context = new Context(apiResponse, apiRequest);
         when(API.put(uri, obj)).thenReturn(context);
 
@@ -149,7 +151,7 @@ public class RequestsIntegrationTest extends DocTest {
         ApiResponse response = makePutRequest(uri, obj);
 
         assertEqualsAndSay(HttpStatus.SC_NO_CONTENT, response.httpStatus, HTTP_TEXT);
-        assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
+        assertEqualsAndSay(PAYLOAD_OBJECT, response.payload, JSON_TEXT);
     }
 
     @Test
@@ -204,13 +206,13 @@ public class RequestsIntegrationTest extends DocTest {
 
         say("And now we would like to update another resource:");
         apiRequest = new ApiRequest(uri, "put", headers, cookies);
-        apiResponse = new ApiResponse(HttpStatus.SC_OK, "", PAYLOAD, headers);
+        apiResponse = new ApiResponse(HttpStatus.SC_OK, "", PAYLOAD_OBJECT, headers);
         context = new Context(apiResponse, apiRequest);
         when(API.put(uri, obj)).thenReturn(context);
 
         response = makePutRequest(uri, obj);
 
         assertEqualsAndSay(HttpStatus.SC_OK, response.httpStatus, HTTP_TEXT);
-        assertEqualsAndSay(PAYLOAD, response.payload, JSON_TEXT);
+        assertEqualsAndSay(PAYLOAD_OBJECT, response.payload, JSON_TEXT);
     }
 }

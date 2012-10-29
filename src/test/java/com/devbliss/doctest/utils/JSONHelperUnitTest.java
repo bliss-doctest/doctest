@@ -22,8 +22,13 @@ public class JSONHelperUnitTest {
     }
 
     @Test
-    public void jsonIsValid() {
+    public void jsonObjectIsValid() {
         assertTrue(helper.isJsonValid("{'abc': 'a'}"));
+    }
+
+    @Test
+    public void jsonArrayIsValid() {
+        assertTrue(helper.isJsonValid("[{'abc': 'a'},{'abf': 'tt'}]"));
     }
 
     @Test
@@ -40,4 +45,11 @@ public class JSONHelperUnitTest {
     public void jsonNotValidStringIsEmpty() {
         assertFalse(helper.isJsonValid(""));
     }
+
+    @Test
+    public void jsonObjectIsNotValid() {
+        assertFalse(helper.isJsonValid("'abc': 'a'}"));
+        assertFalse(helper.isJsonValid("''a'"));
+    }
+
 }
