@@ -26,10 +26,10 @@ import de.devbliss.apitester.ApiResponse;
 /**
  * Default implementation of {@link DocTestMachine}.
  * <p>
- * This class ownes a list of {@link DocItem} : {@link #listItem}. Each time a say method is called,
- * a {@link DocItem} is added to {@link #listItem}. <br/>
- * At the end of the workflow, the method {@link #endDocTest()} is called and uses a
- * {@link ReportRenderer} to render the {@link #listItem} .
+ * This class ownes a list of {@link DocItem} : {@link #listItem}. Each time a say method is called, a {@link DocItem}
+ * is added to {@link #listItem}. <br/>
+ * At the end of the workflow, the method {@link #endDocTest()} is called and uses a {@link ReportRenderer} to render
+ * the {@link #listItem} .
  * </p>
  * 
  * @author bmary
@@ -65,6 +65,7 @@ public class DocTestMachineImpl implements DocTestMachine {
         this.filterHelper = headersHelper;
     }
 
+    @Override
     public void beginDoctest(String fileName, String introduction) {
         if (this.fileName == null) {
             this.fileName = fileName;
@@ -74,12 +75,14 @@ public class DocTestMachineImpl implements DocTestMachine {
         }
     }
 
+    @Override
     public void endDocTest() throws Exception {
         reportRenderer.render(listItem, fileName, introduction);
         fileName = null;
         introduction = null;
     }
 
+    @Override
     public void prepareDocTest() {
         getListItem().clear();
     }
@@ -88,10 +91,12 @@ public class DocTestMachineImpl implements DocTestMachine {
         return listItem;
     }
 
+    @Override
     public void say(String say) {
         listItem.add(new TextDocItem(say));
     }
 
+    @Override
     public void sayNextSectionTitle(String sectionName) {
         listItem.add(new SectionDocItem(sectionName));
     }
@@ -100,12 +105,13 @@ public class DocTestMachineImpl implements DocTestMachine {
      * if apiRequest's uri is null, no documentation for this request/response will be created
      * 
      */
+    @Override
     public void sayRequest(ApiRequest apiRequest, String payload, List<String> headersToShow,
             List<String> cookiesToShow) throws JSONException {
 
         if (apiRequest.uri != null) {
             listItem.add(new RequestDocItem(apiRequest.httpMethod, uriHelper
-                    .uriToString(apiRequest.uri), validateAndPrettifyJson(payload), filterHelper
+                    .uriToString(apiRequest.uri), validateAndPrettifyPayload(apiRequest.getHeader("Content-Type"), payload), filterHelper
                     .filterMap(apiRequest.headers, headersToShow), filterHelper.filterMap(
                     apiRequest.cookies, cookiesToShow)));
         }
@@ -115,6 +121,7 @@ public class DocTestMachineImpl implements DocTestMachine {
      * if apiRequest's uri is null, no documentation for this request/response will be created
      * 
      */
+    @Override
     public void sayUploadRequest(ApiRequest apiRequest, String fileName, String fileBody,
             long size, String mimeType, List<String> headersToShow, List<String> cookiesToShow) {
 
@@ -130,15 +137,18 @@ public class DocTestMachineImpl implements DocTestMachine {
      * add new item for doctest
      * and filter the headers from the ApiResponse
      */
+    @Override
     public void sayResponse(ApiResponse response, List<String> headersToShow) throws Exception {
-        listItem.add(new ResponseDocItem(response, validateAndPrettifyJson(response.payload),
+        listItem.add(new ResponseDocItem(response, validateAndPrettifyPayload(response.getHeader("Content-Type"), response.payload),
                 filterHelper.filterMap(response.headers, headersToShow)));
     }
 
+    @Override
     public void sayVerify(String condition) {
         listItem.add(new AssertDocItem(condition));
     }
 
+    @Override
     public void sayPreformatted(String preformattedText) {
         listItem.add(new JsonDocItem(preformattedText));
     }
@@ -150,18 +160,27 @@ public class DocTestMachineImpl implements DocTestMachine {
      * @param payload
      * @return
      */
-    private String validateAndPrettifyJson(String payload) {
+    private String validateAndPrettifyPayload(String contentType, String payload) {
+        if (contentType != null) {
+            contentType = contentType.toLowerCase();
+        } else {
+            contentType = "";
+        }
+
         String payloadToShow;
-        if (jsonHelper.isJsonValid(payload)) {
-            payloadToShow = jsonHelper.prettyPrintJson(payload);
-        } else if (null == payload) {
+        if (null == payload) {
             payloadToShow = "";
+        } else if (contentType.contains("html")) {
+            payloadToShow = "<xmp>" + payload + "</xmp>";
+        } else if (contentType.contains("json") || jsonHelper.isJsonValid(payload)) {
+            payloadToShow = jsonHelper.prettyPrintJson(payload);
         } else {
             payloadToShow = payload;
         }
         return payloadToShow;
     }
 
+    @Override
     public void say(String say, String[] strings) {
         listItem.add(new MultipleTextDocItem(say, strings));
     }
