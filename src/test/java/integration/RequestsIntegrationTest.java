@@ -42,13 +42,15 @@ import de.devbliss.apitester.Context;
 public class RequestsIntegrationTest extends DocTest {
 
     private static final String JSON_TEXT = "The response contains a JSON payload";
+    private static final String HTML_TEXT = "The response contains a HTML payload";
     private static final String HTTP_TEXT = "The response contains the HTTP_STATUS of the request";
     private static final String PAYLOAD_OBJECT =
             "{'abc':'123', 'cde': {'start': 'today', 'end':'tomorrow'}}";
     private static final String PAYLOAD_ARRAY =
             "[{'objectId': 123},{'objectId':4567}]";
     private static final String REASON_PHRASE = "This is not a normal response code";
-    private static final String HEADER_VALUE1 = "application/json";
+    private static final String HEADER_VALUE11 = "application/json";
+    private static final String HEADER_VALUE12 = "text/html";
     private static final String HEADER_VALUE2 = "value2";
     private static final String HEADER_NAME1 = "content-type";
     private static final String HEADER_NAME2 = "name2";
@@ -90,7 +92,7 @@ public class RequestsIntegrationTest extends DocTest {
                         .setPath("/resource/id:12345").build();
 
         headers = new HashMap<String, String>();
-        headers.put(HEADER_NAME1, HEADER_VALUE1);
+        headers.put(HEADER_NAME1, HEADER_VALUE11);
         headers.put(HEADER_NAME2, HEADER_VALUE2);
 
         cookies = new HashMap<String, String>();
@@ -98,17 +100,33 @@ public class RequestsIntegrationTest extends DocTest {
     }
 
     @Test
-    public void get() throws Exception {
+    public void getJson() throws Exception {
         apiRequest = new ApiRequest(uri, "get", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_OK, REASON_PHRASE, PAYLOAD_ARRAY, headers);
         context = new Context(apiResponse, apiRequest);
         when(API.get(uri)).thenReturn(context);
 
-        sayNextSection("Making a get request");
+        sayNextSection("Making a get request for json content");
         ApiResponse resp = makeGetRequest(uri);
 
         assertEqualsAndSay(HttpStatus.SC_OK, resp.httpStatus, HTTP_TEXT);
         assertEqualsAndSay(PAYLOAD_ARRAY, resp.payload, JSON_TEXT);
+    }
+
+    @Test
+    public void getHtml() throws Exception {
+        headers.put(HEADER_NAME1, HEADER_VALUE12);
+        String html = "<p>some Html content</p>";
+        apiRequest = new ApiRequest(uri, "get", headers, cookies);
+        apiResponse = new ApiResponse(HttpStatus.SC_OK, REASON_PHRASE, html, headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.get(uri)).thenReturn(context);
+
+        sayNextSection("Making a get request for html content");
+        ApiResponse resp = makeGetRequest(uri);
+
+        assertEqualsAndSay(HttpStatus.SC_OK, resp.httpStatus, HTTP_TEXT);
+        assertEqualsAndSay(html, resp.payload, HTML_TEXT);
     }
 
     @Test

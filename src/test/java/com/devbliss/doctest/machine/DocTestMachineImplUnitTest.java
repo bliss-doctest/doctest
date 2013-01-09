@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,9 +32,9 @@ import com.devbliss.doctest.items.ResponseDocItem;
 import com.devbliss.doctest.items.SectionDocItem;
 import com.devbliss.doctest.items.TextDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
+import com.devbliss.doctest.utils.FilterHelper;
 import com.devbliss.doctest.utils.JSONHelper;
 import com.devbliss.doctest.utils.UriHelper;
-import com.devbliss.doctest.utils.FilterHelper;
 
 import de.devbliss.apitester.ApiRequest;
 import de.devbliss.apitester.ApiResponse;
@@ -149,7 +150,7 @@ public class DocTestMachineImplUnitTest {
     }
 
     @Test
-    public void addResponseItem() throws Exception {
+    public void addResponseItemWithValidJsonContent() throws Exception {
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.sayResponse(apiResponse, headersToShow);
         machine.endDocTest();
@@ -164,7 +165,45 @@ public class DocTestMachineImplUnitTest {
     }
 
     @Test
-    public void addRequestItem() throws Exception {
+    public void addResponseItemWithContentTypeJson() throws Exception {
+        ApiResponse apiResponse;
+        List<DocItem> listItems;
+        headers.put("content-type", "application/json");
+
+        // valid json content
+        apiResponse = new ApiResponse(RESPONSE_CODE, "", JSON_VALID, headers);
+
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
+        machine.sayResponse(apiResponse, headersToShow);
+        machine.endDocTest();
+
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
+
+        listItems = listItemCaptor.getValue();
+        assertEquals(1, listItems.size());
+        assertTrue(listItems.get(0) instanceof ResponseDocItem);
+        assertEquals(PRETTY_JSON, ((ResponseDocItem) listItems.get(0)).getPayload().getExpected());
+
+        // invalid json content
+        String noJson = "{}fghkd{]}[";
+        apiResponse = new ApiResponse(RESPONSE_CODE, "", noJson, headers);
+
+        when(jsonHelper.prettyPrintJson(noJson)).thenReturn(noJson);
+
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
+        machine.sayResponse(apiResponse, headersToShow);
+        machine.endDocTest();
+
+        verify(renderer, times(2)).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
+
+        listItems = listItemCaptor.getValue();
+        assertEquals(2, listItems.size());
+        assertTrue(listItems.get(1) instanceof ResponseDocItem);
+        assertEquals(noJson, ((ResponseDocItem) listItems.get(1)).getPayload().getExpected());
+    }
+
+    @Test
+    public void addRequestItemWithValidJsonContent() throws Exception {
         machine.beginDoctest(FILE_NAME, INTRODUCTION);
         machine.sayRequest(apiRequest, JSON_VALID, headersToShow, cookiesToShow);
         machine.endDocTest();
@@ -179,6 +218,44 @@ public class DocTestMachineImplUnitTest {
         assertEquals(uriString, ((RequestDocItem) listItems.get(0)).getUri());
         assertEquals(filteredCookies, ((RequestDocItem) listItems.get(0)).getCookies());
         assertEquals(filteredHeaders, ((RequestDocItem) listItems.get(0)).getHeaders());
+    }
+
+    @Test
+    public void addRequestItemWithContentTypeJson() throws Exception {
+        ApiRequest apiRequest;
+        List<DocItem> listItems;
+        headers.put("content-type", "application/json");
+
+        // valid json content
+        apiRequest = new ApiRequest(uri, HTTP_METHOD, headers, cookies);
+
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
+        machine.sayRequest(apiRequest, JSON_VALID, headersToShow, cookiesToShow);
+        machine.endDocTest();
+
+        verify(renderer).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
+
+        listItems = listItemCaptor.getValue();
+        assertEquals(1, listItems.size());
+        assertTrue(listItems.get(0) instanceof RequestDocItem);
+        assertEquals(PRETTY_JSON, ((RequestDocItem) listItems.get(0)).getPayload().getExpected());
+
+        // invalid json content
+        String noJson = "{}fghkd{]}[";
+        apiRequest = new ApiRequest(uri, HTTP_METHOD, headers, cookies);
+
+        when(jsonHelper.prettyPrintJson(noJson)).thenReturn(noJson);
+
+        machine.beginDoctest(FILE_NAME, INTRODUCTION);
+        machine.sayRequest(apiRequest, noJson, headersToShow, cookiesToShow);
+        machine.endDocTest();
+
+        verify(renderer, times(2)).render(listItemCaptor.capture(), eq(FILE_NAME), eq(INTRODUCTION));
+
+        listItems = listItemCaptor.getValue();
+        assertEquals(2, listItems.size());
+        assertTrue(listItems.get(1) instanceof RequestDocItem);
+        assertEquals(noJson, ((RequestDocItem) listItems.get(1)).getPayload().getExpected());
     }
 
     @Test

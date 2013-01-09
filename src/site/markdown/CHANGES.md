@@ -3,6 +3,7 @@ CHANGES
 
 develop
 -------
+- parse and display a html body
 - improve the isJsonValid method
 
 Version 0.6.2 24.10.2012
