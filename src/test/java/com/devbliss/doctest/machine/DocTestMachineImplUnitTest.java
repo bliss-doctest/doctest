@@ -168,7 +168,6 @@ public class DocTestMachineImplUnitTest {
     public void addResponseItemWithContentTypeJson() throws Exception {
         ApiResponse apiResponse;
         List<DocItem> listItems;
-        Map<String, String> headers = new HashMap<String, String>();
         headers.put("content-type", "application/json");
 
         // valid json content
@@ -225,7 +224,6 @@ public class DocTestMachineImplUnitTest {
     public void addRequestItemWithContentTypeJson() throws Exception {
         ApiRequest apiRequest;
         List<DocItem> listItems;
-        Map<String, String> headers = new HashMap<String, String>();
         headers.put("content-type", "application/json");
 
         // valid json content
