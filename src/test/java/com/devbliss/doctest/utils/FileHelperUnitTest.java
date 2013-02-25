@@ -2,6 +2,7 @@ package com.devbliss.doctest.utils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static testutils.Utils.getFilesInOutputDirectory;
 import static testutils.Utils.verifyTheFileHasBeenCreated;
 
@@ -98,8 +99,13 @@ public class FileHelperUnitTest {
         createAFile("b.html");
         List<LinkDocItem> items = helper.getListOfFile(directory + ".");
         assertEquals(2, items.size());
-        assertEquals("a.txt", items.get(0).getName());
-        assertEquals("b.html", items.get(1).getName());
+
+        for (Object element : items) {
+            LinkDocItem linkDocItem = (LinkDocItem) element;
+            if (!linkDocItem.getName().equals("a.txt") && !linkDocItem.getName().equals("b.html")) {
+                fail();
+            }
+        }
     }
 
     @Test
@@ -115,8 +121,13 @@ public class FileHelperUnitTest {
         createAFile("file.ris");
         List<LinkDocItem> items = helper.getListOfFile(directory + "xxx.css");
         assertEquals(2, items.size());
-        assertEquals("a.pdf", items.get(0).getName());
-        assertEquals("file.ris", items.get(1).getName());
+
+        for (Object element : items) {
+            LinkDocItem linkDocItem = (LinkDocItem) element;
+            if (!linkDocItem.getName().equals("a.pdf") && !linkDocItem.getName().equals("file.ris")) {
+                fail();
+            }
+        }
     }
 
     @Test(expected = AssertionError.class)
