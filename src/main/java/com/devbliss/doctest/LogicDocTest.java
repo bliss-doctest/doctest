@@ -32,8 +32,8 @@ import de.devbliss.apitester.Cookie;
 public abstract class LogicDocTest {
 
     /**
-     * Constant used to show all the elements of a list e.g {@link #cookiesToShow} or
-     * {@link #headersToShow}. Just set this list equals to this {@link #SHOW_ALL_ELEMENTS}
+     * Constant used to show all the elements of a list e.g {@link #cookiesToShow} or {@link #headersToShow}. Just set
+     * this list equals to this {@link #SHOW_ALL_ELEMENTS}
      */
     public static final List<String> SHOW_ALL_ELEMENTS = Arrays.asList("*");
 
@@ -42,6 +42,7 @@ public abstract class LogicDocTest {
     private final ApiTest apiTest;
     private final JSONHelper jsonHelper;
     private final FileHelper fileHelper;
+    private final Configuration configuration;
 
     /**
      * defines the cookies that we want to render for the documentation
@@ -49,8 +50,7 @@ public abstract class LogicDocTest {
      * if you want to define cookies to display for a request,
      * you HAVE TO override this list in your test
      * <p>
-     * If you want to see all the cookies, you have to set
-     * <code>cookiesToShow = {@link #SHOW_ALL_ELEMENTS}</code>
+     * If you want to see all the cookies, you have to set <code>cookiesToShow = {@link #SHOW_ALL_ELEMENTS}</code>
      * </p>
      * <strong>IMPORTANT</strong>: you don't have to care about the case of the cookies name
      * 
@@ -65,8 +65,7 @@ public abstract class LogicDocTest {
      * if you want to define headers to display for a request and response,
      * you HAVE TO override this list in your test
      * <p>
-     * If you want to see all the headers, you have to set
-     * <code>headersToShow = {@link #SHOW_ALL_ELEMENTS}</code>
+     * If you want to see all the headers, you have to set <code>headersToShow = {@link #SHOW_ALL_ELEMENTS}</code>
      * </p>
      * <strong>IMPORTANT</strong>: you don't have to care about the case of the headers name
      * 
@@ -91,11 +90,15 @@ public abstract class LogicDocTest {
             DocTestMachine docTest,
             ApiTest apiTest,
             JSONHelper jsonHelper,
-            FileHelper fileHelper) {
+            FileHelper fileHelper,
+            Configuration configuration) {
         LogicDocTest.docTestMachine = docTest;
         this.apiTest = apiTest;
         this.jsonHelper = jsonHelper;
         this.fileHelper = fileHelper;
+        this.configuration = configuration;
+
+        this.fileHelper.setConfiguration(configuration);
     }
 
     /**
@@ -445,5 +448,14 @@ public abstract class LogicDocTest {
      */
     protected void clearCookies() {
         apiTest.getTestState().clearCookies();
+    }
+
+    /**
+     * TODO
+     * 
+     * @return the configuration
+     */
+    protected Configuration getConfiguration() {
+        return configuration;
     }
 }

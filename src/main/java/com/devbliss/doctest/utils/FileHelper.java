@@ -11,6 +11,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.devbliss.doctest.Configuration;
 import com.devbliss.doctest.items.LinkDocItem;
 import com.devbliss.doctest.renderer.ReportRenderer;
 
@@ -25,12 +26,7 @@ import com.devbliss.doctest.renderer.ReportRenderer;
  */
 public class FileHelper {
 
-    /**
-     * By convention we are using the maven project structure.
-     * Therefore doctest will be written into ./target/doctests/.
-     */
-    public static final String OUTPUT_DIRECTORY = new File("").getAbsolutePath()
-            + "/target/site/doctests/";
+    private Configuration configuration;
 
     /**
      * This writes out the file and retries if some other task has
@@ -78,7 +74,7 @@ public class FileHelper {
     }
 
     public String getCompleteFileName(String name, String extension) {
-        return OUTPUT_DIRECTORY + name + extension;
+        return configuration.getHtmlOutputDirectory() + name + extension;
     }
 
     public String readFile(File fileToUpload) throws IOException {
@@ -125,7 +121,7 @@ public class FileHelper {
      * @return
      */
     private boolean isFileNameAlreadyTaken(String fileName) {
-        String completeName = OUTPUT_DIRECTORY + fileName;
+        String completeName = configuration.getHtmlOutputDirectory() + fileName;
         File[] files = fetchFilesInDirectory(completeName);
 
         if (files != null) {
@@ -147,5 +143,9 @@ public class FileHelper {
             throw new AssertionError("The file name " + fileName
                     + " already exists. Please choose a new one!");
         }
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
     }
 }
