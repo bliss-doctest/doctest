@@ -17,3 +17,8 @@ goals:
 based on junit, html client, ...
 
 Test your rest-API and create an always-uptodate documentation for it.
+
+More
+====
+
+[Github pages](http://devbliss.github.com/doctest/)
