@@ -30,6 +30,11 @@ public abstract class DocTest extends LogicDocTest {
     }
 
     public DocTest() {
-        super(DOC_TEST_MACHINE, API_TEST, JSON_HELPER, FILE_HELPER);
+        this(new Configuration());
+    }
+
+    public DocTest(Configuration configuration) {
+        super(DOC_TEST_MACHINE, API_TEST, JSON_HELPER, FILE_HELPER, configuration);
+        FILE_HELPER.setConfiguration(configuration);
     }
 }

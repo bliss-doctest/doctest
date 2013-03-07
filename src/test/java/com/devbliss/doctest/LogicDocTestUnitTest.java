@@ -436,7 +436,7 @@ public class LogicDocTestUnitTest {
     }
 
     private void instantiateAbstractDocTest() {
-        docTest = new LogicDocTest(docTestMachine, apiTest, jsonHelper, fileHelper) {
+        docTest = new LogicDocTest(docTestMachine, apiTest, jsonHelper, fileHelper, new Configuration()) {
 
             @Override
             protected String getFileName() {
@@ -457,7 +457,7 @@ public class LogicDocTestUnitTest {
     @Test
     public void setIntroduction() {
         // create an instance of the logicDocTest which overrides the introduction function
-        docTest = new LogicDocTest(docTestMachine, apiTest, jsonHelper, fileHelper) {
+        docTest = new LogicDocTest(docTestMachine, apiTest, jsonHelper, fileHelper, new Configuration()) {
             @Override
             public String getIntroduction() {
                 return "intro written by the user";

@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import testutils.Utils;
 
+import com.devbliss.doctest.Configuration;
 import com.devbliss.doctest.items.LinkDocItem;
 
 /**
@@ -31,13 +32,15 @@ public class FileHelperUnitTest {
     private static final String EXTENSION = ".extension";
     private static final String NAME = "name";
     private static final String DOC = "finaleDoc";
+    private final Configuration configuration = new Configuration();
     private FileHelper helper;
     private String directory;
 
     @Before
     public void setUp() {
         helper = new FileHelper();
-        directory = FileHelper.OUTPUT_DIRECTORY;
+        helper.setConfiguration(configuration);
+        directory = configuration.getHtmlOutputDirectory();
         new File(directory).mkdirs();
     }
 
@@ -50,6 +53,16 @@ public class FileHelperUnitTest {
     public void getCompleteFileName() {
         String result = helper.getCompleteFileName(NAME, EXTENSION);
         assertEquals(directory + NAME + EXTENSION, result);
+
+        // change the previous set directory name
+        String newDirectory = configuration.getHtmlOutputDirectory() + "/test123";
+        configuration.setHtmlOutputDirectory(newDirectory);
+        new File(newDirectory).mkdirs();
+
+        result = helper.getCompleteFileName(NAME, EXTENSION);
+        assertEquals(newDirectory + NAME + EXTENSION, result);
+
+        Utils.deleteDirectory(new File(newDirectory));
     }
 
     @Test

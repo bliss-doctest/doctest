@@ -3,6 +3,7 @@ CHANGES
 
 develop
 -------
+- introduce doctest configuration 
 - parse and display a html body
 - improve the isJsonValid method
 
