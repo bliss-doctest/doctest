@@ -451,7 +451,7 @@ public abstract class LogicDocTest {
     }
 
     /**
-     * TODO
+     * Get the doctest {@link Configuration}
      * 
      * @return the configuration
      */
