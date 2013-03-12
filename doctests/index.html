@@ -11,6 +11,9 @@
     background-color:  #EFEFEF;
 }
 
+body * {
+        word-wrap: break-word; /*break long lines for all elements*/
+}
 /* =general
 -------------------------------------------------------------- */
 a {
@@ -36,7 +39,6 @@ img {
 h1, h2, h3, h4, h5, h6, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
     font-weight: bold;
     line-height: 120%;
-    word-wrap: break-word;
     margin: 1.07em 0 0.535em;
 }
 
@@ -171,10 +173,6 @@ button {
     background: #76210f;
 }
 
-.box * {
-    word-wrap: break-word;
-}
-
 .box .headline {
     color: white;
     font-family: monospace;
@@ -189,18 +187,41 @@ button {
     margin: 5px 0 0 0;
 }
 
-pre {
+.box ul li ol, pre {
     color: #EBEFE7;
     padding: 8px;
     margin: 10px 0px;
-    background-color: #585858;
+    background-color: #96979d;
     border: 1px dashed #E6EBE0;
-    border-radius: 2px 2px 2px 2px;
+    border-radius: 4px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     overflow: auto;
     max-height: 160px;
 }
 
+.box ul li ol li label {
+    width: 25%;
+    padding-right: 5%;
+    float: left;
+}
+.box ul li ol li label + div {
+    width: 70%;
+    float: left;
+}
+
+pre {
+    background-color: #585858;
+}
+
+.box ul li ol li {
+    border-top: 1px solid #B4B5BB;
+    padding: 5px 3px 0 0;
+    clear: both;
+}
+.box ul li ol li:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
 
 span.highlight {
     color: #EBEFE7;
@@ -238,7 +259,7 @@ span.highlight {
 		<div class="container">
 			<div class="wrapper">			
             	<br/>            	
-            	Doctest originally perfomed at: Tue Sep 25 14:13:25 CEST 2012 
+            	Doctest originally perfomed at: Wed Mar 06 18:33:13 CET 2013 
             	<div class="menu">
 	<ul>
 					<li>

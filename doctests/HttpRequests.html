@@ -11,6 +11,9 @@
     background-color:  #EFEFEF;
 }
 
+body * {
+        word-wrap: break-word; /*break long lines for all elements*/
+}
 /* =general
 -------------------------------------------------------------- */
 a {
@@ -36,7 +39,6 @@ img {
 h1, h2, h3, h4, h5, h6, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
     font-weight: bold;
     line-height: 120%;
-    word-wrap: break-word;
     margin: 1.07em 0 0.535em;
 }
 
@@ -171,10 +173,6 @@ button {
     background: #76210f;
 }
 
-.box * {
-    word-wrap: break-word;
-}
-
 .box .headline {
     color: white;
     font-family: monospace;
@@ -189,18 +187,41 @@ button {
     margin: 5px 0 0 0;
 }
 
-pre {
+.box ul li ol, pre {
     color: #EBEFE7;
     padding: 8px;
     margin: 10px 0px;
-    background-color: #585858;
+    background-color: #96979d;
     border: 1px dashed #E6EBE0;
-    border-radius: 2px 2px 2px 2px;
+    border-radius: 4px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     overflow: auto;
     max-height: 160px;
 }
 
+.box ul li ol li label {
+    width: 25%;
+    padding-right: 5%;
+    float: left;
+}
+.box ul li ol li label + div {
+    width: 70%;
+    float: left;
+}
+
+pre {
+    background-color: #585858;
+}
+
+.box ul li ol li {
+    border-top: 1px solid #B4B5BB;
+    padding: 5px 3px 0 0;
+    clear: both;
+}
+.box ul li ol li:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
 
 span.highlight {
     color: #EBEFE7;
@@ -243,61 +264,39 @@ span.highlight {
 			<div class="wrapper">			
             	<br/>
             	<a href="./index.html">back to index page</a><br/>
-            	<div class="small">Doctest originally perfomed at: Tue Sep 25 14:13:25 CEST 2012</div>
+            	<div class="small">Doctest originally perfomed at: Wed Mar 06 18:33:13 CET 2013</div>
             	
             		<h3>Introduction:</h3>
             		<div>This documentation describes the input/output of the four http methods.</div>
             	<div class="menu">
 	<ul>
 					<li>
-				<a href="#section21">Making a get request</a>
+				<a href="#section31">Making a put request with enc√∂ding ch√§racters</a>
 			</li>
 			<li>
-				<a href="#section22">Making a put request with encöding chäracters</a>
+				<a href="#section32">Making a delete request</a>
 			</li>
 			<li>
-				<a href="#section23">Making a delete request</a>
+				<a href="#section33">Making a post request</a>
 			</li>
 			<li>
-				<a href="#section24">Making a post request</a>
+				<a href="#section34">Making a get request for json content</a>
 			</li>
 			<li>
-				<a href="#section25">Making an upload post request</a>
+				<a href="#section35">Making a get request for html content</a>
 			</li>
 			<li>
-				<a href="#section26">Making an upload post request with an image file</a>
+				<a href="#section36">Making an upload post request</a>
+			</li>
+			<li>
+				<a href="#section37">Making an upload post request with an image file</a>
+			</li>
+			<li>
+				<a href="#section38">Suite of requests</a>
 			</li>
 	</ul>
 </div><h1>
-	<a name="section21"> Making a get request </a>
-	<a class="link-to-top" href="#">
-		(top)
-	</a>
-</h1><div class="box">
-	<span class="headline">		
-					Request
-	</span>
-	<ul>
-		<li>HTTP: GET</li>
-		<li>URI: /resource/id:12345</li>
-    </ul>
-</div><div class="box">
-	<span class="headline">Response</span>
-	<ul>
-		<li>ResponseCode: 230</li>
-			<li>
-				<div>payload:</div>
-				<pre>{
-  "abc": "123"
-}</pre>
-			</li>
-    </ul>
-</div><div class="box correct">
-	The response contains the HTTP_STATUS of the request
-</div><div class="box correct">
-	The response contains a JSON payload
-</div><h1>
-	<a name="section22"> Making a put request with encöding chäracters </a>
+	<a name="section31"> Making a put request with enc√∂ding ch√§racters </a>
 	<a class="link-to-top" href="#">
 		(top)
 	</a>
@@ -308,15 +307,58 @@ span.highlight {
 	<ul>
 		<li>HTTP: PUT</li>
 		<li>URI: /resource/id:12345</li>
-    </ul>
-</div><div class="box">
-	<span class="headline">Response</span>
-	<ul>
-		<li>ResponseCode: 230</li>
+		
+			<li>Headers:
+					<ol>
+						    <li>
+						        <label>content-type = </label>
+						        <div>application/json</div>
+						    </li>
+					</ol>
+					
+					<ol>
+					 <li><b>Cookies:</b></li>
+						    <li>
+						        <label>login = </label>
+						        <div>123456(-)654321</div></li>
+					</ol>
+			</li>
+		
 			<li>
 				<div>payload:</div>
 				<pre>{
-  "abc": "123"
+  "name": "test object",
+  "points": 12,
+  "properties": [
+    "prop1",
+    "prop2"
+  ]
+}</pre>
+			</li>
+    </ul>
+</div>
+<div class="box">
+	<span class="headline">Response</span>
+	<ul>
+		<li>ResponseCode: 204</li>
+
+			<li>Headers
+				<ol>
+				    <li>
+				        <label>content-type = </label>
+				        <div>application/json</diuv>
+				    </li>
+				</ol>
+			</li>
+
+			<li>
+				<div>payload:</div>
+				<pre>{
+  "abc": "123",
+  "cde": {
+    "start": "today",
+    "end": "tomorrow"
+  }
 }</pre>
 			</li>
     </ul>
@@ -325,7 +367,7 @@ span.highlight {
 </div><div class="box correct">
 	The response contains a JSON payload
 </div><h1>
-	<a name="section23"> Making a delete request </a>
+	<a name="section32"> Making a delete request </a>
 	<a class="link-to-top" href="#">
 		(top)
 	</a>
@@ -336,24 +378,52 @@ span.highlight {
 	<ul>
 		<li>HTTP: DELETE</li>
 		<li>URI: /resource/id:12345</li>
+		
+			<li>Headers:
+					<ol>
+						    <li>
+						        <label>content-type = </label>
+						        <div>application/json</div>
+						    </li>
+						    <li>
+						        <label>name2 = </label>
+						        <div>value2</div>
+						    </li>
+					</ol>
+					
+					<ol>
+					 <li><b>Cookies:</b></li>
+						    <li>
+						        <label>login = </label>
+						        <div>123456(-)654321</div></li>
+					</ol>
+			</li>
+		
     </ul>
-</div><div class="box">
+</div>
+<div class="box">
 	<span class="headline">Response</span>
 	<ul>
-		<li>ResponseCode: 230</li>
-			<li>
-				<div>payload:</div>
-				<pre>{
-  "abc": "123"
-}</pre>
+		<li>ResponseCode: 204</li>
+
+			<li>Headers
+				<ol>
+				    <li>
+				        <label>content-type = </label>
+				        <div>application/json</diuv>
+				    </li>
+				    <li>
+				        <label>name2 = </label>
+				        <div>value2</diuv>
+				    </li>
+				</ol>
 			</li>
+
     </ul>
 </div><div class="box correct">
 	The response contains the HTTP_STATUS of the request
-</div><div class="box correct">
-	The response contains a JSON payload
 </div><h1>
-	<a name="section24"> Making a post request </a>
+	<a name="section33"> Making a post request </a>
 	<a class="link-to-top" href="#">
 		(top)
 	</a>
@@ -364,15 +434,58 @@ span.highlight {
 	<ul>
 		<li>HTTP: POST</li>
 		<li>URI: /resource/id:12345</li>
-    </ul>
-</div><div class="box">
-	<span class="headline">Response</span>
-	<ul>
-		<li>ResponseCode: 230</li>
+		
+			<li>Headers:
+					<ol>
+						    <li>
+						        <label>content-type = </label>
+						        <div>application/json</div>
+						    </li>
+					</ol>
+					
+					<ol>
+					 <li><b>Cookies:</b></li>
+						    <li>
+						        <label>login = </label>
+						        <div>123456(-)654321</div></li>
+					</ol>
+			</li>
+		
 			<li>
 				<div>payload:</div>
 				<pre>{
-  "abc": "123"
+  "name": "test object",
+  "points": 12,
+  "properties": [
+    "prop1",
+    "prop2"
+  ]
+}</pre>
+			</li>
+    </ul>
+</div>
+<div class="box">
+	<span class="headline">Response</span>
+	<ul>
+		<li>ResponseCode: 201</li>
+
+			<li>Headers
+				<ol>
+				    <li>
+				        <label>content-type = </label>
+				        <div>application/json</diuv>
+				    </li>
+				</ol>
+			</li>
+
+			<li>
+				<div>payload:</div>
+				<pre>{
+  "abc": "123",
+  "cde": {
+    "start": "today",
+    "end": "tomorrow"
+  }
 }</pre>
 			</li>
     </ul>
@@ -381,7 +494,122 @@ span.highlight {
 </div><div class="box correct">
 	The response contains a JSON payload
 </div><h1>
-	<a name="section25"> Making an upload post request </a>
+	<a name="section34"> Making a get request for json content </a>
+	<a class="link-to-top" href="#">
+		(top)
+	</a>
+</h1><div class="box">
+	<span class="headline">		
+					Request
+	</span>
+	<ul>
+		<li>HTTP: GET</li>
+		<li>URI: /resource/id:12345</li>
+		
+			<li>Headers:
+					<ol>
+						    <li>
+						        <label>content-type = </label>
+						        <div>application/json</div>
+						    </li>
+					</ol>
+					
+					<ol>
+					 <li><b>Cookies:</b></li>
+						    <li>
+						        <label>login = </label>
+						        <div>123456(-)654321</div></li>
+					</ol>
+			</li>
+		
+    </ul>
+</div>
+<div class="box">
+	<span class="headline">Response</span>
+	<ul>
+		<li>ResponseCode: 200</li>
+
+			<li>Headers
+				<ol>
+				    <li>
+				        <label>content-type = </label>
+				        <div>application/json</diuv>
+				    </li>
+				</ol>
+			</li>
+
+			<li>
+				<div>payload:</div>
+				<pre>[
+  {
+    "objectId": 123
+  },
+  {
+    "objectId": 4567
+  }
+]</pre>
+			</li>
+    </ul>
+</div><div class="box correct">
+	The response contains the HTTP_STATUS of the request
+</div><div class="box correct">
+	The response contains a JSON payload
+</div><h1>
+	<a name="section35"> Making a get request for html content </a>
+	<a class="link-to-top" href="#">
+		(top)
+	</a>
+</h1><div class="box">
+	<span class="headline">		
+					Request
+	</span>
+	<ul>
+		<li>HTTP: GET</li>
+		<li>URI: /resource/id:12345</li>
+		
+			<li>Headers:
+					<ol>
+						    <li>
+						        <label>content-type = </label>
+						        <div>text/html</div>
+						    </li>
+					</ol>
+					
+					<ol>
+					 <li><b>Cookies:</b></li>
+						    <li>
+						        <label>login = </label>
+						        <div>123456(-)654321</div></li>
+					</ol>
+			</li>
+		
+    </ul>
+</div>
+<div class="box">
+	<span class="headline">Response</span>
+	<ul>
+		<li>ResponseCode: 200</li>
+
+			<li>Headers
+				<ol>
+				    <li>
+				        <label>content-type = </label>
+				        <div>text/html</diuv>
+				    </li>
+				</ol>
+			</li>
+
+			<li>
+				<div>payload:</div>
+				<pre><xmp><p>some Html content</p></xmp></pre>
+			</li>
+    </ul>
+</div><div class="box correct">
+	The response contains the HTTP_STATUS of the request
+</div><div class="box correct">
+	The response contains a HTML payload
+</div><h1>
+	<a name="section36"> Making an upload post request </a>
 	<a class="link-to-top" href="#">
 		(top)
 	</a>
@@ -392,33 +620,53 @@ span.highlight {
 	<ul>
 		<li>HTTP: POST</li>
 		<li>URI: /resource/id:12345</li>
+		
+			<li>Headers:
+					<ol>
+						    <li>
+						        <label>content-type = </label>
+						        <div>application/json</div>
+						    </li>
+					</ol>
+					
+					<ol>
+					 <li><b>Cookies:</b></li>
+						    <li>
+						        <label>login = </label>
+						        <div>123456(-)654321</div></li>
+					</ol>
+			</li>
+		
 		<li>FileName: file.txt</li>
 		<li>FileSize: 26 bytes</li>
 		<li>Mimetype: text/plain</li>
 		<li>FileBody: 
-			<button type="button" onclick="toggle(request6)" class="moreOrLess">See/hide file content</button>
-            <pre id=request6 style="display:none">
+			<button type="button" onclick="toggle(request9)" class="moreOrLess">See/hide file content</button>
+            <pre id=request9 style="display:none">
                 content&lt;br/&gt;&ouml;f &lt;br/&gt;the text&lt;br/&gt;file
             </pre>
         </li>
     </ul>
-</div><div class="box">
+</div>
+<div class="box">
 	<span class="headline">Response</span>
 	<ul>
-		<li>ResponseCode: 230</li>
-			<li>
-				<div>payload:</div>
-				<pre>{
-  "abc": "123"
-}</pre>
+		<li>ResponseCode: 201</li>
+
+			<li>Headers
+				<ol>
+				    <li>
+				        <label>content-type = </label>
+				        <div>application/json</diuv>
+				    </li>
+				</ol>
 			</li>
+
     </ul>
 </div><div class="box correct">
 	The response contains the HTTP_STATUS of the request
-</div><div class="box correct">
-	The response contains a JSON payload
 </div><h1>
-	<a name="section26"> Making an upload post request with an image file </a>
+	<a name="section37"> Making an upload post request with an image file </a>
 	<a class="link-to-top" href="#">
 		(top)
 	</a>
@@ -429,18 +677,155 @@ span.highlight {
 	<ul>
 		<li>HTTP: POST</li>
 		<li>URI: /resource/id:12345</li>
+		
+			<li>Headers:
+					<ol>
+						    <li>
+						        <label>content-type = </label>
+						        <div>application/json</div>
+						    </li>
+					</ol>
+					
+					<ol>
+					 <li><b>Cookies:</b></li>
+						    <li>
+						        <label>login = </label>
+						        <div>123456(-)654321</div></li>
+					</ol>
+			</li>
+		
 		<li>FileName: picture.png</li>
 		<li>FileSize: 280.649 bytes</li>
 		<li>Mimetype: application/octet-stream</li>
     </ul>
-</div><div class="box">
+</div>
+<div class="box">
 	<span class="headline">Response</span>
 	<ul>
-		<li>ResponseCode: 230</li>
+		<li>ResponseCode: 201</li>
+
+			<li>Headers
+				<ol>
+				    <li>
+				        <label>content-type = </label>
+				        <div>application/json</diuv>
+				    </li>
+				</ol>
+			</li>
+
+    </ul>
+</div><div class="box correct">
+	The response contains the HTTP_STATUS of the request
+</div><h1>
+	<a name="section38"> Suite of requests </a>
+	<a class="link-to-top" href="#">
+		(top)
+	</a>
+</h1><p>All requests are independent and can be done in a sequentially way.</p><p>Let's first upload a resource:</p><div class="box">
+	<span class="headline">		
+					Upload-Request
+	</span>
+	<ul>
+		<li>HTTP: POST</li>
+		<li>URI: /resource/id:12345</li>
+		
+			<li>Headers:
+					<ol>
+						    <li>
+						        <label>content-type = </label>
+						        <div>application/json</div>
+						    </li>
+					</ol>
+					
+					<ol>
+					 <li><b>Cookies:</b></li>
+						    <li>
+						        <label>login = </label>
+						        <div>123456(-)654321</div></li>
+					</ol>
+			</li>
+		
+		<li>FileName: picture.png</li>
+		<li>FileSize: 280.649 bytes</li>
+		<li>Mimetype: application/octet-stream</li>
+    </ul>
+</div>
+<div class="box">
+	<span class="headline">Response</span>
+	<ul>
+		<li>ResponseCode: 201</li>
+
+			<li>Headers
+				<ol>
+				    <li>
+				        <label>content-type = </label>
+				        <div>application/json</diuv>
+				    </li>
+				</ol>
+			</li>
+
+    </ul>
+</div><div class="box correct">
+	The response contains the HTTP_STATUS of the request
+</div><p>And now we would like to update another resource:</p><div class="box">
+	<span class="headline">		
+					Request
+	</span>
+	<ul>
+		<li>HTTP: PUT</li>
+		<li>URI: /resource/id:12345</li>
+		
+			<li>Headers:
+					<ol>
+						    <li>
+						        <label>content-type = </label>
+						        <div>application/json</div>
+						    </li>
+					</ol>
+					
+					<ol>
+					 <li><b>Cookies:</b></li>
+						    <li>
+						        <label>login = </label>
+						        <div>123456(-)654321</div></li>
+					</ol>
+			</li>
+		
 			<li>
 				<div>payload:</div>
 				<pre>{
-  "abc": "123"
+  "name": "test object",
+  "points": 12,
+  "properties": [
+    "prop1",
+    "prop2"
+  ]
+}</pre>
+			</li>
+    </ul>
+</div>
+<div class="box">
+	<span class="headline">Response</span>
+	<ul>
+		<li>ResponseCode: 200</li>
+
+			<li>Headers
+				<ol>
+				    <li>
+				        <label>content-type = </label>
+				        <div>application/json</diuv>
+				    </li>
+				</ol>
+			</li>
+
+			<li>
+				<div>payload:</div>
+				<pre>{
+  "abc": "123",
+  "cde": {
+    "start": "today",
+    "end": "tomorrow"
+  }
 }</pre>
 			</li>
     </ul>
@@ -448,110 +833,6 @@ span.highlight {
 	The response contains the HTTP_STATUS of the request
 </div><div class="box correct">
 	The response contains a JSON payload
-</div><div class="box">
-	<span class="headline">		
-					Upload-Request
-	</span>
-	<ul>
-		<li>HTTP: POST</li>
-		<li>URI: /resource/id:12345</li>
-		<li>FileName: file.txt</li>
-		<li>FileSize: 26 bytes</li>
-		<li>Mimetype: text/plain</li>
-		<li>FileBody: 
-			<button type="button" onclick="toggle(request8)" class="moreOrLess">See/hide file content</button>
-            <pre id=request8 style="display:none">
-                content&lt;br/&gt;&ouml;f &lt;br/&gt;the text&lt;br/&gt;file
-            </pre>
-        </li>
-    </ul>
-</div><div class="box">
-	<span class="headline">Response</span>
-	<ul>
-		<li>ResponseCode: 230</li>
-			<li>
-				<div>payload:</div>
-				<pre>{
-  "abc": "123"
-}</pre>
-			</li>
-    </ul>
-</div><div class="box">
-	<span class="headline">		
-					Request
-	</span>
-	<ul>
-		<li>HTTP: GET</li>
-		<li>URI: /resource/id:12345</li>
-    </ul>
-</div><div class="box">
-	<span class="headline">Response</span>
-	<ul>
-		<li>ResponseCode: 230</li>
-			<li>
-				<div>payload:</div>
-				<pre>{
-  "abc": "123"
-}</pre>
-			</li>
-    </ul>
-</div><div class="box">
-	<span class="headline">		
-					Request
-	</span>
-	<ul>
-		<li>HTTP: DELETE</li>
-		<li>URI: /resource/id:12345</li>
-    </ul>
-</div><div class="box">
-	<span class="headline">Response</span>
-	<ul>
-		<li>ResponseCode: 230</li>
-			<li>
-				<div>payload:</div>
-				<pre>{
-  "abc": "123"
-}</pre>
-			</li>
-    </ul>
-</div><div class="box">
-	<span class="headline">		
-					Request
-	</span>
-	<ul>
-		<li>HTTP: POST</li>
-		<li>URI: /resource/id:12345</li>
-    </ul>
-</div><div class="box">
-	<span class="headline">Response</span>
-	<ul>
-		<li>ResponseCode: 230</li>
-			<li>
-				<div>payload:</div>
-				<pre>{
-  "abc": "123"
-}</pre>
-			</li>
-    </ul>
-</div><div class="box">
-	<span class="headline">		
-					Request
-	</span>
-	<ul>
-		<li>HTTP: PUT</li>
-		<li>URI: /resource/id:12345</li>
-    </ul>
-</div><div class="box">
-	<span class="headline">Response</span>
-	<ul>
-		<li>ResponseCode: 230</li>
-			<li>
-				<div>payload:</div>
-				<pre>{
-  "abc": "123"
-}</pre>
-			</li>
-    </ul>
 </div>
             </div>
         </div>

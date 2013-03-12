@@ -11,6 +11,9 @@
     background-color:  #EFEFEF;
 }
 
+body * {
+        word-wrap: break-word; /*break long lines for all elements*/
+}
 /* =general
 -------------------------------------------------------------- */
 a {
@@ -36,7 +39,6 @@ img {
 h1, h2, h3, h4, h5, h6, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
     font-weight: bold;
     line-height: 120%;
-    word-wrap: break-word;
     margin: 1.07em 0 0.535em;
 }
 
@@ -171,10 +173,6 @@ button {
     background: #76210f;
 }
 
-.box * {
-    word-wrap: break-word;
-}
-
 .box .headline {
     color: white;
     font-family: monospace;
@@ -189,18 +187,41 @@ button {
     margin: 5px 0 0 0;
 }
 
-pre {
+.box ul li ol, pre {
     color: #EBEFE7;
     padding: 8px;
     margin: 10px 0px;
-    background-color: #585858;
+    background-color: #96979d;
     border: 1px dashed #E6EBE0;
-    border-radius: 2px 2px 2px 2px;
+    border-radius: 4px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     overflow: auto;
     max-height: 160px;
 }
 
+.box ul li ol li label {
+    width: 25%;
+    padding-right: 5%;
+    float: left;
+}
+.box ul li ol li label + div {
+    width: 70%;
+    float: left;
+}
+
+pre {
+    background-color: #585858;
+}
+
+.box ul li ol li {
+    border-top: 1px solid #B4B5BB;
+    padding: 5px 3px 0 0;
+    clear: both;
+}
+.box ul li ol li:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
 
 span.highlight {
     color: #EBEFE7;
@@ -243,56 +264,56 @@ span.highlight {
 			<div class="wrapper">			
             	<br/>
             	<a href="./index.html">back to index page</a><br/>
-            	<div class="small">Doctest originally perfomed at: Tue Sep 25 14:13:25 CEST 2012</div>
+            	<div class="small">Doctest originally perfomed at: Wed Mar 06 18:33:13 CET 2013</div>
             	
             	<div class="menu">
 	<ul>
 					<li>
-				<a href="#section16">Making an assertTrueAndSay(true, "The assertion should evaluate to true")</a>
+				<a href="#section26">Making an assertTrueAndSay(true, "The assertion should evaluate to true")</a>
 			</li>
 			<li>
-				<a href="#section17">Making an assertNullAndSay(null, "The Object IS NOT instantiated")</a>
+				<a href="#section27">Making an assertNullAndSay(null, "The Object IS NOT instantiated")</a>
 			</li>
 			<li>
-				<a href="#section18">Making an assertNotNull(new Object(), "The object IS instantiated");</a>
+				<a href="#section28">Making an assertNotNull(new Object(), "The object IS instantiated");</a>
 			</li>
 			<li>
-				<a href="#section19">Making an assertFalseAndSay(false, "The assertion is evaluated to false")</a>
+				<a href="#section29">Making an assertFalseAndSay(false, "The assertion is evaluated to false")</a>
 			</li>
 			<li>
-				<a href="#section20">Making an assertEqualsAndSay(new String("Same"), new String("Same"), "The expected Strings and the given String equal each other")</a>
+				<a href="#section30">Making an assertEqualsAndSay(new String("Same"), new String("Same"), "The expected Strings and the given String equal each other")</a>
 			</li>
 	</ul>
 </div><h1>
-	<a name="section16"> Making an assertTrueAndSay(true, "The assertion should evaluate to true") </a>
+	<a name="section26"> Making an assertTrueAndSay(true, "The assertion should evaluate to true") </a>
 	<a class="link-to-top" href="#">
 		(top)
 	</a>
 </h1><p>We want to verify the assertion is evaluated to true and a documenting output is generated</p><div class="box correct">
 	The assertion IS evaluated to true
 </div><h1>
-	<a name="section17"> Making an assertNullAndSay(null, "The Object IS NOT instantiated") </a>
+	<a name="section27"> Making an assertNullAndSay(null, "The Object IS NOT instantiated") </a>
 	<a class="link-to-top" href="#">
 		(top)
 	</a>
 </h1><p>We want to verify the assertion is null and a documenting output is generated</p><div class="box correct">
 	The object IS NOT instantiated
 </div><h1>
-	<a name="section18"> Making an assertNotNull(new Object(), "The object IS instantiated"); </a>
+	<a name="section28"> Making an assertNotNull(new Object(), "The object IS instantiated"); </a>
 	<a class="link-to-top" href="#">
 		(top)
 	</a>
 </h1><p>We want to verify the assertion is not null and a documenting output is generated</p><div class="box correct">
 	The object IS instantiated
 </div><h1>
-	<a name="section19"> Making an assertFalseAndSay(false, "The assertion is evaluated to false") </a>
+	<a name="section29"> Making an assertFalseAndSay(false, "The assertion is evaluated to false") </a>
 	<a class="link-to-top" href="#">
 		(top)
 	</a>
 </h1><p>We want to verify the assertion is evaluated to false and a documenting output is generated</p><div class="box correct">
 	The assertion IS evaluated to false
 </div><h1>
-	<a name="section20"> Making an assertEqualsAndSay(new String("Same"), new String("Same"), "The expected Strings and the given String equal each other") </a>
+	<a name="section30"> Making an assertEqualsAndSay(new String("Same"), new String("Same"), "The expected Strings and the given String equal each other") </a>
 	<a class="link-to-top" href="#">
 		(top)
 	</a>
