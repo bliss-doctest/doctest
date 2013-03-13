@@ -11,11 +11,11 @@
     <name>doctest</name>
     <artifactId>doctest</artifactId>
     <version>0.6.4-SNAPSHOT</version>
-    <description>Test your REST-API and create an always-uptodate documentation for it</description>
-    <url>https://github.com/devbliss/doctest</url>
+    <description>Test and document your REST Api in one single file</description>
+    <url>http://devbliss.github.com/doctest</url>
     <organization>
         <name>devbliss GmbH</name>
-        <url>http://devbliss.com</url>
+        <url>http://www.devbliss.com</url>
     </organization>
     <inceptionYear>2012</inceptionYear>
     <packaging>jar</packaging>
