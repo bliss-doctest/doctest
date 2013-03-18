@@ -84,6 +84,13 @@
                   
       <li>
     
+                          <a href="Configuration.html" title="Configuration">
+          <i class="none"></i>
+        Configuration</a>
+            </li>
+                  
+      <li>
+    
                           <a href="CHANGES.html" title="Changelog">
           <i class="none"></i>
         Changelog</a>
@@ -152,7 +159,7 @@
                 
         <div id="bodyColumn"  class="span9" >
                                   
-            <h1>Test and document your REST Api in one single file</h1><p>Writing tests and documentation is one of the most important aspects of modern software development. At the same time this is the part with the fewest amount of time to work on during a project. This <em>doctest</em> library is the best way to merge the world of documenting and testing your REST Api. </p><h2>Why?</h2>
+            <h1>Test and document your java application REST Api in one single file</h1><p>Writing tests and documentation is one of the most important aspects of modern software development. At the same time this is the part with the fewest amount of time to work on during a project. This <em>doctest</em> library is the best way to merge the world of documenting and testing your REST Api of your java application powered by the <a href="http://junit.org/">junit</a> library. </p><h2>Why?</h2>
 <ul>
   <li>It saves your time, because happens in one test file.</li><li>It saves your time, because changes in your code appear immediatly in your documentation.</li><li>You can review your documentation at the same time you review your code, because all happens in your repository and not in a dedicated software instance like a wiki.</li><li>Your documentation proves its correctness by itself, because the new documentation will only be generated if all tests passed.</li><li>The output of your documentation can be what you like, just add a renderer that fits your needs. Currently it will render an HTML output.</li>
 </ul><h2>Want to see an example?</h2><p>The following example shows the integration test of the delete-profile REST endpoint. The test method is seperated into 4 blocks introduction / setup, show the existing data by using the get-profile endpoint, call the delete-profile endpoint and finally show that the profile is gone by calling again the get-profile endpoint.</p>
@@ -200,7 +207,7 @@ class ProfileDocTest extends com.devbliss.doctest.DocTest {
 
     ...
 }
-</pre><p>From the single test case above you&rsquo;ll get a result HTML that will look like this:</p><p><img src="example-delete-profile.png"  alt="Example HTML output of the delete-profile endpoint."/></p><p>The whole idea for this project is based on the <a href="http://docs.python.org/2/library/doctest.html">python doctests</a>. The intention was to transfer this idea into the java world with full compatibility to the junit library.</p><h2>Getting started</h2><p>Go to the latest version at <a href="http://search.maven.org/#search|ga|1|g%3A%22com.devbliss.doctest%22">maven central</a> choose the build tool of you choice and add doctest as a dependency to your project or download the jar and include it manually. E.g if you are using maven just add the following dependency to your project pom.xml:</p>
+</pre><p>From the single test case above you&rsquo;ll get a result HTML that will look like this:</p><p><img src="https://raw.github.com/devbliss/doctest/master/src/site/resources/example-delete-profile.png"  alt="Example HTML output of the delete-profile endpoint."/></p><p>The whole idea for this project is based on the <a href="http://docs.python.org/2/library/doctest.html">python doctests</a>. The intention was to transfer this idea into the java world with full compatibility to the junit library.</p><h2>Getting started</h2><p>Go to the latest version at <a href="http://search.maven.org/#search|ga|1|g%3A%22com.devbliss.doctest%22">maven central</a> choose the build tool of you choice and add doctest as a dependency to your project or download the jar and include it manually. E.g if you are using maven just add the following dependency to your project pom.xml:</p>
 <pre><code>&lt;dependency&gt;
     &lt;groupId&gt;com.devbliss.doctest&lt;/groupId&gt;
     &lt;artifactId&gt;doctest&lt;/artifactId&gt;

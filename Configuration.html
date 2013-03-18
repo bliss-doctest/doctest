@@ -68,10 +68,12 @@
                 <ul class="nav nav-list">
                     <li class="nav-header">Overview</li>
                                 
-      <li class="active">
+      <li>
     
-            <a href="#"><i class="none"></i>About</a>
-          </li>
+                          <a href="index.html" title="About">
+          <i class="none"></i>
+        About</a>
+            </li>
                   
       <li>
     
@@ -80,12 +82,10 @@
         Installation</a>
             </li>
                   
-      <li>
+      <li class="active">
     
-                          <a href="Configuration.html" title="Configuration">
-          <i class="none"></i>
-        Configuration</a>
-            </li>
+            <a href="#"><i class="none"></i>Configuration</a>
+          </li>
                   
       <li>
     
@@ -157,10 +157,43 @@
                 
         <div id="bodyColumn"  class="span9" >
                                   
-            <h1>Test and document your java application REST Api in one single file</h1><p>Writing tests and documentation is one of the most important aspects of modern software development. At the same time this is the part with the fewest amount of time to work on during a project. This <em>doctest</em> library is the best way to merge the world of documenting and testing your REST Api of your java application powered by the <a href="http://junit.org/">junit</a> library. </p><h2>Why?</h2>
-<ul>
-  <li>It saves your time, because happens in one test file.</li><li>It saves your time, because changes in your code appear immediatly in your documentation.</li><li>You can review your documentation at the same time you review your code, because all happens in your repository and not in a dedicated software instance like a wiki.</li><li>Your documentation proves its correctness by itself, because the new documentation will only be generated if all tests passed.</li><li>The output of your documentation can be what you like, just add a renderer that fits your needs. Currently it will render an HTML output.</li>
-</ul><h2>Are you new?</h2><p>Have a look at <a href="Installation.html">Installation</a>.</p><h2>Wanna see what it does?</h2><p>Have a look at the first introduction <a href="Example.html">example</a> or klick through the already generated <a href="Doctests.hmtl">doctest</a> files.</p>
+            <h1>How to configure the doctests</h1><p>The <em>doctest</em> library can be configured if you have to. Currently the <em>Configuration</em> object only allows to change the output directory of the generated html files.</p><p>These two examples show how the usage of the configuration can look like:</p>
+<pre>
+import com.devbliss.doctest.DocTest;
+import com.devbliss.doctest.Configuration;
+
+abstract class MyAbstractDocTest extends DocTest {
+
+    public MyAbstractDocTest() {
+        Configuration configuration = new Configuration();
+        configuration.setHtmlOutputDirectory = "/my/project/documentation";
+
+        super(configuration);
+    }
+
+    ...
+
+}
+</pre>
+<pre>
+import com.devbliss.doctest.DocTest;
+import com.devbliss.doctest.Configuration;
+
+class MyDocTest extends DocTest {
+
+    @Before
+    public setUp() {
+        Configuration configuration = getConfiguration();
+        configuration.setHtmlOutputDirectory = "/my/project/special/test/documentation";
+        
+        // set up my tests
+    }
+
+    @Test
+    ...
+
+}
+</pre>
                   </div>
             </div>
           </div>
