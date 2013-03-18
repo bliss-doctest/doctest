@@ -1,9 +1,11 @@
-CHANGES
-=======
+# Changelog
 
 develop
 -------
 - introduce doctest configuration 
+
+Version 0.6.3 09.01.2013
+------------------------
 - parse and display a html body
 - improve the isJsonValid method
 

@@ -3,27 +3,38 @@
          xsi:schemaLocation="http://maven.apache.org/DECORATION/1.1.0 http://maven.apache.org/xsd/decoration-1.1.0.xsd"
          name="Doctest">
     <bannerLeft>
-        <name>Doctest internal documentation and Api documentation</name>
-        <href>http://devbliss.de</href>
+        <name>Doctest: Api documentation and testing</name>
+        <href>http://www.devbliss.com</href>
     </bannerLeft>
     <body>
         <menu name="Overview">
-            <item name="README" href="README.html"/>
-            <item name="CHANGES" href="CHANGES.html"/>
-            <item name="TODOS" href="TODO.html"/>
-            <item name="INFO" href="project-info.html"/>
+            <item name="About" href="index.html"/>
+            <item name="Installation" href="Installation.html"/>
+            <item name="Changelog" href="CHANGES.html"/>
+            <item name="Todos" href="TODO.html"/>
         </menu>
-        <menu name="Example">
-            <item name="Example of a doctest report" href="Doctests.html"/>
+        <menu name="Examples">
+            <item name="Introduction Example" href="Example.html"/>
+            <item name="Example of generated doctest reports" href="Doctests.html"/>
         </menu>
-        <menu name="Api">
-            <item name="JavaDoc src" href="Apidocs.html"/>
-            <item name="JavaDoc test" href="Testapidocs.html"/>
+        <menu name="Project documentation">
+            <item name="Maven Info" href="project-info.html"/>
+            <item name="JavaDocs" href="Apidocs.html"/>
+            <item name="Test JavaDocs" href="Testapidocs.html"/>
         </menu>
     </body>
     <skin>
         <groupId>org.apache.maven.skins</groupId>
         <artifactId>maven-fluido-skin</artifactId>
-        <version>1.0</version>
+        <version>1.3.0</version>
     </skin>
+    <custom>
+        <fluidoSkin>
+            <gitHub>
+                <projectId>devbliss/doctest</projectId>
+                <ribbonOrientation>right</ribbonOrientation>
+                <ribbonColor>green</ribbonColor>
+            </gitHub>
+        </fluidoSkin>
+    </custom>
 </project>
