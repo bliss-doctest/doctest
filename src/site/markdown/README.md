@@ -5,11 +5,11 @@ Writing tests and documentation is one of the most important aspects of modern s
  * It saves your time, because happens in one test file.
  * It saves your time, because changes in your code appear immediatly in your documentation.
  * You can review your documentation at the same time you review your code, because all happens in your repository and not in a dedicated software instance like a wiki.
- * Your documentation proves its correctness by itself, because the new documentation will only generated if all tests passed.
+ * Your documentation proves its correctness by itself, because the new documentation will only be generated if all tests passed.
  * The output of your documentation can be what you like, just add a renderer that fits your needs. Currently it will render an HTML output.
 
 ## Want to see an example?
-This examples shows the integration test of the delete-profile REST endpoint. The test method is seperated into 4 blocks introduction / setup, show the existing data by using the get-profile endpoint, call the delete-profile endpoint and finally show that the profile is gone by calling again the get-profile endpoint.
+The following example shows the integration test of the delete-profile REST endpoint. The test method is seperated into 4 blocks introduction / setup, show the existing data by using the get-profile endpoint, call the delete-profile endpoint and finally show that the profile is gone by calling again the get-profile endpoint.
 
 <pre>
 class ProfileDocTest extends com.devbliss.doctest.DocTest {
@@ -45,9 +45,9 @@ class ProfileDocTest extends com.devbliss.doctest.DocTest {
         assertEquals(HttpStatus.SC_NO_CONTENT, response2.httpStatus);
 
         /*
-         * Show how the response of the GET endpoint changed after the DELETE request was successfull.
+         * Show how the response of the GET endpoint changed after the DELETE request was successful.
          */
-        say("After the deleting of a profile was successfull the request to get the profile with the id \"" 
+        say("After the deleting of a profile was successful the request to get the profile with the id \"" 
             + profile.id + "\" will end up in a response with the status code " + HttpStatus.SC_NOT_FOUND);
         final ApiResponse response3 = makeGetRequest(buildUri("api/v1/profile/" + profile.id));
         assertEqualsAndSay(HttpStatus.SC_NOT_FOUND, response3.httpStatus, "The profile is not found since it has been deleted.");
