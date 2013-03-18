@@ -9,12 +9,13 @@
     <body>
         <menu name="Overview">
             <item name="About" href="index.html"/>
-            <item name="Readme" href="README.html"/>
+            <item name="Installation" href="Installation.html"/>
             <item name="Changelog" href="CHANGES.html"/>
             <item name="Todos" href="TODO.html"/>
         </menu>
-        <menu name="Example">
-            <item name="Example of a doctest report" href="Doctests.html"/>
+        <menu name="Examples">
+            <item name="Introduction Example" href="Example.html"/>
+            <item name="Example of generated doctest reports" href="Doctests.html"/>
         </menu>
         <menu name="Project documentation">
             <item name="Maven Info" href="project-info.html"/>
