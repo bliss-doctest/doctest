@@ -1,1 +1,8 @@
-/* You can override this file with your own styles */
+code {
+    background: none;
+    line-height: 1.2;
+}
+
+div #bannerRight {
+    margin-right: 130px;
+}
