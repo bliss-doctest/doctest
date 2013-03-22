@@ -6,6 +6,10 @@
         <name>Doctest: Api documentation and testing</name>
         <href>http://www.devbliss.com</href>
     </bannerLeft>
+    <bannerRight>
+        <src>./images/devbliss.png</src>
+        <href>http://devbliss.com</href>
+    </bannerRight>
     <body>
         <menu name="Overview">
             <item name="About" href="index.html"/>
@@ -18,11 +22,7 @@
             <item name="Introduction Example" href="Example.html"/>
             <item name="Example of generated doctest reports" href="Doctests.html"/>
         </menu>
-        <menu name="Project documentation">
-            <item name="Maven Info" href="project-info.html"/>
-            <item name="JavaDocs" href="Apidocs.html"/>
-            <item name="Test JavaDocs" href="Testapidocs.html"/>
-        </menu>
+        <menu ref="reports" />
     </body>
     <skin>
         <groupId>org.apache.maven.skins</groupId>
