@@ -4,7 +4,7 @@
          name="Doctest">
     <bannerLeft>
         <name>Doctest: Api documentation and testing</name>
-        <href>http://www.devbliss.com</href>
+        <href>http://devbliss.github.com/doctest</href>
     </bannerLeft>
     <bannerRight>
         <src>./images/devbliss.png</src>
