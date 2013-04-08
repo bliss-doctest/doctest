@@ -11,27 +11,28 @@ have a look at our [TODO's](http://devbliss.github.com/doctest/TODO.html).
 
 ## Writing issues
 
-* Submit a ticket for your issue, assuming one does not already exist.
+* Submit a new ticket for your issue, assuming one does not already exist. [link](https://github.com/devbliss/doctest/issues/new)
 * Clearly describe the issue including steps to reproduce when it is a bug.
 * It would be the best if you can add a test case that fullfill you requirement or shows the bug (Test driven development ftw).
 
 ## Making Changes
 
-* Create a topic branch from where you want to base your work.
+* Fork this repository into your own github account [see this link](https://help.github.com/articles/fork-a-repo)
+* Create a local copy of this repository on your machine. `git clone git@github.com:{your_username}/doctest.git`
+* Create a topic branch from where you want to base your work. `git checkout -b {branchname}`
   * This is usually the master branch.
-  * Only target release branches if you are certain your fix must be on that
-    branch.
+  * Only target release branches if you are certain your fix must be on that branch.
   * Please avoid working directly on the `master` branch.
 * Import the `doctest-format.xml` (Eclipse IDE format definitions) file into your IDE of choice to have the correct file formatting in place.
-* Make commits of logical units.
+* Make commits of logical units. `git add {file}; git commit -m "{commit message}"`
 * Make sure your commit messages are informative.
 * Make sure you have added the necessary tests for your changes.
-* Run _all_ the tests to assure nothing else was accidentally broken.
+* Run _all_ the tests to assure nothing else was accidentally broken. `mvn test`
 * If you added new files make sure you added a license of your choice to that file.
 
 ## Submitting Changes
 
-* Push your changes to a topic branch in your fork of the repository.
-* Submit a pull request to the repository in the devbliss organization.
+* Push your changes to the topic branch in your fork of the repository. `git push origin {branchname}`
+* Submit a pull request to the repository in the devbliss organization. [see this link](https://help.github.com/articles/creating-a-pull-request)
 * Make a informative pull request description.
 * Please don't add information to the `CHANGES.md`. 
