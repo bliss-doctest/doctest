@@ -15,6 +15,7 @@
             <item name="About" href="index.html"/>
             <item name="Installation" href="Installation.html"/>
             <item name="Configuration" href="Configuration.html"/>
+            <item name="Contributing" href="Contributing.html"/>
             <item name="Changelog" href="CHANGES.html"/>
             <item name="Todos" href="TODO.html"/>
         </menu>
