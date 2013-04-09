@@ -13,7 +13,6 @@ have a look at our [TODO's](http://devbliss.github.com/doctest/TODO.html).
 
 * Submit a new ticket for your issue, assuming one does not already exist. [link](https://github.com/devbliss/doctest/issues/new)
 * Clearly describe the issue including steps to reproduce when it is a bug.
-* It would be the best if you can add a test case that fullfill you requirement or shows the bug (Test driven development ftw).
 
 ## Making Changes
 
@@ -28,7 +27,10 @@ have a look at our [TODO's](http://devbliss.github.com/doctest/TODO.html).
 * Make sure your commit messages are informative.
 * Make sure you have added the necessary tests for your changes.
 * Run _all_ the tests to assure nothing else was accidentally broken. `mvn test`
-* If you added new files make sure you added a license of your choice to that file.
+* Add your contribution information
+  * Add your name and email to the contributors section in the pom.xml
+  * If you added new files make sure you added your name to it with the author tag `@author`
+  * If you added new files make sure you added a license of your choice to that file.
 
 ## Submitting Changes
 
