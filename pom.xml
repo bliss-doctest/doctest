@@ -146,63 +146,6 @@
         </dependency>
     </dependencies>
 
-    <developers>
-        <developer>
-            <name>Bastien Mary</name>
-            <email>bastien.mary@devbliss.com</email>
-            <url>http://www.devbliss.com</url>
-            <roles>
-                <role>Author</role>
-            </roles>
-            <organization>devbliss GmbH</organization>
-        </developer>
-        <developer>
-            <name>Henning Schuetz</name>
-            <email>henning.schuetz@devbliss.com</email>
-            <url>http://www.devbliss.com</url>
-            <roles>
-                <role>Author</role>
-            </roles>
-            <organization>devbliss GmbH</organization>
-        </developer>
-        <developer>
-            <name>James Roper</name>
-            <email>james.roper@devbliss.com</email>
-            <url>http://www.devbliss.com</url>
-            <roles>
-                <role>Author</role>
-            </roles>
-            <organization>devbliss GmbH</organization>
-        </developer>
-        <developer>
-            <name>Marco Reinwarth</name>
-            <email>marco.reinwarth@devbliss.com</email>
-            <url>http://www.devbliss.com</url>
-            <roles>
-                <role>Author</role>
-            </roles>
-            <organization>devbliss GmbH</organization>
-        </developer>
-        <developer>
-            <name>Raphael Andre Bauer</name>
-            <email>raphael.bauer@devbliss.com</email>
-            <url>http://www.devbliss.com</url>
-            <roles>
-                <role>Author</role>
-            </roles>
-            <organization>devbliss GmbH</organization>
-        </developer>
-        <developer>
-            <name>Marcel Bankmann</name>
-            <email>marcel.bankmann@devbliss.com</email>
-            <url>http://www.devbliss.com</url>
-            <roles>
-                <role>Author</role>
-            </roles>
-            <organization>devbliss GmbH</organization>
-        </developer>
-    </developers>
-
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -267,4 +210,71 @@
             </plugin>
         </plugins>
     </reporting>
+    
+    <developers>
+        <developer>
+            <name>Bastien Mary</name>
+            <email>bastien.mary@devbliss.com</email>
+            <url>http://www.devbliss.com</url>
+            <roles>
+                <role>Author</role>
+            </roles>
+            <organization>devbliss GmbH</organization>
+        </developer>
+        <developer>
+            <name>Henning Schuetz</name>
+            <email>henning.schuetz@devbliss.com</email>
+            <url>http://www.devbliss.com</url>
+            <roles>
+                <role>Author</role>
+            </roles>
+            <organization>devbliss GmbH</organization>
+        </developer>
+        <developer>
+            <name>James Roper</name>
+            <email>james.roper@devbliss.com</email>
+            <url>http://www.devbliss.com</url>
+            <roles>
+                <role>Author</role>
+            </roles>
+            <organization>devbliss GmbH</organization>
+        </developer>
+        <developer>
+            <name>Marco Reinwarth</name>
+            <email>marco.reinwarth@devbliss.com</email>
+            <url>http://www.devbliss.com</url>
+            <roles>
+                <role>Author</role>
+            </roles>
+            <organization>devbliss GmbH</organization>
+        </developer>
+        <developer>
+            <name>Raphael Andre Bauer</name>
+            <email>raphael.bauer@devbliss.com</email>
+            <url>http://www.devbliss.com</url>
+            <roles>
+                <role>Author</role>
+            </roles>
+            <organization>devbliss GmbH</organization>
+        </developer>
+        <developer>
+            <name>Marcel Bankmann</name>
+            <email>marcel.bankmann@devbliss.com</email>
+            <url>http://www.devbliss.com</url>
+            <roles>
+                <role>Author</role>
+            </roles>
+            <organization>devbliss GmbH</organization>
+        </developer>
+    </developers>
+    
+    <contributors>
+        <!-- 
+        <contributor>
+            <name>Noelle</name>
+            <email>some.name@gmail.com</email>
+            <url>http://noellemarie.com</url>
+        </contributor>
+        -->
+    </contributors>
 </project>
