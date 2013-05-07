@@ -2,6 +2,9 @@
 
 develop
 -------
+
+Version 0.6.4 07.05.2013
+------------------------
 - introduce doctest configuration 
 
 Version 0.6.3 09.01.2013
