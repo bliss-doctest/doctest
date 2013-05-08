@@ -10,7 +10,7 @@
     <groupId>com.devbliss.doctest</groupId>
     <name>doctest</name>
     <artifactId>doctest</artifactId>
-    <version>0.6.5</version>
+    <version>0.6.6-SNAPSHOT</version>
     <description>Test and document your REST Api in one single file</description>
     <url>http://devbliss.github.com/doctest</url>
     <organization>
