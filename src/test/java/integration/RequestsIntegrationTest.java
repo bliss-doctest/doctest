@@ -79,7 +79,7 @@ public class RequestsIntegrationTest extends DocTest {
     }
 
     @Override
-    protected String getFileName() {
+    public String getFileName() {
         return "HttpRequests";
     }
 
