@@ -2,6 +2,7 @@
 
 develop
 -------
+- Moved templates, styling and js to subfolder to enable theming of doctest html output.
 
 Version 0.6.4 07.05.2013
 ------------------------
