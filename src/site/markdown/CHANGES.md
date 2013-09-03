@@ -10,6 +10,8 @@ develop
   This allows us to use the DocTestLibrary not only in test scenarios where we can use "extends DocTest", but
   also in scenarios, where we are already exending another testlibrary. In such scenarios we can now
   use DocTest as simple class level utitily class.
+- Bump to site plugin version 3.3 (compatible with Maven 3.1)
+- Added description how to customize doctest with own layout 
 
 Version 0.6.4 07.05.2013
 ------------------------
