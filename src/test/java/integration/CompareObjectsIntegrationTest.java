@@ -59,7 +59,7 @@ public class CompareObjectsIntegrationTest extends DocTest {
     }
 
     @Override
-    protected String getFileName() {
+    public String getFileName() {
         return "CompareObjects";
     }
 

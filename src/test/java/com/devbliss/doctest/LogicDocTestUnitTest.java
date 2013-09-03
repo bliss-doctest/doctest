@@ -453,7 +453,7 @@ public class LogicDocTestUnitTest {
         docTest = new LogicDocTest(docTestMachine, apiTest, jsonHelper, fileHelper, new Configuration()) {
 
             @Override
-            protected String getFileName() {
+            public String getFileName() {
                 return FILE_NAME;
             }
         };
@@ -478,7 +478,7 @@ public class LogicDocTestUnitTest {
             }
 
             @Override
-            protected String getFileName() {
+            public String getFileName() {
                 return FILE_NAME;
             }
         };

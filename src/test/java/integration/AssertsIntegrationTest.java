@@ -32,7 +32,7 @@ public class AssertsIntegrationTest extends DocTest {
     private static final String DOCU_GENERATED = "a documenting output is generated";
 
     @Override
-    protected String getFileName() {
+    public String getFileName() {
         return "Asserts";
     }
 

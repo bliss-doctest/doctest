@@ -3,6 +3,11 @@
 develop
 -------
 - Moved templates, styling and js to subfolder to enable theming of doctest html output.
+- fixed a bug in IntegrationTest#verifyThatTheReportsAreCreated (the wrong file object was verified)
+- Made protected methods in LogicDocTest public / also fixed testcases to reflect that change.
+  This allows us to use the DocTestLibrary not only in test scenarios where we can use "extends DocTest", but
+  also in scenarios, where we are already exending another testlibrary. In such scenarios we can now
+  use DocTest as simple class level utitily class.
 
 Version 0.6.4 07.05.2013
 ------------------------
