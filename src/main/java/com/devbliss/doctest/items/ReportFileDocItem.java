@@ -24,6 +24,10 @@ import com.google.common.io.CharStreams;
 
 public class ReportFileDocItem implements DocItem {
 
+    final String SCRIPT_JS_CLASSPATH_LOCATION = "/com/devbliss/doctest/script.js";
+
+    final String JQUERY_CLASSPATH_LOCATION = "/com/devbliss/doctest/jquery-1.8.0.min.js";
+
     private String css;
     private String jsCode;
     private String name;
@@ -43,9 +47,9 @@ public class ReportFileDocItem implements DocItem {
         this.date = new Date().toString();
         try {
             StringBuffer stringBuffer = new StringBuffer();
-            InputStream jsStream = HtmlItems.class.getResourceAsStream("/script.js");
+            InputStream jsStream = HtmlItems.class.getResourceAsStream(SCRIPT_JS_CLASSPATH_LOCATION);
             stringBuffer.append(CharStreams.toString(new InputStreamReader(jsStream)));
-            jsStream = HtmlItems.class.getResourceAsStream("/jquery-1.8.0.min.js");
+            jsStream = HtmlItems.class.getResourceAsStream(JQUERY_CLASSPATH_LOCATION);
             stringBuffer.append(CharStreams.toString(new InputStreamReader(jsStream)));
             this.jsCode = stringBuffer.toString();
         } catch (IOException e) {

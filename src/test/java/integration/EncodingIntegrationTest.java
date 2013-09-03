@@ -50,7 +50,7 @@ public class EncodingIntegrationTest {
 
         for (File file : listFiles) {
             if (file.getAbsolutePath().endsWith("HttpRequests.html")) {
-                verifyTheFileHasThisContent(listFiles.get(0),
+                verifyTheFileHasThisContent(file,
                         "Making a put request with encöding chäracters");
             }
         }
