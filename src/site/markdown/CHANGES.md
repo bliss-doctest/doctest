@@ -2,6 +2,8 @@
 
 develop
 -------
+- removed copyright headers from files that would be generated for users of doctest.
+  (script.js, htmlStyle.css).
 
 Version 0.6.4 07.05.2013
 ------------------------
