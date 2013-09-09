@@ -23,10 +23,12 @@ import freemarker.template.ObjectWrapper;
 
 public class ConfigurationWrapper extends Configuration {
 
+    final String TEMPLATES_CLASSPATH_LOCATION = "/com/devbliss/doctest/templates/";
+
     @Inject
     public ConfigurationWrapper(ObjectWrapper objectWrapper) throws IOException {
         super();
-        setClassForTemplateLoading(this.getClass(), "/templates/");
+        setClassForTemplateLoading(this.getClass(), TEMPLATES_CLASSPATH_LOCATION);
         setObjectWrapper(objectWrapper);
     }
 }

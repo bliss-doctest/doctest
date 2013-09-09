@@ -39,6 +39,8 @@ import freemarker.template.Template;
  */
 public class HtmlItems {
 
+    final static String HTML_STYLE_CLASSPATH_LOCATION = "/com/devbliss/doctest/htmlStyle.css";
+
     private final Configuration configuration;
 
     @Inject
@@ -60,7 +62,7 @@ public class HtmlItems {
 
     private static String getCss() {
         try {
-            InputStream htmlCSSStream = HtmlItems.class.getResourceAsStream("/htmlStyle.css");
+            InputStream htmlCSSStream = HtmlItems.class.getResourceAsStream(HTML_STYLE_CLASSPATH_LOCATION);
             return CharStreams.toString(new InputStreamReader(htmlCSSStream));
         } catch (IOException e) {
             return "no css";
