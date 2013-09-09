@@ -73,3 +73,5 @@ Go to the latest version at [maven central](http://search.maven.org/#search|ga|1
     </dependency>
 
 Once the doctest library is included to your project you can start writing *doctests* by extending *com.devbliss.doctest.DocTest*
+
+Please make sure to read the changelog src/site/markdown/CHANGES.md to get information about new features and possibly incompatibilities to older versions.
