@@ -25,6 +25,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.activation.MimetypesFileTypeMap;
 
@@ -67,8 +68,8 @@ public abstract class LogicDocTest {
      * If you want to see all the cookies, you have to set <code>cookiesToShow = {@link #SHOW_ALL_ELEMENTS}</code>
      * </p>
      * <strong>IMPORTANT</strong>: you don't have to care about the case of the cookies name
-     * 
-     * 
+     *
+     *
      * @return
      */
     public List<String> cookiesToShow = new ArrayList<String>();
@@ -82,8 +83,8 @@ public abstract class LogicDocTest {
      * If you want to see all the headers, you have to set <code>headersToShow = {@link #SHOW_ALL_ELEMENTS}</code>
      * </p>
      * <strong>IMPORTANT</strong>: you don't have to care about the case of the headers name
-     * 
-     * 
+     *
+     *
      * @return
      */
     public List<String> headersToShow = new ArrayList<String>();
@@ -118,7 +119,7 @@ public abstract class LogicDocTest {
     /**
      * This method must be overridden if you want to set an introduction
      * The default value of the introduction is: empty.
-     * 
+     *
      * @return
      */
     public String getIntroduction() {
@@ -127,7 +128,7 @@ public abstract class LogicDocTest {
 
     /**
      * Returns the name of the report file
-     * 
+     *
      * @return name of the file without extension
      */
     public abstract String getFileName();
@@ -139,7 +140,7 @@ public abstract class LogicDocTest {
     /**
      * say will result in a text in the resulting document with the support of JSON representations
      * for objects and highlighted text.
-     * 
+     *
      * @param say the text to be said
      * @param objects multiple Objects matching the amount of placeholders in the text
      */
@@ -168,9 +169,9 @@ public abstract class LogicDocTest {
     }
 
     /**
-     * 
+     *
      * The given POJO will be converted to JSON and be pretty printed.
-     * 
+     *
      * @param obj
      * @throws Exception
      */
@@ -179,9 +180,9 @@ public abstract class LogicDocTest {
     }
 
     /**
-     * 
+     *
      * The given String will be formatted as-is and be highlighted in a fancy box.
-     * 
+     *
      * @param code
      * @throws Exception
      */
@@ -190,47 +191,72 @@ public abstract class LogicDocTest {
     }
 
     public ApiResponse makeGetRequestSilent(URI uri) throws Exception {
-        return doGetRequest(uri).apiResponse;
+      return makeGetRequestSilent(uri, null);
+  }
+
+    public ApiResponse makeGetRequestSilent(URI uri, Map<String, String> additionalHeaders) throws Exception {
+        return doGetRequest(uri, additionalHeaders).apiResponse;
     }
 
-    private Context doGetRequest(URI uri) throws Exception {
-        return apiTest.get(uri);
+    private Context doGetRequest(URI uri, Map<String, String> additionalHeaders) throws Exception {
+        return apiTest.get(uri, additionalHeaders);
     }
 
     public ApiResponse makeGetRequest(URI uri) throws Exception {
-        Context context = doGetRequest(uri);
+      return makeGetRequest(uri, null);
+    }
+
+    public ApiResponse makeGetRequest(URI uri, Map<String, String> additionalHeaders) throws Exception {
+        Context context = doGetRequest(uri, additionalHeaders);
         sayRequest(context.apiRequest);
         docTestMachine.sayResponse(context.apiResponse, headersToShow);
         return context.apiResponse;
     }
 
     public ApiResponse makePostRequestSilent(URI uri, Object obj) throws Exception {
-        return doPostRequest(uri, obj).apiResponse;
+      return makePostRequestSilent(uri, obj, null);
     }
 
-    private Context doPostRequest(URI uri, Object obj) throws Exception {
-        return apiTest.post(uri, obj);
+    public ApiResponse makePostRequestSilent(URI uri, Object obj, Map<String, String> additionalHeaders) throws Exception {
+        return doPostRequest(uri, obj, additionalHeaders).apiResponse;
+    }
+
+    private Context doPostRequest(URI uri, Object obj, Map<String, String> additionalHeaders) throws Exception {
+        return apiTest.post(uri, obj, additionalHeaders);
     }
 
     public ApiResponse makePostRequest(URI uri) throws Exception {
-        return makePostRequest(uri, null);
+        return makePostRequest(uri, null, null);
     }
 
-    public ApiResponse makePostRequest(URI uri, Object obj) throws Exception {
-        Context context = doPostRequest(uri, obj);
-        sayRequest(context.apiRequest, obj);
+    public ApiResponse makePostRequest(URI uri, Object payload) throws Exception {
+      return makePostRequest(uri, payload, null);
+    }
+
+    public ApiResponse makePostRequest(URI uri, Map<String, String> additionalHeaders) throws Exception {
+      return makePostRequest(uri, null, additionalHeaders);
+  }
+
+    public ApiResponse makePostRequest(URI uri, Object payload, Map<String, String> additionalHeaders) throws Exception {
+        Context context = doPostRequest(uri, payload, additionalHeaders);
+        sayRequest(context.apiRequest, payload);
         docTestMachine.sayResponse(context.apiResponse, headersToShow);
         return context.apiResponse;
     }
 
+
     protected ApiResponse makePostUploadRequest(URI uri, File fileToUpload, String paramName)
+        throws Exception {
+      return makePostUploadRequest(uri, fileToUpload, paramName, null);
+    }
+    protected ApiResponse makePostUploadRequest(URI uri, File fileToUpload, String paramName, Map<String, String> additionalHeaders)
             throws Exception {
         FileBody fileBodyToUpload = new FileBody(fileToUpload);
         String mimeType = new MimetypesFileTypeMap().getContentType(fileToUpload);
 
         Context context =
                 apiTest.post(uri, null, new PostUploadWithoutRedirectImpl(paramName,
-                        fileBodyToUpload));
+                        fileBodyToUpload), additionalHeaders);
 
         docTestMachine.sayUploadRequest(context.apiRequest, fileBodyToUpload.getFilename(),
                 fileHelper.readFile(fileToUpload), fileToUpload.length(), mimeType, headersToShow,
@@ -242,53 +268,100 @@ public abstract class LogicDocTest {
     }
 
     public ApiResponse makePutRequestSilent(URI uri, Object obj) throws Exception {
-        return doPutRequest(uri, obj).apiResponse;
+      return makePutRequestSilent(uri, obj, null);
     }
 
-    private Context doPutRequest(URI uri, Object obj) throws Exception {
-        return apiTest.put(uri, obj);
+    public ApiResponse makePutRequestSilent(URI uri, Object obj, Map<String, String> additionalHeaders) throws Exception {
+        return doPutRequest(uri, obj, additionalHeaders).apiResponse;
+    }
+
+    private Context doPutRequest(URI uri, Object obj, Map<String, String> additionalHeaders) throws Exception {
+        return apiTest.put(uri, obj, additionalHeaders);
     }
 
     public ApiResponse makePutRequest(URI uri) throws Exception {
-        return makePutRequest(uri, null);
+        return makePutRequest(uri, null, null);
     }
 
     public ApiResponse makePutRequest(URI uri, Object obj) throws Exception {
-        Context context = doPutRequest(uri, obj);
+      return makePutRequest(uri, obj, null);
+    }
+
+    public ApiResponse makePutRequest(URI uri, Map<String, String> additionalHeaders) throws Exception {
+      return makePutRequest(uri, null, additionalHeaders);
+    }
+
+    public ApiResponse makePutRequest(URI uri, Object obj, Map<String, String> additionalHeaders) throws Exception {
+        Context context = doPutRequest(uri, obj, additionalHeaders);
+        sayRequest(context.apiRequest, obj);
+        docTestMachine.sayResponse(context.apiResponse, headersToShow);
+        return context.apiResponse;
+    }
+
+    public ApiResponse makePatchRequestSilent(URI uri, Object obj) throws Exception {
+      return makePatchRequestSilent(uri, obj, null);
+    }
+
+    public ApiResponse makePatchRequestSilent(URI uri, Object obj, Map<String, String> additionalHeaders) throws Exception {
+        return doPatchRequest(uri, obj, additionalHeaders).apiResponse;
+    }
+
+    private Context doPatchRequest(URI uri, Object obj, Map<String, String> additionalHeaders) throws Exception {
+        return apiTest.patch(uri, obj, additionalHeaders);
+    }
+
+    public ApiResponse makePatchRequest(URI uri) throws Exception {
+        return makePatchRequest(uri, null, null);
+    }
+
+    public ApiResponse makePatchRequest(URI uri, Object obj) throws Exception {
+      return makePatchRequest(uri, obj, null);
+    }
+
+    public ApiResponse makePatchRequest(URI uri, Map<String, String> additionalHeaders) throws Exception {
+      return makePatchRequest(uri, null, additionalHeaders);
+    }
+
+    public ApiResponse makePatchRequest(URI uri, Object obj, Map<String, String> additionalHeaders) throws Exception {
+        Context context = doPatchRequest(uri, obj, additionalHeaders);
         sayRequest(context.apiRequest, obj);
         docTestMachine.sayResponse(context.apiResponse, headersToShow);
         return context.apiResponse;
     }
 
     public ApiResponse makeDeleteRequestSilent(URI uri) throws Exception {
-        return doDeleteRequest(uri).apiResponse;
+        return doDeleteRequest(uri, null).apiResponse;
     }
 
-    public Context doDeleteRequest(URI uri) throws Exception {
-        return apiTest.delete(uri);
+    public Context doDeleteRequest(URI uri, Map<String, String> additionalHeaders) throws Exception {
+        return apiTest.delete(uri, additionalHeaders);
     }
 
-    public ApiResponse makeDeleteRequestSilent(URI uri, Object obj) throws Exception {
-        return doDeleteRequest(uri, obj).apiResponse;
+    public ApiResponse makeDeleteRequestSilent(URI uri, Object obj, Map<String, String> additionalHeaders) throws Exception {
+        return doDeleteRequest(uri, obj, additionalHeaders).apiResponse;
     }
 
-    public Context doDeleteRequest(URI uri, Object obj) throws Exception {
-        return apiTest.delete(uri, obj);
+    public Context doDeleteRequest(URI uri, Object obj, Map<String, String> additionalHeaders) throws Exception {
+        return apiTest.delete(uri, obj, additionalHeaders);
     }
 
     public ApiResponse makeDeleteRequest(URI uri) throws Exception {
-        return makeDeleteRequest(uri, null);
+        return makeDeleteRequest(uri, null, null);
     }
 
     public ApiResponse makeDeleteRequest(URI uri, Object obj) throws Exception {
-        Context context = doDeleteRequest(uri, obj);
+      return makeDeleteRequest(uri, obj, null);
+  }
+
+    public ApiResponse makeDeleteRequest(URI uri, Object obj, Map<String, String> additionalHeaders) throws Exception {
+        Context context = doDeleteRequest(uri, obj, additionalHeaders);
         sayRequest(context.apiRequest, obj);
         docTestMachine.sayResponse(context.apiResponse, headersToShow);
         return context.apiResponse;
     }
 
     /**
-     * 
+     *
      * @param expected
      * @param given
      * @param message
@@ -299,10 +372,10 @@ public abstract class LogicDocTest {
     }
 
     /**
-     * 
+     *
      * At first converts both objects to Json and then asserts that they are equal.
      * The resulting doc will sport the expected Json String.
-     * 
+     *
      * @param expected POJO
      * @param result POJO
      */
@@ -311,11 +384,11 @@ public abstract class LogicDocTest {
     }
 
     /**
-     * 
+     *
      * At first converts both objects to Json and then asserts that they are equal, except on the
      * fields mentioned in exceptions.
      * The resulting doc will sport the expected Json String.
-     * 
+     *
      * @param expected POJO
      * @param result POJO
      */
@@ -325,11 +398,11 @@ public abstract class LogicDocTest {
     }
 
     /**
-     * 
+     *
      * First converts both objects to Json and then asserts that they are equal, except on the
      * fields mentioned in exceptions.
      * The resulting doc will sport the expected Json String after the given message.
-     * 
+     *
      * @param expected POJO
      * @param result POJO
      * @param message Additional message to be concatenated to the expected Json
@@ -374,9 +447,9 @@ public abstract class LogicDocTest {
 
     /**
      * Assert that the value of the cookie with the given name equals the given value.
-     * 
+     *
      * The resulting cookie name and value will be printed, separated by a colon.
-     * 
+     *
      * @param name The name of the cookie
      * @param expectedValue The expected value
      */
@@ -388,9 +461,9 @@ public abstract class LogicDocTest {
 
     /**
      * Assert that the cookie with the given name is present.
-     * 
+     *
      * The resulting cookie name and value will be printed, separated by a colon.
-     * 
+     *
      * @param name The name of the cookie
      */
     public void assertCookiePresentAndSay(String name) {
@@ -401,9 +474,9 @@ public abstract class LogicDocTest {
 
     /**
      * Assert that the cookie with the given name is not.
-     * 
+     *
      * The resulting cookie name and null will be printed, separated by a colon.
-     * 
+     *
      * @param name The name of the cookie
      */
     public void assertCookieNotPresentAndSay(String name) {
@@ -415,9 +488,9 @@ public abstract class LogicDocTest {
     /**
      * Assert that a cookie is present that matches the attributes of the given
      * cookie
-     * 
+     *
      * The resulting cookie will be output with its parameters, in JSON format.
-     * 
+     *
      * @param expected The cookie to check
      */
     public void assertCookieMatchesAndSay(Cookie expected) {
@@ -438,7 +511,7 @@ public abstract class LogicDocTest {
 
     /**
      * Get the value of the cookie with the given name
-     * 
+     *
      * @param name The name of the cookie
      * @return The cookies value, or null if no cookie with that name was found
      */
@@ -448,7 +521,7 @@ public abstract class LogicDocTest {
 
     /**
      * Add the cookie with the given name and value to the current state
-     * 
+     *
      * @param name The name of the cookie
      * @param value The value of the cookie
      */
@@ -466,7 +539,7 @@ public abstract class LogicDocTest {
 
     /**
      * Get the doctest {@link Configuration}
-     * 
+     *
      * @return the configuration
      */
     public Configuration getConfiguration() {
