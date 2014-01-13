@@ -2,6 +2,7 @@
 
 develop
 -------
+- additionalHeaders and patch httpMethod added. Only compatible with apiTest >0.7.0
 - removed copyright headers from files that would be generated for users of doctest.
   (script.js, htmlStyle.css).
 - Moved templates, styling and js to subfolder to enable theming of doctest html output.

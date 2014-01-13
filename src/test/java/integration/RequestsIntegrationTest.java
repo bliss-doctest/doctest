@@ -45,12 +45,12 @@ import de.devbliss.apitester.Context;
 
 /**
  * Example implementation of a unit test class extending the {@link DocTest}.
- * 
+ *
  * This class is used in the {@link ReportCreatedIntegrationTest} class and describes how to use the
  * doctest library to make some http requests.
- * 
+ *
  * @author bmary
- * 
+ *
  */
 @RunWith(MockitoJUnitRunner.class)
 public class RequestsIntegrationTest extends DocTest {
@@ -118,7 +118,7 @@ public class RequestsIntegrationTest extends DocTest {
         apiRequest = new ApiRequest(uri, "get", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_OK, REASON_PHRASE, PAYLOAD_ARRAY, headers);
         context = new Context(apiResponse, apiRequest);
-        when(API.get(uri)).thenReturn(context);
+        when(API.get(uri, null)).thenReturn(context);
 
         sayNextSection("Making a get request for json content");
         ApiResponse resp = makeGetRequest(uri);
@@ -134,7 +134,7 @@ public class RequestsIntegrationTest extends DocTest {
         apiRequest = new ApiRequest(uri, "get", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_OK, REASON_PHRASE, html, headers);
         context = new Context(apiResponse, apiRequest);
-        when(API.get(uri)).thenReturn(context);
+        when(API.get(uri, null)).thenReturn(context);
 
         sayNextSection("Making a get request for html content");
         ApiResponse resp = makeGetRequest(uri);
@@ -149,7 +149,7 @@ public class RequestsIntegrationTest extends DocTest {
         apiRequest = new ApiRequest(uri, "delete", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_NO_CONTENT, REASON_PHRASE, null, headers);
         context = new Context(apiResponse, apiRequest);
-        when(API.delete(uri, null)).thenReturn(context);
+        when(API.delete(uri, null, null)).thenReturn(context);
 
         sayNextSection("Making a delete request");
         ApiResponse response = makeDeleteRequest(uri);
@@ -163,7 +163,7 @@ public class RequestsIntegrationTest extends DocTest {
         apiRequest = new ApiRequest(uri, "post", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_CREATED, REASON_PHRASE, PAYLOAD_OBJECT, headers);
         context = new Context(apiResponse, apiRequest);
-        when(API.post(uri, obj)).thenReturn(context);
+        when(API.post(uri, obj, null)).thenReturn(context);
 
         sayNextSection("Making a post request");
         ApiResponse response = makePostRequest(uri, obj);
@@ -177,10 +177,24 @@ public class RequestsIntegrationTest extends DocTest {
         apiRequest = new ApiRequest(uri, "put", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_NO_CONTENT, REASON_PHRASE, PAYLOAD_OBJECT, headers);
         context = new Context(apiResponse, apiRequest);
-        when(API.put(uri, obj)).thenReturn(context);
+        when(API.put(uri, obj, null)).thenReturn(context);
 
         sayNextSection("Making a put request with encöding chäracters");
         ApiResponse response = makePutRequest(uri, obj);
+
+        assertEqualsAndSay(HttpStatus.SC_NO_CONTENT, response.httpStatus, HTTP_TEXT);
+        assertEqualsAndSay(PAYLOAD_OBJECT, response.payload, JSON_TEXT);
+    }
+
+    @Test
+    public void patch() throws Exception {
+        apiRequest = new ApiRequest(uri, "patch", headers, cookies);
+        apiResponse = new ApiResponse(HttpStatus.SC_NO_CONTENT, REASON_PHRASE, PAYLOAD_OBJECT, headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.patch(uri, obj, null)).thenReturn(context);
+
+        sayNextSection("Making a patch request with encöding chäracters");
+        ApiResponse response = makePatchRequest(uri, obj);
 
         assertEqualsAndSay(HttpStatus.SC_NO_CONTENT, response.httpStatus, HTTP_TEXT);
         assertEqualsAndSay(PAYLOAD_OBJECT, response.payload, JSON_TEXT);
@@ -191,7 +205,7 @@ public class RequestsIntegrationTest extends DocTest {
         apiRequest = new ApiRequest(uri, "post", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_CREATED, "", null, headers);
         context = new Context(apiResponse, apiRequest);
-        when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
+        when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class), eq((Map<String,String>)null))).thenReturn(
                 context);
         sayNextSection("Making an upload post request");
 
@@ -206,7 +220,7 @@ public class RequestsIntegrationTest extends DocTest {
         apiRequest = new ApiRequest(uri, "post", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_CREATED, "", null, headers);
         context = new Context(apiResponse, apiRequest);
-        when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
+        when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class), eq((Map<String,String>)null))).thenReturn(
                 context);
         sayNextSection("Making an upload post request with an image file");
 
@@ -227,7 +241,7 @@ public class RequestsIntegrationTest extends DocTest {
         apiRequest = new ApiRequest(uri, "post", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_CREATED, "", null, headers);
         context = new Context(apiResponse, apiRequest);
-        when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class))).thenReturn(
+        when(API.post(eq(uri), eq(null), isA(PostUploadWithoutRedirectImpl.class), eq((Map<String,String>)null))).thenReturn(
                 context);
 
         ApiResponse response =
@@ -240,7 +254,7 @@ public class RequestsIntegrationTest extends DocTest {
         apiRequest = new ApiRequest(uri, "put", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_OK, "", PAYLOAD_OBJECT, headers);
         context = new Context(apiResponse, apiRequest);
-        when(API.put(uri, obj)).thenReturn(context);
+        when(API.put(uri, obj, null)).thenReturn(context);
 
         response = makePutRequest(uri, obj);
 
