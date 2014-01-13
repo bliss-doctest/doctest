@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -143,6 +144,14 @@ public class LogicDocTestUnitTest {
     }
 
     @Test
+    public void makeGetRequestWithAdditionalHeaders() throws Exception {
+        when(apiTest.get(uri, headers)).thenReturn(context);
+        docTest.makeGetRequest(uri, headers);
+        verify(apiTest).get(uri, headers);
+      }
+
+
+    @Test
     public void makeDeleteRequest() throws Exception {
         when(apiTest.delete(uri, null, null)).thenReturn(context);
         docTest.makeDeleteRequest(uri);
@@ -159,6 +168,13 @@ public class LogicDocTestUnitTest {
     }
 
     @Test
+    public void makeDeleteRequestWithAdditionalHeaders() throws Exception {
+        when(apiTest.delete(uri, obj, headers)).thenReturn(context);
+        docTest.makeDeleteRequest(uri, obj, headers);
+        verify(apiTest).delete(uri, obj, headers);
+      }
+
+    @Test
     public void makePostRequest() throws Exception {
         when(apiTest.post(uri, null, null)).thenReturn(context);
         docTest.makePostRequest(uri);
@@ -173,6 +189,14 @@ public class LogicDocTestUnitTest {
         verify(docTestMachine).sayRequest(request, OBJECT, myHeadersToShow, myCookiesToShow);
         verify(docTestMachine).sayResponse(response, myHeadersToShow);
     }
+
+    @Test
+    public void makePostRequestWithAdditionalHeaders() throws Exception {
+        when(apiTest.post(uri, obj, headers)).thenReturn(context);
+        docTest.makePostRequest(uri, obj, headers);
+        verify(apiTest).post(uri, obj, headers);
+      }
+
 
     @Test
     public void makePostUploadRequest() throws Exception {
@@ -211,6 +235,13 @@ public class LogicDocTestUnitTest {
     }
 
     @Test
+    public void makePutRequestWithAdditionalHeaders() throws Exception {
+        when(apiTest.put(uri, obj, headers)).thenReturn(context);
+        docTest.makePutRequest(uri, obj, headers);
+        verify(apiTest).put(uri, obj, headers);
+      }
+
+    @Test
     public void makePatchRequest() throws Exception {
         when(apiTest.patch(uri, null, null)).thenReturn(context);
         docTest.makePatchRequest(uri);
@@ -225,6 +256,13 @@ public class LogicDocTestUnitTest {
         verify(docTestMachine).sayRequest(request, OBJECT, myHeadersToShow, myCookiesToShow);
         verify(docTestMachine).sayResponse(response, myHeadersToShow);
     }
+
+    @Test
+    public void makePatchRequestWithAdditionalHeaders() throws Exception {
+        when(apiTest.patch(uri, obj, headers)).thenReturn(context);
+        docTest.makePatchRequest(uri, obj, headers);
+        verify(apiTest).patch(uri, obj, headers);
+      }
 
     @Test
     public void assertTrueAndSay() throws Exception {

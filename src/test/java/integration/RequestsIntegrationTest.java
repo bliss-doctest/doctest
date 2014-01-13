@@ -187,6 +187,20 @@ public class RequestsIntegrationTest extends DocTest {
     }
 
     @Test
+    public void patch() throws Exception {
+        apiRequest = new ApiRequest(uri, "patch", headers, cookies);
+        apiResponse = new ApiResponse(HttpStatus.SC_NO_CONTENT, REASON_PHRASE, PAYLOAD_OBJECT, headers);
+        context = new Context(apiResponse, apiRequest);
+        when(API.patch(uri, obj, null)).thenReturn(context);
+
+        sayNextSection("Making a patch request with encöding chäracters");
+        ApiResponse response = makePatchRequest(uri, obj);
+
+        assertEqualsAndSay(HttpStatus.SC_NO_CONTENT, response.httpStatus, HTTP_TEXT);
+        assertEqualsAndSay(PAYLOAD_OBJECT, response.payload, JSON_TEXT);
+    }
+
+    @Test
     public void postUploadText() throws Exception {
         apiRequest = new ApiRequest(uri, "post", headers, cookies);
         apiResponse = new ApiResponse(HttpStatus.SC_CREATED, "", null, headers);
