@@ -268,7 +268,7 @@ public abstract class LogicDocTest {
     }
 
     public ApiResponse makePutRequestSilent(URI uri, Object obj) throws Exception {
-      return makePutRequestSilent(uri, obj, null);
+        return makePutRequestSilent(uri, obj, null);
     }
 
     public ApiResponse makePutRequestSilent(URI uri, Object obj, Map<String, String> additionalHeaders) throws Exception {
