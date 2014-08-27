@@ -14,37 +14,31 @@
 
 package com.devbliss.doctest.httpfactory;
 
-import static com.devbliss.doctest.httpfactory.HttpConstants.ENCODING;
 import static com.devbliss.doctest.httpfactory.HttpConstants.HANDLE_REDIRECTS;
 
-import java.io.IOException;
-import java.net.URI;
-
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
-
-import com.google.gson.Gson;
 import com.google.inject.Inject;
-
 import de.devbliss.apitester.factory.DeleteFactory;
 import de.devbliss.apitester.factory.HttpDeleteWithBody;
+import de.devbliss.apitester.factory.impl.EntityBuilder;
+import java.io.IOException;
+import java.net.URI;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 
 /**
  * Implements a DELETE HTTP request which does not handle any redirect.
  * 
- * @author bmary
+ * @author bmary, hschuetz
  * 
  */
 public class DeleteWithoutRedirectImpl implements DeleteFactory {
 
-    private final Gson gson;
-
+    private final EntityBuilder entityBuilder;
+    
     @Inject
-    public DeleteWithoutRedirectImpl(Gson gson) {
-        this.gson = gson;
+    public DeleteWithoutRedirectImpl(EntityBuilder entityBuilder) {
+        this.entityBuilder = entityBuilder;
     }
 
     public HttpDeleteWithBody createDeleteRequest(URI uri, Object payload) throws IOException {
@@ -54,10 +48,7 @@ public class DeleteWithoutRedirectImpl implements DeleteFactory {
         httpDelete.setParams(params);
 
         if (payload != null) {
-            String json = gson.toJson(payload);
-            StringEntity entity = new StringEntity(json, ENCODING);
-            entity.setContentType(ContentType.APPLICATION_JSON.getMimeType());
-            httpDelete.setEntity(entity);
+            httpDelete.setEntity(entityBuilder.buildEntity(payload));
         }
 
         return httpDelete;

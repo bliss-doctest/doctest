@@ -14,17 +14,15 @@
 
 package com.devbliss.doctest.httpfactory;
 
+import de.devbliss.apitester.factory.PostFactory;
 import java.io.IOException;
 import java.net.URI;
-
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
-
-import de.devbliss.apitester.factory.PostFactory;
 
 /**
  * Implements a POST HTTP request which does not handle any redirect.
