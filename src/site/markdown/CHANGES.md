@@ -2,6 +2,8 @@
 
 develop
 -------
+- string payload in requests is treated as text/plain now by the custom request factories
+- using apitester 0.7.1 doing the same in the default request factories
 
 Version 0.7.0 14.01.2014
 ------------------------
