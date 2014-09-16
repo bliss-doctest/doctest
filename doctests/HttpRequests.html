@@ -266,7 +266,7 @@ span.highlight {
 			<div class="wrapper">			
             	<br/>
             	<a href="./index.html">back to index page</a><br/>
-            	<div class="small">Doctest originally perfomed at: Tue Sep 16 09:29:50 CEST 2014</div>
+            	<div class="small">Doctest originally perfomed at: Tue Sep 16 10:18:54 CEST 2014</div>
             	
             		<h3>Introduction:</h3>
             		<div>This documentation describes the input/output of the four http methods.</div>
@@ -279,10 +279,10 @@ span.highlight {
 				<a href="#section34">Making a delete request</a>
 			</li>
 			<li>
-				<a href="#section35">Making a post request</a>
+				<a href="#section35">Making a patch request with encöding chäracters</a>
 			</li>
 			<li>
-				<a href="#section36">Making a patch request with encöding chäracters</a>
+				<a href="#section36">Making a post request</a>
 			</li>
 			<li>
 				<a href="#section37">Making a get request for json content</a>
@@ -428,78 +428,7 @@ span.highlight {
 </div><div class="box correct">
 	The response contains the HTTP_STATUS of the request
 </div><h1>
-	<a name="section35"> Making a post request </a>
-	<a class="link-to-top" href="#">
-		(top)
-	</a>
-</h1><div class="box">
-	<span class="headline">		
-			Request
-	</span>
-	<ul>
-		<li>HTTP: POST</li>
-		<li>URI: /resource/id:12345</li>
-		
-			<li>Headers:
-					<ol>
-						    <li>
-						        <label>content-type = </label>
-						        <div>application/json</div>
-						    </li>
-					</ol>
-					
-					<ol>
-					 <li><b>Cookies:</b></li>
-						    <li>
-						        <label>login = </label>
-						        <div>123456(-)654321</div></li>
-					</ol>
-			</li>
-		
-			<li>
-				<div>payload:</div>
-				<pre>{
-  "name": "test object",
-  "points": 12,
-  "properties": [
-    "prop1",
-    "prop2"
-  ]
-}</pre>
-			</li>
-    </ul>
-</div>
-<div class="box">
-	<span class="headline">Response</span>
-	<ul>
-		<li>ResponseCode: 201</li>
-
-			<li>Headers
-				<ol>
-				    <li>
-				        <label>content-type = </label>
-				        <div>application/json</diuv>
-				    </li>
-				</ol>
-			</li>
-
-			<li>
-				<div>payload:</div>
-				<pre>{
-  "abc": "123",
-  "cde": {
-    "start": "today",
-    "end": "tomorrow"
-  }
-}</pre>
-			</li>
-    </ul>
-</div><div class="box correct">
-	The response contains the HTTP_STATUS of the request
-</div><div class="box correct">
-	The response contains a JSON payload
-</div><h1>
-	<a name="section36"> Making a patch request with encöding chäracters </a>
+	<a name="section35"> Making a patch request with encöding chäracters </a>
 	<a class="link-to-top" href="#">
 		(top)
 	</a>
@@ -544,6 +473,77 @@ span.highlight {
 	<span class="headline">Response</span>
 	<ul>
 		<li>ResponseCode: 204</li>
+
+			<li>Headers
+				<ol>
+				    <li>
+				        <label>content-type = </label>
+				        <div>application/json</diuv>
+				    </li>
+				</ol>
+			</li>
+
+			<li>
+				<div>payload:</div>
+				<pre>{
+  "abc": "123",
+  "cde": {
+    "start": "today",
+    "end": "tomorrow"
+  }
+}</pre>
+			</li>
+    </ul>
+</div><div class="box correct">
+	The response contains the HTTP_STATUS of the request
+</div><div class="box correct">
+	The response contains a JSON payload
+</div><h1>
+	<a name="section36"> Making a post request </a>
+	<a class="link-to-top" href="#">
+		(top)
+	</a>
+</h1><div class="box">
+	<span class="headline">		
+			Request
+	</span>
+	<ul>
+		<li>HTTP: POST</li>
+		<li>URI: /resource/id:12345</li>
+		
+			<li>Headers:
+					<ol>
+						    <li>
+						        <label>content-type = </label>
+						        <div>application/json</div>
+						    </li>
+					</ol>
+					
+					<ol>
+					 <li><b>Cookies:</b></li>
+						    <li>
+						        <label>login = </label>
+						        <div>123456(-)654321</div></li>
+					</ol>
+			</li>
+		
+			<li>
+				<div>payload:</div>
+				<pre>{
+  "name": "test object",
+  "points": 12,
+  "properties": [
+    "prop1",
+    "prop2"
+  ]
+}</pre>
+			</li>
+    </ul>
+</div>
+<div class="box">
+	<span class="headline">Response</span>
+	<ul>
+		<li>ResponseCode: 201</li>
 
 			<li>Headers
 				<ol>
