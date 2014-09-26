@@ -1,7 +1,7 @@
 # How to configure the doctests
 The *doctest* library can be configured if you have to. Currently the *Configuration* object only allows to change the output directory of the generated html files.
 
-These two examples show how the usage of the configuration can look like:
+There are two ways to configure the html output directory of your tests. The first is programmatically.
 
 <pre>
 import com.devbliss.doctest.DocTest;
@@ -41,3 +41,8 @@ class MyDocTest extends DocTest {
 }
 </pre>
 
+The second way is by the system properties defined in the Configuration class.
+
+<pre>
+doctest.html.output = "/my/project/documentation"
+</pre>
