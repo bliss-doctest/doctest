@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import java.util.Properties;
+
 /**
  * Test class for {@link Configuration}.
  * 
@@ -24,6 +26,8 @@ public class ConfigurationTest {
         System.setProperty(Configuration.PROPERTY_HTML_OUTPUT_DIR, TEST_OUTPUT_DIR_PATH);
         configuration = new Configuration();
         assertTrue(configuration.getHtmlOutputDirectory().endsWith(TEST_OUTPUT_DIR_PATH));
+        Properties sysProps = System.getProperties();
+        sysProps.remove(Configuration.PROPERTY_HTML_OUTPUT_DIR);
     }
 
 }
