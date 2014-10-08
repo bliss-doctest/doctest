@@ -1,5 +1,3 @@
-Build on Cloudbees: [![Build Status](https://buildhive.cloudbees.com/job/devbliss/job/doctest/badge/icon)](https://buildhive.cloudbees.com/job/devbliss/job/doctest/)
-
 # Test and document your java application REST Api in one single file
 Writing tests and documentation is one of the most important aspects of modern software development. At the same time this is the part with the fewest amount of time to work on during a project. This *doctest* library is the best way to merge the world of documenting and testing your REST Api of your java application powered by the [junit](http://junit.org/) library. 
 
