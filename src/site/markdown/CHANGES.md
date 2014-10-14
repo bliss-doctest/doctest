@@ -2,6 +2,7 @@
 
 develop
 -------
+ - Removed reference to CloudBees build status
 
 Version 0.9.0 29.09.2014
 ------------------------
