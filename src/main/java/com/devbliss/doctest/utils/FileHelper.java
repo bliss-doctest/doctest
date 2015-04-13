@@ -40,6 +40,8 @@ import com.devbliss.doctest.renderer.ReportRenderer;
  */
 public class FileHelper {
 
+    private  static final int MAX_RETRIES = 5;
+
     private Configuration configuration;
 
     /**
@@ -59,17 +61,25 @@ public class FileHelper {
     }
 
     private void writeOutFile(String nameOfFile, String content) {
+        writeOutFile(nameOfFile, content, 0);
+    }
+
+    private void writeOutFile(String nameOfFile, String content, int iteration) {
         Writer fw = null;
         if (content != null) {
             try {
                 fw = new FileWriter(nameOfFile);
                 fw.write(content);
             } catch (IOException e) {
+                if (iteration > MAX_RETRIES) {
+                    throw new RuntimeException(e);
+                }
+
                 try {
                     Thread.sleep(200);
-                    writeOutFile(nameOfFile, content);
+                    writeOutFile(nameOfFile, content, ++iteration);
                 } catch (InterruptedException err2) {
-                    writeOutFile(nameOfFile, content);
+                    writeOutFile(nameOfFile, content, ++iteration);
                 }
             } finally {
                 closeFileWriter(fw);

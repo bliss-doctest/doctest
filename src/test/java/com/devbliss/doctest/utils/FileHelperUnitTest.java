@@ -14,25 +14,23 @@
 
 package com.devbliss.doctest.utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static testutils.Utils.getFilesInOutputDirectory;
-import static testutils.Utils.verifyTheFileHasBeenCreated;
+import com.devbliss.doctest.Configuration;
+import com.devbliss.doctest.items.LinkDocItem;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import testutils.Utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import testutils.Utils;
-
-import com.devbliss.doctest.Configuration;
-import com.devbliss.doctest.items.LinkDocItem;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static testutils.Utils.getFilesInOutputDirectory;
+import static testutils.Utils.verifyTheFileHasBeenCreated;
 
 /**
  * Unit test for {@link FileHelper}
@@ -118,6 +116,23 @@ public class FileHelperUnitTest {
     @Test(expected = FileNotFoundException.class)
     public void readFileToStringException() throws Exception {
         helper.readFile(new File("."));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void readFileToRuntimeException() throws Exception {
+        // change the previous set directory name
+        String newDirectory = configuration.getHtmlOutputDirectory() + "/notwriteable";
+        configuration.setHtmlOutputDirectory(newDirectory);
+        final File file = new File(newDirectory);
+        file.mkdirs();
+        file.setWritable(false);
+
+        try {
+            helper.writeFile(newDirectory + "/" + FILE, DOC);
+        } finally {
+            file.setWritable(true);
+            Utils.deleteDirectory(new File(newDirectory));
+        }
     }
 
     @Test
