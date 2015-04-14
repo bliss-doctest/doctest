@@ -118,7 +118,7 @@ public class FileHelperUnitTest {
         helper.readFile(new File("."));
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = FileNotFoundException.class)
     public void readFileToRuntimeException() throws Exception {
         // change the previous set directory name
         String newDirectory = configuration.getHtmlOutputDirectory() + "/notwriteable";

@@ -14,6 +14,10 @@
 
 package com.devbliss.doctest.utils;
 
+import com.devbliss.doctest.Configuration;
+import com.devbliss.doctest.items.LinkDocItem;
+import com.devbliss.doctest.renderer.ReportRenderer;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -24,10 +28,6 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.devbliss.doctest.Configuration;
-import com.devbliss.doctest.items.LinkDocItem;
-import com.devbliss.doctest.renderer.ReportRenderer;
 
 /**
  * Defines some general methods to write a file and defines its name.
@@ -51,36 +51,22 @@ public class FileHelper {
      * This could cause a StackOverflowException, but I cannot
      * think of any real case where this happens...
      * 
-     * @param nameOfFile
-     * @throws InvalidReportException
+     * @param nameCompletePath
+     * @param finalDoc
+     * @throws IOException
      */
-    public void writeFile(String nameCompletePath, String finalDoc) {
+    public void writeFile(String nameCompletePath, String finalDoc) throws IOException {
         // make sure the directory exists
         new File(nameCompletePath).getParentFile().mkdirs();
         writeOutFile(nameCompletePath, finalDoc);
     }
 
-    private void writeOutFile(String nameOfFile, String content) {
-        writeOutFile(nameOfFile, content, 0);
-    }
-
-    private void writeOutFile(String nameOfFile, String content, int iteration) {
+    private void writeOutFile(String nameOfFile, String content) throws IOException {
         Writer fw = null;
         if (content != null) {
             try {
                 fw = new FileWriter(nameOfFile);
                 fw.write(content);
-            } catch (IOException e) {
-                if (iteration > MAX_RETRIES) {
-                    throw new RuntimeException(e);
-                }
-
-                try {
-                    Thread.sleep(200);
-                    writeOutFile(nameOfFile, content, ++iteration);
-                } catch (InterruptedException err2) {
-                    writeOutFile(nameOfFile, content, ++iteration);
-                }
             } finally {
                 closeFileWriter(fw);
             }
