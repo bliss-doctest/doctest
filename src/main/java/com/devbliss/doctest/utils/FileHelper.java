@@ -40,8 +40,6 @@ import java.util.List;
  */
 public class FileHelper {
 
-    private  static final int MAX_RETRIES = 5;
-
     private Configuration configuration;
 
     /**
